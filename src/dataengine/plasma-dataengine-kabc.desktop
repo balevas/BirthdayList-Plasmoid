@@ -1,0 +1,23 @@
+[Desktop Entry]
+Name=Kabc Engine
+Name[de]=Kabc Data Engine
+Name[fr]=Moteur de données Kabc
+Comment=An engine providing address book data
+Comment[de]=DataEngine, die eine Liste mit Kontakten mit Geburtstagen liefert.
+Comment[fr]=Un moteur fournissant des données du carnet d'adresse
+Type=Service
+
+X-KDE-ServiceTypes=Plasma/DataEngine
+X-KDE-Library=plasma_engine_kabc
+X-Plasma-EngineName=kabc
+X-KDE-PluginInfo-Author=Meinhard Ritscher
+X-KDE-PluginInfo-Email=unreachable@gmx.co.uk
+X-KDE-PluginInfo-Name=kabc
+X-KDE-PluginInfo-Version=0.9.72
+X-KDE-PluginInfo-Website=http://www.kde-look.org/content/show.php/K+Birthday+Reminder?content=91641
+X-KDE-PluginInfo-Category=Time and Date
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+X-PlasmoidCategory=Time and Date

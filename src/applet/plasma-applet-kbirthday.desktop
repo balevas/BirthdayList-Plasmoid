@@ -1,0 +1,23 @@
+[Desktop Entry]
+Name=Birthday Reminder
+Name[de]=Geburtstagserinnerer
+Name[fr]=Rappel d'anniversaire
+Comment=Remembers you on anniversaries
+Comment[de]=Erinnert an Geburtstage und Jahrestage von Kontakten im KDE-Adressbuch
+Comment[fr]=Souvenez-vous des dates anniversaires
+Icon=cookie
+Type=Service
+X-KDE-ServiceTypes=Plasma/Applet
+
+X-KDE-Library=plasma_applet_kbirthdayapplet
+X-KDE-PluginInfo-Author=Meinhard Ritscher
+X-KDE-PluginInfo-Email=unreachable@gmx.co.uk
+X-KDE-PluginInfo-Name=kbirthdayapplet
+X-KDE-PluginInfo-Version=0.9.72
+X-KDE-PluginInfo-Website=http://www.kde-look.org/content/show.php/K+Birthday+Reminder?content=91641
+X-KDE-PluginInfo-Category=Time and Date
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+
+X-PlasmoidCategory=Time and Date

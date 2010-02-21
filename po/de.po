@@ -1,0 +1,128 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Meinhard Ritscher, 2010.
+# Meinhard Ritscher <unreachable@gmx.co.uk>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: plasma_applet_kbirthdayapplet\n"
+"Report-Msgid-Bugs-To: http://www.kde-look.org/content/show.php/K+Birthday"
+"+Reminder?content=91641\n"
+"POT-Creation-Date: 2010-01-14 13:09+0100\n"
+"PO-Revision-Date: 2009-03-04 08:38+0100\n"
+"Last-Translator: Meinhard Ritscher <unreachable@gmx.co.uk>\n"
+"Language-Team: German <kde-i18n-de@lists.kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 0.3\n"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:62
+#. i18n: ectx: property (text), widget (QLabel, colourLabel)
+#: po/rc.cpp:3 rc.cpp:3
+msgid "Font Colour:"
+msgstr "Zeichenfarbe:"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:111
+#. i18n: ectx: property (text), widget (QLabel, pastColourLabel)
+#: po/rc.cpp:6 rc.cpp:6
+msgid "Past Events:"
+msgstr "Ereignisse in der Vergangenheit:"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:136
+#. i18n: ectx: property (text), widget (QLabel, highlightColourLabel)
+#: po/rc.cpp:9 rc.cpp:9
+msgid "Highlight Colour:"
+msgstr "Hervorhebungsfarbe:"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:153
+#. i18n: ectx: property (text), widget (QLabel, eventLabel)
+#: po/rc.cpp:12 rc.cpp:12
+#, fuzzy
+msgid "Show coming events within"
+msgstr "Zeige kommende Ereignisse innherhalb von"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:170
+#. i18n: ectx: property (text), widget (QLabel, pastEventLabel)
+#: po/rc.cpp:15 rc.cpp:15
+msgid "Show past events within"
+msgstr "Zeige Ereignisse in der Vergangenheit innherhalb:"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:187
+#. i18n: ectx: property (text), widget (QLabel, highlightEventLabel)
+#: po/rc.cpp:18 rc.cpp:18
+msgid "Highlight events within"
+msgstr "Hebe Ereignisse hervor innerhalb:"
+
+#. i18n: file: src/applet/kbirthdayapplet_config.ui:200
+#. i18n: ectx: property (text), widget (QCheckBox, showAnniversaries)
+#: po/rc.cpp:21 rc.cpp:21
+msgid "Show anniversaries"
+msgstr "Zeige Jahrestage"
+
+#: po/rc.cpp:22 rc.cpp:22
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Meinhard Ritscher"
+
+#: po/rc.cpp:23 rc.cpp:23
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "unreachable@gmx.co.uk"
+
+#: src/applet/kbirthdayapplet.cpp:222
+msgid "No Events"
+msgstr "Keine Ereignisse"
+
+#: src/applet/kbirthdayapplet.cpp:227 src/applet/kbirthdaydialog.cpp:108
+#: src/dataengine/kabcengine.cpp:83
+msgid "Birthdays"
+msgstr "Geburtstage"
+
+#: src/applet/kbirthdayapplet.cpp:238 src/applet/kbirthdaydialog.cpp:133
+#: src/dataengine/kabcengine.cpp:85
+msgid "Anniversaries"
+msgstr "Jahrestage"
+
+#: src/applet/kbirthdayapplet.cpp:255
+msgid "Birthday Reminder"
+msgstr "Geburtstagserinnerer"
+
+#: src/applet/kbirthdayapplet.cpp:257
+msgid "One outstanding event"
+msgid_plural "%1 outstanding events"
+msgstr[0] "Ein anstehendes Ereignis"
+msgstr[1] "%1 anstehende Ereignisse"
+
+#: src/applet/kbirthdayapplet.cpp:259
+msgid "No outstanding event"
+msgstr "Keine anstehende Ereignisse"
+
+#: src/applet/kbirthdayapplet.cpp:440
+msgid "%1 days ago"
+msgstr "vor %1 Tagen"
+
+#: src/applet/kbirthdayapplet.cpp:442
+msgid "yesterday"
+msgstr "Gestern"
+
+#: src/applet/kbirthdayapplet.cpp:444
+msgid "today"
+msgstr "heute"
+
+#: src/applet/kbirthdayapplet.cpp:446
+msgid "tomorrow"
+msgstr "morgen"
+
+#: src/applet/kbirthdayapplet.cpp:448
+msgid "in %1 days"
+msgstr "in %1 Tagen"
+
+#: src/applet/kbirthdaydialog.cpp:73
+msgid "Outstanding Events"
+msgstr "Anstehende Ereignisse"
+
+#: src/dataengine/kabcengine.cpp:157
+msgid "  no name available"
+msgstr "Unbekannt"
