@@ -1,0 +1,225 @@
+<ui version="4.0" >
+ <class>KBirthdayAppletConfig</class>
+ <widget class="QWidget" name="KBirthdayAppletConfig" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>256</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <property name="minimumSize" >
+   <size>
+    <width>250</width>
+    <height>230</height>
+   </size>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="2" column="0" colspan="2" >
+    <spacer name="horizontalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>1</width>
+       <height>100</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item rowspan="2" row="2" column="7" >
+    <spacer name="horizontalSpacer_2" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>2</width>
+       <height>100</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="6" >
+    <layout class="QFormLayout" name="formLayout" >
+     <property name="sizeConstraint" >
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+     <property name="fieldGrowthPolicy" >
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <property name="labelAlignment" >
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing" >
+      <number>6</number>
+     </property>
+     <item row="0" column="0" >
+      <widget class="QLabel" name="colourLabel" >
+       <property name="text" >
+        <string>Font Colour:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="KColorButton" name="colour" >
+       <property name="autoDefault" >
+        <bool>false</bool>
+       </property>
+       <property name="default" >
+        <bool>false</bool>
+       </property>
+       <property name="color" >
+        <color>
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </property>
+       <property name="defaultColor" >
+        <color>
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" >
+      <widget class="KColorButton" name="pastColour" >
+       <property name="color" >
+        <color>
+         <red>150</red>
+         <green>150</green>
+         <blue>150</blue>
+        </color>
+       </property>
+       <property name="defaultColor" >
+        <color>
+         <red>150</red>
+         <green>150</green>
+         <blue>150</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" >
+      <widget class="QLabel" name="pastColourLabel" >
+       <property name="text" >
+        <string>Past Events:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1" >
+      <widget class="KColorButton" name="highlightColour" >
+       <property name="color" >
+        <color>
+         <red>170</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="defaultColor" >
+        <color>
+         <red>170</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" >
+      <widget class="QLabel" name="highlightColourLabel" >
+       <property name="text" >
+        <string>Highlight Colour:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1" >
+      <widget class="QSpinBox" name="spinEventTreshold" >
+       <property name="maximum" >
+        <number>90</number>
+       </property>
+       <property name="value" >
+        <number>30</number>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" >
+      <widget class="QLabel" name="eventLabel" >
+       <property name="text" >
+        <string>Show coming events within</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1" >
+      <widget class="QSpinBox" name="spinPast" >
+       <property name="maximum" >
+        <number>30</number>
+       </property>
+       <property name="value" >
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" >
+      <widget class="QLabel" name="pastEventLabel" >
+       <property name="text" >
+        <string>Show past events within</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1" >
+      <widget class="QSpinBox" name="spinHighlight" >
+       <property name="maximum" >
+        <number>29</number>
+       </property>
+       <property name="value" >
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" >
+      <widget class="QLabel" name="highlightEventLabel" >
+       <property name="text" >
+        <string>Highlight events within</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" >
+      <widget class="QCheckBox" name="showAnniversaries" >
+       <property name="enabled" >
+        <bool>true</bool>
+       </property>
+       <property name="layoutDirection" >
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text" >
+        <string>Show anniversaries</string>
+       </property>
+       <property name="checked" >
+        <bool>true</bool>
+       </property>
+       <property name="showAnniversaries" stdset="0" >
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <zorder>horizontalSpacer_2</zorder>
+  <zorder></zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KColorButton</class>
+   <extends>QPushButton</extends>
+   <header>kcolorbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
