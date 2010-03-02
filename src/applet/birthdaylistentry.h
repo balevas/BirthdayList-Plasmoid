@@ -1,8 +1,8 @@
-#ifndef BLISTENTRY_H
-#define BLISTENTRY_H
+#ifndef BIRTHDAYLISTENTRY_H
+#define BIRTHDAYLISTENTRY_H
 
 /* ************************************************
- *  @name: blistentry.h 
+ *  @name: birthdaylistentry.h
  *  @author: Meinhard Ritscher
  *  @date: 2008-10-21
  *
@@ -36,10 +36,10 @@
 
 #include <QString>
 #include <QDate>
-#include <QIcon>
 #include <QStandardItem>
 
 #include <KDebug>
+#include <KIcon>
 
 
 
@@ -48,13 +48,17 @@ class AbstractAnnualEventEntry {
         AbstractAnnualEventEntry(const QString &name, const QDate &date);
         virtual ~AbstractAnnualEventEntry();
 
+        const QString& name() const { return m_name; }
+        int age() const { return m_age; }
+        const QDate& date() const { return m_date; }
         int remainingDays() const { return m_remainingDays; }
-	void calculateDays();
-	virtual void createModelItems(QList<QStandardItem*> &items) const = 0;
 
-	static bool lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b);
-	
-     protected:
+        void calculateDays();
+        virtual void createModelItems(QList<QStandardItem*> &items) const = 0;
+
+        static bool lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b);
+        
+    protected:
         static QString remainingDaysString(const int remainingDays);
 
 
@@ -62,13 +66,13 @@ class AbstractAnnualEventEntry {
     /** @brief The formatted name of that person. */
         QString m_name;
     /** @brief How old turns the person / the anniversary. */
-        unsigned int m_age;
+        int m_age;
     /** @brief The date of the event*/
         QDate m_date;
     /** @brief How many days until the event (this might be negative). */
         int m_remainingDays;
-	
-	static int historyMargin;
+        
+        static int m_historyMargin;
 };
 
 
@@ -77,10 +81,10 @@ class BirthdayEntry : public AbstractAnnualEventEntry {
         BirthdayEntry(const QString &name, const QDate &date);
         virtual ~BirthdayEntry();
 
-	virtual void createModelItems(QList<QStandardItem*> &items) const;
+        virtual void createModelItems(QList<QStandardItem*> &items) const;
 
-  private:
-    	static QIcon m_icon;
+    private:
+        static KIcon m_icon;
 };
 
 
@@ -88,14 +92,14 @@ class NamedayEntry : public AbstractAnnualEventEntry {
     public:
         NamedayEntry(const QString &name, const QDate &date);
         virtual ~NamedayEntry();
-	
-	void setAggregated(bool aggregated) { m_aggregated = aggregated; }
 
-	virtual void createModelItems(QList<QStandardItem*> &items) const;
+        void setAggregated(bool aggregated) { m_aggregated = aggregated; }
 
-  private:
+        virtual void createModelItems(QList<QStandardItem*> &items) const;
+
+    private:
         bool m_aggregated;
-    	static QIcon m_icon;
+        static KIcon m_icon;
 };
 
 
@@ -104,11 +108,25 @@ class AggregatedNamedayEntry : public AbstractAnnualEventEntry {
         AggregatedNamedayEntry(const QString &name, const QDate &date);
         virtual ~AggregatedNamedayEntry();
 
-	virtual void createModelItems(QList<QStandardItem*> &items) const;
+        void addNamedayEntry(NamedayEntry *namedayEntry);
 
-  private:
-    	static QIcon m_icon;
+        virtual void createModelItems(QList<QStandardItem*> &items) const;
+
+    private:
+        QList<NamedayEntry *> m_storedEntries;
+        static KIcon m_icon;
 };
 
 
-#endif
+class AnniversaryEntry : public AbstractAnnualEventEntry {
+    public:
+        AnniversaryEntry(const QString &name, const QDate &date);
+        virtual ~AnniversaryEntry();
+    
+    virtual void createModelItems(QList<QStandardItem*> &items) const;
+
+    private:
+        static KIcon m_icon;
+};
+
+#endif //BIRTHDAYLISTENTRY_H

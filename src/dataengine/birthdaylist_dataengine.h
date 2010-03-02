@@ -1,25 +1,11 @@
-#ifndef KABCENGINE_H
-#define KABCENGINE_H
+#ifndef BIRTHDAYLIST_DATAENGINE_H
+#define BIRTHDAYLIST_DATAENGINE_H
 
 /* ************************************************
- *  @name: kabcengine.h
- *  @author: Meinhard Ritscher
- *  @date: 2008-10-21
- *
- *  $Id:  $
- *
- *  Description
- *  ============
- *  A data engine providing a list of birthdays
- *  and a list of anninversaries from the standard
- *  KDE address book.
- *  Code from Jan Hambrecht from the kicker applet
- *  KBirthday has been used.
- *
- *  Histrory
- *  ============
- *
+ *  @name: birthdaylist_dataengine.cpp
+ *  @author: Karol Slanina
  * ********************************************** */
+
 /* *************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -37,22 +23,19 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include <Plasma/DataEngine>
-#include <kabc/stdaddressbook.h>
+namespace KABC {
+    class Addressee;
+};
 
-// This enables us to use a QPair as an QMetatype
-typedef QPair<QString, QDate> KabEntry;
-typedef QList<QVariant> KabEventList;
-
-class AddressBook;
-
-class KabcEngine : public Plasma::DataEngine
+class BirthdayListDataEngine : public Plasma::DataEngine
 {
     Q_OBJECT
 
     public:
-        KabcEngine(QObject* parent, const QVariantList& args);
-        ~KabcEngine();
+        BirthdayListDataEngine(QObject* parent, const QVariantList& args);
+        ~BirthdayListDataEngine();
 
         /**
         * @brief overloaded function List of names of the resources provided
@@ -65,37 +48,34 @@ class KabcEngine : public Plasma::DataEngine
         * @param name the name of the requested resource
         */
         bool sourceRequestEvent(const QString& name);
+
         /**
         * @brief overloaded function. Update the data of a resource
         * @param source the name of the resource to update
         */
         bool updateSourceEvent(const QString& source);
 
-	bool updateNamedayLists();
-	bool updateNamedayDef(QString langCode);
-
     private slots:
-        void slotAddressbookChanged(AddressBook*);
+        void slotAddressbookChanged();
 
     private:
-        void updateEventList(const QString &name);
-        /** 
-         * @brief helper function for getting an anniversary date. If none exists 
-         */
-        QDate getAnniversary( const KABC::Addressee &addressee );
+        bool updateNamedayLists();
+        bool updateNamedayList(QString langCode);
 
-private: // Private attributes
+        void setKabcAnniversaryField(QString kabcAnniversaryField);
+        void setKabcNamedayField(QString kabcNamedayField);
+        bool updateKabcContactInfo();
+        QString getAddresseeName(KABC::Addressee &kabcAddressee);
 
-    /** @brief List of all found birthday events. */
-        KabEventList* m_pBirthdayList;
+        QString kabcAnniversaryField;
+        QString kabcNamedayField;
 
-    /** @brief List of all found anniversary events. */
-        KabEventList* m_pAnniversaryList;
-
-    /** @brief A pointer to kde addressbook. */
-        KABC::AddressBook *m_pAddressbook;
+        static const QString source_kabcContactInfo;
+        static const QString source_kabcNamedayStringPrefix;
+        static const QString source_kabcAnniversaryStringPrefix;
+        static const QString source_namedayLists;
+        static const QString source_namedayListPrefix;
 };
 
-K_EXPORT_PLASMA_DATAENGINE(birthdays_namedays, KabcEngine);
 
-#endif
+#endif //BIRTHDAYLIST_DATAENGINE_H

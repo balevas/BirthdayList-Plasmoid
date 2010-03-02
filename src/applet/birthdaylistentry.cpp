@@ -1,8 +1,8 @@
-#include "blistentry.h"
+#include "birthdaylistentry.h"
 #include <KLocalizedString>
 
 /* ************************************************
- *  @name: blistentry.cpp 
+ *  @name: birthdaylistentry.cpp 
  *  @author: Meinhard Ritscher
  *
  *  $Id:  $
@@ -27,10 +27,11 @@
  *                                                                         *
  ***************************************************************************/
 
-int AbstractAnnualEventEntry::historyMargin = 7;
-QIcon BirthdayEntry::m_icon("/home/karolko/src/plasmoid/birthday/KBirthdayPlasma_0_9_73/icons/cookie.png");
-QIcon NamedayEntry::m_icon("/home/karolko/src/plasmoid/birthday/KBirthdayPlasma_0_9_73/icons/date.png");
-QIcon AggregatedNamedayEntry::m_icon("/home/karolko/src/plasmoid/birthday/KBirthdayPlasma_0_9_73/icons/date.png");
+int AbstractAnnualEventEntry::m_historyMargin = 7;
+KIcon BirthdayEntry::m_icon("bl_cookie.png");
+KIcon NamedayEntry::m_icon("bl_date.png");
+KIcon AggregatedNamedayEntry::m_icon("bl_date.png");
+KIcon AnniversaryEntry::m_icon("bl_date.png");
 
 
 AbstractAnnualEventEntry::AbstractAnnualEventEntry(const QString &name, const QDate &date)
@@ -49,10 +50,10 @@ void AbstractAnnualEventEntry::calculateDays()
 
     QDate currentAnniversary = QDate(today.year(), m_date.month(), m_date.day());
     int daysToAnniversary = today.daysTo(currentAnniversary);
-    if (daysToAnniversary < -historyMargin) {
+    if (daysToAnniversary < -m_historyMargin) {
       currentAnniversary = QDate(today.year() + 1, m_date.month(), m_date.day());
     }
-    else if (daysToAnniversary > today.daysInYear() - historyMargin) {
+    else if (daysToAnniversary > today.daysInYear() - m_historyMargin) {
       currentAnniversary = QDate(today.year() - 1, m_date.month(), m_date.day());
     }
 
@@ -118,7 +119,7 @@ NamedayEntry::~NamedayEntry()
 void NamedayEntry::createModelItems(QList<QStandardItem*> &items) const
 {
     items.append(new QStandardItem(m_name));
-    if (!m_aggregated) items[0]->setIcon(NamedayEntry::m_icon);
+    items[0]->setIcon(NamedayEntry::m_icon);
     items.append(new QStandardItem(QString::number(m_age)));
     items.append(new QStandardItem(m_aggregated ? "" : m_date.toString("d. M.")));
     items.append(new QStandardItem(m_aggregated ? "" : remainingDaysString(remainingDays())));
@@ -131,12 +132,16 @@ AggregatedNamedayEntry::AggregatedNamedayEntry(const QString &name, const QDate 
 
 AggregatedNamedayEntry::~AggregatedNamedayEntry()
 {
+    foreach (NamedayEntry *storedEntry, m_storedEntries) {
+        delete storedEntry;
+    }
+    m_storedEntries.clear();
 }
 
-void AggregatedNamedayEntry::addNamedayEntry(NamedayEntry &namedayEntry)
+void AggregatedNamedayEntry::addNamedayEntry(NamedayEntry *namedayEntry)
 {
+    namedayEntry->setAggregated(true);
     m_storedEntries.append(namedayEntry);
-    namedayEntry.setAggregated(true);
 }
 
 void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items) const
@@ -147,9 +152,30 @@ void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items) cons
     items.append(new QStandardItem(m_date.toString("d. M.")));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
 
-    foreach(NamedayEntry storedEntry, m_storedEntries) {
+    foreach (NamedayEntry *storedEntry, m_storedEntries) {
         QList<QStandardItem*> storedEntryItems;
-        storedEntry.createModelItems(storedEntryItems);
+        storedEntry->createModelItems(storedEntryItems);
         items[0]->appendRow(storedEntryItems);
     }
 }
+
+
+AnniversaryEntry::AnniversaryEntry(const QString &name, const QDate &date)
+    :AbstractAnnualEventEntry(name, date)
+{
+}
+
+AnniversaryEntry::~AnniversaryEntry() 
+{
+}
+
+void AnniversaryEntry::createModelItems(QList<QStandardItem*> &items) const
+{
+    items.append(new QStandardItem(m_name));
+    items[0]->setIcon(AnniversaryEntry::m_icon);
+    items.append(new QStandardItem(QString::number(m_age)));
+    items.append(new QStandardItem(m_date.toString("d. M.")));
+    items.append(new QStandardItem(remainingDaysString(remainingDays())));
+}
+
+
