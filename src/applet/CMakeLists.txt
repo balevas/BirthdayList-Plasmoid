@@ -7,7 +7,7 @@ set(BirthdayListApplet_SRC
     birthdaylistentry.cpp
 )
 
-kde4_add_ui_files(BirthdayListApplet_SRC birthdaylist_applet_config.ui)
+kde4_add_ui_files(BirthdayListApplet_SRC birthdaylist_datasource_config.ui birthdaylist_contents_config.ui birthdaylist_appearance_config.ui)
 kde4_add_plugin(plasma_applet_birthdaylist ${BirthdayListApplet_SRC})
 target_link_libraries(plasma_applet_birthdaylist ${KDE4_PLASMA_LIBS} ${KDE4_KDEUI_LIBS})
 

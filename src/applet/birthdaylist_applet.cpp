@@ -64,8 +64,8 @@ KBirthdayApplet::KBirthdayApplet(QObject *parent, const QVariantList &args)
     m_model(0),
     m_isOnPanel(false),
     m_pKabcEngine(0),
-    m_kabcNamedayString("Anniversary"),
-    m_kabcAnniversaryString("Nameday"),
+    m_kabcNamedayString("Nameday"),
+    m_kabcAnniversaryString("Anniversary"),
     m_showColumnHeaders(true),
     m_showNamedays(true),
     m_aggregateNamedays(true),
@@ -86,7 +86,6 @@ KBirthdayApplet::KBirthdayApplet(QObject *parent, const QVariantList &args)
     m_columnWidthDate(0),
     m_columnWidthRemaining(0)
 {
-
     setBackgroundHints(DefaultBackground);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setHasConfigurationInterface(true);
@@ -106,9 +105,11 @@ void KBirthdayApplet::init()
 {
     KConfigGroup configGroup = config();
 
-    m_pIcon = new Plasma::IconWidget(KIcon("bl_cookie",NULL), QString());
+    m_pIcon = new Plasma::IconWidget(KIcon("bl_cookie", NULL), QString());
     setPopupIcon(m_pIcon->icon());
 
+    m_kabcNamedayString = configGroup.readEntry("KABC Nameday String", "Nameday");
+    m_kabcAnniversaryString = configGroup.readEntry("KABC Anniversary String", "Anniversary");
     m_curNamedayLangCode = configGroup.readEntry("Nameday Calendar LangCode", "");
 
     m_pKabcEngine = dataEngine("birthdaylist");
@@ -144,6 +145,11 @@ void KBirthdayApplet::init()
     }
 
     m_showColumnHeaders = configGroup.readEntry("Show Column Headers", true);
+    //m_showColName = configGroup.readEntry("Show Name Column", true);
+    m_showColName = true;
+    m_showColAge = configGroup.readEntry("Show Age Column", true);
+    m_showColDate = configGroup.readEntry("Show Date Column", true);
+    m_showColRemaining = configGroup.readEntry("Show Remaining Column", true);
 
     m_showNamedays = configGroup.readEntry("Show Namedays", true);
     m_aggregateNamedays = configGroup.readEntry("Aggregate Namedays", true);
@@ -176,39 +182,57 @@ void KBirthdayApplet::init()
 
 void KBirthdayApplet::createConfigurationInterface(KConfigDialog *parent)
 {
-    QWidget *widget = new QWidget;
+    QWidget *dataSourceWidget = new QWidget;
+    QWidget *contentsWidget = new QWidget;
+    QWidget *appearanceWidget = new QWidget;
 
-    m_ui.setupUi(widget);
+    m_ui_datasource.setupUi(dataSourceWidget);
+    m_ui_contents.setupUi(contentsWidget);
+    m_ui_appearance.setupUi(appearanceWidget);
 
     parent->setButtons(KDialog::Ok | KDialog::Cancel);
-    parent->addPage(widget, parent->windowTitle(), icon());
+    parent->addPage(dataSourceWidget, i18n("Data source"), "preferences-contact-list");
+    parent->addPage(contentsWidget, i18n("Contents"), "view-form-table");
+    parent->addPage(appearanceWidget, i18n("Appearance"), "preferences-desktop-theme");
 
-    m_ui.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
+    m_ui_datasource.lineEditNamedayField->setText(m_kabcNamedayString);
+    m_ui_datasource.lineEditAnniversaryField->setText(m_kabcAnniversaryString);
 
-    m_ui.chckShowNamedays->setChecked(m_showNamedays);
-    m_ui.chckAggrNamedays->setChecked(m_aggregateNamedays);
-    m_ui.cmbNamedayCalendar->clear();
-    m_ui.cmbNamedayCalendar->addItems(m_namedayLangStrings);
+    m_ui_contents.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
+    m_ui_contents.chckShowColName->setChecked(m_showColName);
+    m_ui_contents.chckShowColAge->setChecked(m_showColAge);
+    m_ui_contents.chckShowColDate->setChecked(m_showColDate);
+    m_ui_contents.chckShowColRemaining->setChecked(m_showColRemaining);
+
+    m_ui_contents.chckShowNamedays->setChecked(m_showNamedays);
+    m_ui_contents.chckAggrNamedays->setChecked(m_aggregateNamedays);
+    m_ui_contents.cmbNamedayCalendar->clear();
+    m_ui_contents.cmbNamedayCalendar->addItems(m_namedayLangStrings);
     if (m_namedayLangCodes.contains(m_curNamedayLangCode)) {
-        m_ui.cmbNamedayCalendar->setCurrentIndex(m_namedayLangCodes.indexOf(m_curNamedayLangCode));
+        m_ui_contents.cmbNamedayCalendar->setCurrentIndex(m_namedayLangCodes.indexOf(m_curNamedayLangCode));
     }
     else {
-        m_ui.cmbNamedayCalendar->setCurrentIndex(0);
+        m_ui_contents.cmbNamedayCalendar->setCurrentIndex(0);
     }
-    m_ui.chckShowAnniversaries->setChecked(m_showAnniversaries);
+    m_ui_contents.chckShowAnniversaries->setChecked(m_showAnniversaries);
 
-    m_ui.spinComingShowDays->setValue(m_eventThreshold);
-    m_ui.spinComingHighlightDays->setValue(m_highlightThreshold);
-    m_ui.chckComingHighlightForeground->setChecked(m_isHighlightForeground);
-    m_ui.colorbtnComingHighlightForeground->setColor(m_brushHighlightForeground.color());
-    m_ui.chckComingHighlightBackground->setChecked(m_isHighlightBackground);
-    m_ui.colorbtnComingHighlightBackground->setColor(m_brushHighlightBackground.color());
+    m_ui_appearance.spinComingShowDays->setValue(m_eventThreshold);
+    m_ui_appearance.spinComingHighlightDays->setValue(m_highlightThreshold);
+    m_ui_appearance.chckComingHighlightForeground->setChecked(m_isHighlightForeground);
+    m_ui_appearance.colorbtnComingHighlightForeground->setColor(m_brushHighlightForeground.color());
+    m_ui_appearance.chckComingHighlightBackground->setChecked(m_isHighlightBackground);
+    m_ui_appearance.colorbtnComingHighlightBackground->setColor(m_brushHighlightBackground.color());
 
-    m_ui.spinPastShowDays->setValue(m_pastThreshold);
-    m_ui.chckPastForeground->setChecked(m_isPastForeground);
-    m_ui.colorbtnPastForeground->setColor(m_brushPastForeground.color());
-    m_ui.chckPastBackground->setChecked(m_isPastBackground);
-    m_ui.colorbtnPastBackground->setColor(m_brushPastBackground.color());
+    m_ui_appearance.spinPastShowDays->setValue(m_pastThreshold);
+    m_ui_appearance.chckPastForeground->setChecked(m_isPastForeground);
+    m_ui_appearance.colorbtnPastForeground->setColor(m_brushPastForeground.color());
+    m_ui_appearance.chckPastBackground->setChecked(m_isPastBackground);
+    m_ui_appearance.colorbtnPastBackground->setColor(m_brushPastBackground.color());
+
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lblNamedayField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lineEditNamedayField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lblAnniversaryField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lineEditAnniversaryField, SLOT(setEnabled(bool)));
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
 }
@@ -220,25 +244,32 @@ void KBirthdayApplet::createConfigurationInterface(KConfigDialog *parent)
  */
 void KBirthdayApplet::configAccepted()
 {
-    m_showColumnHeaders = m_ui.chckShowColumnHeaders->isChecked();
+    m_kabcNamedayString = m_ui_datasource.lineEditNamedayField->text();
+    m_kabcAnniversaryString = m_ui_datasource.lineEditAnniversaryField->text();
 
-    m_showNamedays = m_ui.chckShowNamedays->isChecked();
-    m_aggregateNamedays = m_ui.chckAggrNamedays->isChecked();
-    m_curNamedayLangCode = m_namedayLangCodes[m_ui.cmbNamedayCalendar->currentIndex()];
-    m_showAnniversaries = m_ui.chckShowAnniversaries->isChecked();
+    m_showColumnHeaders = m_ui_contents.chckShowColumnHeaders->isChecked();
+    m_showColName = m_ui_contents.chckShowColName->isChecked();
+    m_showColAge = m_ui_contents.chckShowColAge->isChecked();
+    m_showColDate = m_ui_contents.chckShowColDate->isChecked();
+    m_showColRemaining = m_ui_contents.chckShowColRemaining->isChecked();
 
-    m_eventThreshold     = m_ui.spinComingShowDays->value();
-    m_highlightThreshold = m_ui.spinComingHighlightDays->value();
-    m_isHighlightForeground = m_ui.chckComingHighlightForeground->isChecked();
-    m_brushHighlightForeground.setColor(m_ui.colorbtnComingHighlightForeground->color());
-    m_isHighlightBackground = m_ui.chckComingHighlightBackground->isChecked();
-    m_brushHighlightBackground.setColor(m_ui.colorbtnComingHighlightBackground->color());
+    m_showNamedays = m_ui_contents.chckShowNamedays->isChecked();
+    m_aggregateNamedays = m_ui_contents.chckAggrNamedays->isChecked();
+    m_curNamedayLangCode = m_namedayLangCodes[m_ui_contents.cmbNamedayCalendar->currentIndex()];
+    m_showAnniversaries = m_ui_contents.chckShowAnniversaries->isChecked();
 
-    m_pastThreshold      = m_ui.spinPastShowDays->value();
-    m_isPastForeground = m_ui.chckPastForeground->isChecked();
-    m_brushPastForeground.setColor(m_ui.colorbtnPastForeground->color());
-    m_isPastBackground = m_ui.chckPastBackground->isChecked();
-    m_brushPastBackground.setColor(m_ui.colorbtnPastBackground->color());
+    m_eventThreshold     = m_ui_appearance.spinComingShowDays->value();
+    m_highlightThreshold = m_ui_appearance.spinComingHighlightDays->value();
+    m_isHighlightForeground = m_ui_appearance.chckComingHighlightForeground->isChecked();
+    m_brushHighlightForeground.setColor(m_ui_appearance.colorbtnComingHighlightForeground->color());
+    m_isHighlightBackground = m_ui_appearance.chckComingHighlightBackground->isChecked();
+    m_brushHighlightBackground.setColor(m_ui_appearance.colorbtnComingHighlightBackground->color());
+
+    m_pastThreshold      = m_ui_appearance.spinPastShowDays->value();
+    m_isPastForeground = m_ui_appearance.chckPastForeground->isChecked();
+    m_brushPastForeground.setColor(m_ui_appearance.colorbtnPastForeground->color());
+    m_isPastBackground = m_ui_appearance.chckPastBackground->isChecked();
+    m_brushPastBackground.setColor(m_ui_appearance.colorbtnPastBackground->color());
 
     QTreeView *qTreeView = m_treeView->nativeWidget();
     m_columnWidthName = qTreeView->columnWidth(0);
@@ -248,7 +279,15 @@ void KBirthdayApplet::configAccepted()
 
 
     KConfigGroup configGroup = config();
+
+    configGroup.writeEntry("KABC Nameday String", m_kabcNamedayString);
+    configGroup.writeEntry("KABC Anniversary String", m_kabcAnniversaryString);
+
     configGroup.writeEntry("Show Column Headers", m_showColumnHeaders);
+    //configGroup.writeEntry("Show Name Column", m_showColName);
+    configGroup.writeEntry("Show Age Column", m_showColAge);
+    configGroup.writeEntry("Show Date Column", m_showColDate);
+    configGroup.writeEntry("Show Remaining Column", m_showColRemaining);
 
     configGroup.writeEntry("Show Namedays", m_showNamedays);
     configGroup.writeEntry("Aggregate Namedays", m_aggregateNamedays);
@@ -274,6 +313,8 @@ void KBirthdayApplet::configAccepted()
     configGroup.writeEntry("Remaining Column Width", m_columnWidthRemaining);
 
     m_curLangNamedayList = m_pKabcEngine->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
+    m_pKabcEngine->query(QString("KabcNamedayString_%1").arg(m_kabcNamedayString));
+    m_pKabcEngine->query(QString("KabcAnniversaryString_%1").arg(m_kabcAnniversaryString));
     updateEventList(m_pKabcEngine->query("KabcContactInfo"));
     updateModels();
     update();
@@ -289,7 +330,7 @@ QGraphicsWidget *KBirthdayApplet::graphicsWidget()
     m_graphicsWidget->setMinimumSize(225, 150);
     m_graphicsWidget->setPreferredSize(350, 200);
     
-    	m_treeView = new Plasma::TreeView(m_graphicsWidget);
+    m_treeView = new Plasma::TreeView(m_graphicsWidget);
 	m_treeView->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 	QTreeView *treeView =m_treeView->nativeWidget();
  	treeView->setAlternatingRowColors( true );
@@ -301,7 +342,6 @@ QGraphicsWidget *KBirthdayApplet::graphicsWidget()
 	treeView->setItemsExpandable(true);
 	treeView->setExpandsOnDoubleClick(true);
 
-    
     m_model = new QStandardItemModel(0,3);
 	updateModels();
 	m_treeView->setModel( m_model );
@@ -366,18 +406,22 @@ void KBirthdayApplet::setColumnWidths() {
   QTreeView *qTreeView = m_treeView->nativeWidget();
 
   qTreeView->setHeaderHidden(!m_showColumnHeaders);
-  
-  if (m_columnWidthName == 0 || m_columnWidthAge == 0 || m_columnWidthDate == 0 || m_columnWidthRemaining == 0) {
-    for (int i=0; i<m_model->columnCount(); ++i) {
-      qTreeView->resizeColumnToContents(i);
-    }
-  }
-  else {
-    qTreeView->setColumnWidth(0, m_columnWidthName);
-    qTreeView->setColumnWidth(1, m_columnWidthAge);
-    qTreeView->setColumnWidth(2, m_columnWidthDate);
-    qTreeView->setColumnWidth(3, m_columnWidthRemaining);
-  }
+  qTreeView->setColumnHidden(0, !m_showColName);
+  qTreeView->setColumnHidden(1, !m_showColAge);
+  qTreeView->setColumnHidden(2, !m_showColDate);
+  qTreeView->setColumnHidden(3, !m_showColRemaining);
+
+  if (m_columnWidthName < 10) qTreeView->resizeColumnToContents(0);
+  else qTreeView->setColumnWidth(0, m_columnWidthName); 
+
+  if (m_columnWidthAge < 10) qTreeView->resizeColumnToContents(1);
+  else qTreeView->setColumnWidth(1, m_columnWidthAge);
+
+  if (m_columnWidthDate < 10) qTreeView->resizeColumnToContents(2);
+  else qTreeView->setColumnWidth(2, m_columnWidthDate);
+
+  if (m_columnWidthRemaining < 10) qTreeView->resizeColumnToContents(3);
+  else qTreeView->setColumnWidth(3, m_columnWidthRemaining);
 }
 
 void KBirthdayApplet::useCurrentPlasmaTheme() {

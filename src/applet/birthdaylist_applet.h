@@ -33,7 +33,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "ui_birthdaylist_applet_config.h"
+#include "ui_birthdaylist_datasource_config.h"
+#include "ui_birthdaylist_contents_config.h"
+#include "ui_birthdaylist_appearance_config.h"
 
 
 //Plasma
@@ -94,7 +96,9 @@ friend class KBirthdayDialog;
 
     private:
         /** @brief The configuration dialog. */
-        Ui::KBirthdayAppletConfig m_ui;
+        Ui::BirthdayListDataSourceConfig m_ui_datasource;
+        Ui::BirthdayListContentsConfig m_ui_contents;
+        Ui::BirthdayListAppearanceConfig m_ui_appearance;
 
         /** @brief  The dialog where events are displayed when in panel.*/
         QGraphicsWidget *m_graphicsWidget;
@@ -107,7 +111,6 @@ friend class KBirthdayDialog;
         QString m_kabcNamedayString;
         QString m_kabcAnniversaryString;
 
-        
         QList<AbstractAnnualEventEntry*> m_listEntries;
 
         QString m_curNamedayLangCode;
@@ -119,6 +122,11 @@ friend class KBirthdayDialog;
 
 
         bool m_showColumnHeaders;
+        bool m_showColName;
+        bool m_showColAge;
+        bool m_showColDate;
+        bool m_showColRemaining;
+
         bool m_showNamedays;
         bool m_aggregateNamedays;
         bool m_showAnniversaries;
