@@ -1,0 +1,62 @@
+1. Inspiration
+----------------------------------
+I decided to create a new birthday reminder desktop applet
+because I just could not find any birthday reminder software out there
+that would also support namedays.
+In my part of Europe, nameday celebrations are equally important
+as birthdays (sometimes even more, because unlike for birthdays,
+everyone knows when you celebrate your nameday :)
+
+To make the plasmoid usable for the rest of the world,
+the whole nameday stuff can be turned completely off.
+This way you can use the plasmoid just like any other birthday reminder
+that supports birthdays and anniversaries.
+
+Internal logic of the plasmoid is inspired by the K Birthday Reminder,
+while for the visualisation I learned many tricks by studying
+the Public Transport.
+
+
+2. Features
+----------------------------------
+The plasmoid shows a sorted list of coming birthdays, namedays
+and anniversaries. These events are shown in a table-like view,
+so you can easily select or reorder the columns you want to see.
+
+Namedays can optionally be aggregated by name (one line standing
+for all contacts that celebrate their nameday on the particular day) ->
+this is especially useful for frequently used names such as Peter, etc.
+Of course, individual contacts can be 'unrolled' by double-clicking
+on the name entry.
+
+Names shown for aggregated nameday entries are taken
+from the selectable country-specific nameday calendar.
+
+At the moment, contact information is taken from the KDE Address Book.
+In the future I plan to add support for other sources such as Akonadi
+or Mozilla Calendar.
+
+
+3. Installation
+----------------------------------
+Unpack the tarball, go to its directory and execute
+./install.sh
+
+If the build and installation succeeds, the plasmoid should show up
+in the add widgets dialog. If not, please re-login to KDE or execute:
+kquitapp plasma-desktop
+kstart plasma-desktop
+
+The plasmoid can be removed by executing
+./uninstall.sh
+
+To build the plasmoid, you will need development packages for
+KDE PIM, KDE4, Qt4 and cmake.
+Exact package names are distribution-specific.
+
+
+4. Contributions
+----------------------------------
+Any feedback, ideas, suggestions or contributions are highly appreciated.
+Your support is especially needed for internationalization
+and providing of additional nameday calendars.

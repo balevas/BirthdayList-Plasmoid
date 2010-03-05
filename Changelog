@@ -1,0 +1,9 @@
+20100305
+        ============= V 0.5.0 ==================
+        - Initial release
+        - KDE Address Book as the only source
+        - Supports birthdays, namedays, anniversaries
+        - Supports nameday aggregation by name
+        - Contains 7 nameday calendars (cz, de, dk, hu, no, se, sk)
+        - Slovak translation
+
