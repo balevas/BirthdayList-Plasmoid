@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: BirthdayList 0.5.0\n"
-"Report-Msgid-Bugs-To: http://www.kde-look.org\n"
+"Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
 "POT-Creation-Date: 2010-03-05 17:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"

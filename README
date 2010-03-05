@@ -1,40 +1,35 @@
 1. Inspiration
 ----------------------------------
-I decided to create a new birthday reminder desktop applet
-because I just could not find any birthday reminder software out there
-that would also support namedays.
-In my part of Europe, nameday celebrations are equally important
-as birthdays (sometimes even more, because unlike for birthdays,
-everyone knows when you celebrate your nameday :)
+I decided to create a new birthday reminder desktop applet because I just could not find
+any birthday reminder software out there that would also support namedays.
+In my part of Europe, nameday celebrations are equally important as birthdays
+(sometimes even more, because unlike for birthdays, everyone knows when you celebrate
+your nameday :)
 
-To make the plasmoid usable for the rest of the world,
-the whole nameday stuff can be turned completely off.
-This way you can use the plasmoid just like any other birthday reminder
-that supports birthdays and anniversaries.
+To make the plasmoid usable for the rest of the world, the whole nameday stuff can be
+turned completely off. This way you can use the plasmoid just like any other birthday
+reminder that supports birthdays and anniversaries.
 
-Internal logic of the plasmoid is inspired by the K Birthday Reminder,
-while for the visualisation I learned many tricks by studying
-the Public Transport.
+Internal logic of the plasmoid is inspired by the K Birthday Reminder, while for the
+visualisation I learned many tricks by studying the Public Transport.
 
 
 2. Features
 ----------------------------------
-The plasmoid shows a sorted list of coming birthdays, namedays
-and anniversaries. These events are shown in a table-like view,
-so you can easily select or reorder the columns you want to see.
+The plasmoid shows a sorted list of coming birthdays, namedays and anniversaries.
+These events are shown in a table-like view, so you can easily select or reorder the
+columns you want to see.
 
-Namedays can optionally be aggregated by name (one line standing
-for all contacts that celebrate their nameday on the particular day) ->
-this is especially useful for frequently used names such as Peter, etc.
-Of course, individual contacts can be 'unrolled' by double-clicking
-on the name entry.
+Namedays can optionally be aggregated by name (one line standing for all contacts that
+celebrate their nameday on the particular day) -> this is especially useful for frequently
+used names such as Peter, etc.
+Of course, individual contacts can be 'unrolled' by double-clicking on the name entry.
 
-Names shown for aggregated nameday entries are taken
-from the selectable country-specific nameday calendar.
+Names shown for aggregated nameday entries are taken from the selectable country-specific
+nameday calendar.
 
-At the moment, contact information is taken from the KDE Address Book.
-In the future I plan to add support for other sources such as Akonadi
-or Mozilla Calendar.
+At the moment, contact information is taken from the KDE Address Book. In the future I plan
+to add support for other sources such as Akonadi or Mozilla Calendar.
 
 
 3. Installation
@@ -42,21 +37,47 @@ or Mozilla Calendar.
 Unpack the tarball, go to its directory and execute
 ./install.sh
 
-If the build and installation succeeds, the plasmoid should show up
-in the add widgets dialog. If not, please re-login to KDE or execute:
+If the build and installation succeeds, the plasmoid should show up in the add widgets
+dialog. If not, please re-login to KDE or execute:
 kquitapp plasma-desktop
 kstart plasma-desktop
 
 The plasmoid can be removed by executing
 ./uninstall.sh
 
-To build the plasmoid, you will need development packages for
-KDE PIM, KDE4, Qt4 and cmake.
+To build the plasmoid, you will need development packages for KDE PIM, KDE4, Qt4 and cmake.
 Exact package names are distribution-specific.
 
 
-4. Contributions
+4. Troubleshooting
 ----------------------------------
-Any feedback, ideas, suggestions or contributions are highly appreciated.
-Your support is especially needed for internationalization
-and providing of additional nameday calendars.
+KDE Address Book was significantly changed in KDE SC 4.4. Older address books located under
+~/.kde4/share/apps/kabc/std.vcf should, however, be working fine.
+In case that you don't use the KDE address book yet and want to create it new on KDE 4.4,
+open kaddressbook and follow the steps below:
+- Select File - New - Add Address Book
+- Choose KDE Address Book (traditional)
+- In the wizard, press Next, select File, press Next,
+  accept default option with std.vcf, press Finish.
+- the contacts you will be adding to this address book should appear in the plasmoid.
+
+If you prefer namedays over anniversaries, you can insert the namedays of your contacts to
+the "Anniversary" field of the address book, and set it this way in the BirthdayList
+configuration dialog.
+
+KDE address book in KDE 4.4 does not support custom fields, which may complicate the matters
+if you want to use both namedays and anniversaries. You will have to edit the std.vcf file
+manually.
+
+If you want to add a custom nameday calendar, create a new text file under the data engine
+installation directory, e.g. /usr/share/apps/plasma_engine_birthdaylist/namedaydefs/
+with the name "namedays_<langcode>.txt, where <langcode> is replaced by your language.
+The first line in this file contains a human-readable name for the language, remaining lines
+contain name entries. Use already existing files to see the format. After the restart of plasma
+you should see the new calendar.
+
+
+5. Contributions
+----------------------------------
+Any feedback, ideas, suggestions or contributions are highly appreciated. Your support is
+especially needed for internationalization and providing of additional nameday calendars.
