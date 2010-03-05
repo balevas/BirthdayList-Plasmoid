@@ -19,7 +19,7 @@ FOREACH(_current_PO_FILE ${_po_files})
          DEPENDS ${_current_PO_FILE}
       )
 
-   INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo DESTINATION ${LOCALE_INSTALL_DIR}/${_lang}/LC_MESSAGES/ RENAME plasma_applet_birthdays_namedays.mo)
+   INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo DESTINATION ${LOCALE_INSTALL_DIR}/${_lang}/LC_MESSAGES/ RENAME plasma_applet_birthdaylist.mo)
    LIST(APPEND _gmoFiles ${_gmoFile})
 ENDFOREACH(_current_PO_FILE)
 ADD_CUSTOM_TARGET(pofiles ALL DEPENDS ${_gmoFiles})

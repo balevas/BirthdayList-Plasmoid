@@ -1,34 +1,30 @@
-/* ************************************************
- *  @name: birthdaylist_dataengine.cpp 
- *  @author: Karol Slanina
- * ********************************************** */
-
-/* *************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 or (at your option)    *
- *   any later version.                                                    *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   General Public Licencse for more details.                             *
- *                                                                         *
- *   A copy of the license should be part of the package. If not you can   *
- *   find it here: http://www.gnu.org/licenses/gpl.html                    *
- *                                                                         *
- ***************************************************************************/
+/**
+ * @file    birthdaylist_dataengine.cpp
+ * @author  Karol Slanina
+ * @version 0.5.0
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details at
+ * http://www.gnu.org/copyleft/gpl.html
+ */
 
 #include "birthdaylist_dataengine.h"
 
-#include <KDebug>
-#include <KStandardDirs>
-#include <kabc/stdaddressbook.h>
-#include <kabc/field.h>
-
 #include <QFile>
 
+#include <KDebug>
+#include <KStandardDirs>
+
+#include <kabc/stdaddressbook.h>
+#include <kabc/field.h>
 
 K_EXPORT_PLASMA_DATAENGINE(birthdaylist, BirthdayListDataEngine);
 
@@ -40,10 +36,7 @@ const QString BirthdayListDataEngine::source_namedayLists("NamedayLists");
 const QString BirthdayListDataEngine::source_namedayListPrefix("NamedayList_");
 
 BirthdayListDataEngine::BirthdayListDataEngine(QObject* parent, const QVariantList& args)
-    : Plasma::DataEngine(parent, args)
-{
-    Q_UNUSED(args)
-    
+: Plasma::DataEngine(parent, args) {
     kabcAnniversaryField = "X-Anniversary";
     kabcNamedayField = "X-Nameday";
 
@@ -51,12 +44,10 @@ BirthdayListDataEngine::BirthdayListDataEngine(QObject* parent, const QVariantLi
     connect(KABC::StdAddressBook::self(), SIGNAL(addressBookChanged(AddressBook*)), this, SLOT(slotAddressbookChanged()));
 }
 
-BirthdayListDataEngine::~BirthdayListDataEngine()
-{
+BirthdayListDataEngine::~BirthdayListDataEngine() {
 }
 
-QStringList BirthdayListDataEngine::sources() const
-{
+QStringList BirthdayListDataEngine::sources() const {
     QStringList sources;
     sources << source_namedayLists;
     sources << source_kabcContactInfo;
@@ -64,20 +55,17 @@ QStringList BirthdayListDataEngine::sources() const
     return sources;
 }
 
-bool BirthdayListDataEngine::sourceRequestEvent(const QString &name)
-{
+bool BirthdayListDataEngine::sourceRequestEvent(const QString &name) {
     if (name == source_kabcContactInfo ||
-        name == source_namedayLists ||
-        name.startsWith(source_namedayListPrefix) ||
-        name.startsWith(source_kabcNamedayStringPrefix) ||
-        name.startsWith(source_kabcAnniversaryStringPrefix)) {
+            name == source_namedayLists ||
+            name.startsWith(source_namedayListPrefix) ||
+            name.startsWith(source_kabcNamedayStringPrefix) ||
+            name.startsWith(source_kabcAnniversaryStringPrefix)) {
         return updateSourceEvent(name);
-    }
-    else return false;
+    } else return false;
 }
 
-bool BirthdayListDataEngine::updateSourceEvent(const QString &name)
-{
+bool BirthdayListDataEngine::updateSourceEvent(const QString &name) {
     if (name == source_kabcContactInfo) {
         return updateKabcContactInfo();
     } else if (name == source_namedayLists) {
@@ -93,26 +81,18 @@ bool BirthdayListDataEngine::updateSourceEvent(const QString &name)
     return false;
 }
 
-//
-// private slots
-//
-void BirthdayListDataEngine::slotAddressbookChanged()
-{
+void BirthdayListDataEngine::slotAddressbookChanged() {
     updateKabcContactInfo();
 }
 
-//
-// private
-//
-bool BirthdayListDataEngine::updateNamedayLists()
-{
+bool BirthdayListDataEngine::updateNamedayLists() {
     QStringList fileNames = KGlobal::dirs()->findAllResources("data", "plasma_engine_birthdaylist/namedaydefs/namedays_*.txt");
-    if (fileNames.isEmpty() ) {
+    if (fileNames.isEmpty()) {
         kDebug() << "Couldn't find any nameday list files";
         return false;
     }
 
-    foreach (QString fileName, fileNames) {
+    foreach(QString fileName, fileNames) {
         int langPos = fileName.lastIndexOf("/namedays_") + 10;
         QString namedayDefinitionKey = fileName.mid(langPos);
         namedayDefinitionKey.chop(4);
@@ -125,22 +105,20 @@ bool BirthdayListDataEngine::updateNamedayLists()
             QTextStream stream(&namedayFile);
             namedayDefinitionInfo.insert("Language", stream.readLine());
             namedayFile.close();
-        }
-        else {
+        } else {
             kDebug() << "Cannot read language string from " << fileName;
             continue;
         }
 
-        kDebug() << "Registering nameday file" << namedayDefinitionInfo["File"].toString() 
-                 << "for langcode" << namedayDefinitionKey << "language" << namedayDefinitionInfo["Language"].toString();
+        kDebug() << "Registering nameday file" << namedayDefinitionInfo["File"].toString()
+                << "for langcode" << namedayDefinitionKey << "language" << namedayDefinitionInfo["Language"].toString();
         setData(source_namedayLists, namedayDefinitionKey, namedayDefinitionInfo);
     }
 
     return true;
 }
 
-bool BirthdayListDataEngine::updateNamedayList(QString sourceName)
-{
+bool BirthdayListDataEngine::updateNamedayList(QString sourceName) {
     QString langCode = sourceName.mid(source_namedayListPrefix.size());
     QVariant namedayFileRecord = query(source_namedayLists)[langCode].toHash()["File"];
     if (!namedayFileRecord.isValid()) {
@@ -177,22 +155,19 @@ bool BirthdayListDataEngine::updateNamedayList(QString sourceName)
     return true;
 }
 
-void BirthdayListDataEngine::setKabcAnniversaryField(QString kabcAnniversaryField) 
-{ 
+void BirthdayListDataEngine::setKabcAnniversaryField(QString kabcAnniversaryField) {
     this->kabcAnniversaryField = QString("X-%1").arg(kabcAnniversaryField);
     kDebug() << "Setting anniversary string to" << this->kabcAnniversaryField;
     updateKabcContactInfo();
 }
 
-void BirthdayListDataEngine::setKabcNamedayField(QString kabcNamedayField) 
-{ 
-    this->kabcNamedayField = QString("X-%1").arg(kabcNamedayField); 
+void BirthdayListDataEngine::setKabcNamedayField(QString kabcNamedayField) {
+    this->kabcNamedayField = QString("X-%1").arg(kabcNamedayField);
     kDebug() << "Setting nameday string to" << this->kabcNamedayField;
     updateKabcContactInfo();
 }
 
-bool BirthdayListDataEngine::updateKabcContactInfo()
-{
+bool BirthdayListDataEngine::updateKabcContactInfo() {
     /*
     // Unfortunately KABC does not show all fields available in Address Book. Anniversary field is not provided by the loop below.
     QList<KABC::Field*> fields = KABC::Field::allFields();
@@ -204,7 +179,7 @@ bool BirthdayListDataEngine::updateKabcContactInfo()
     // scan all addressbook entries
     KABC::AddressBook *kabcAddressBook = KABC::StdAddressBook::self();
     int readEntries = 0, skippedEntries = 0;
-    
+
     for (KABC::AddressBook::Iterator it = kabcAddressBook->begin(); it != kabcAddressBook->end(); ++it) {
         KABC::Addressee kabcAddressee = *it;
         QHash<QString, QVariant> kabcContactInfo;
@@ -212,7 +187,7 @@ bool BirthdayListDataEngine::updateKabcContactInfo()
 
         QString kabcAddresseeName = getAddresseeName(kabcAddressee);
         kabcContactInfo.insert("Name", kabcAddresseeName);
-        
+
         QDate birthdayDate = kabcAddressee.birthday().date();
         if (birthdayDate.isValid()) {
             kabcContactInfo.insert("Birthday", birthdayDate);
@@ -241,9 +216,7 @@ bool BirthdayListDataEngine::updateKabcContactInfo()
     return true;
 }
 
-
-QString BirthdayListDataEngine::getAddresseeName(KABC::Addressee &kabcAddressee)
-{
+QString BirthdayListDataEngine::getAddresseeName(KABC::Addressee &kabcAddressee) {
     if (!kabcAddressee.nickName().isEmpty()) {
         return kabcAddressee.nickName();
     } else if (!kabcAddressee.formattedName().isEmpty()) {

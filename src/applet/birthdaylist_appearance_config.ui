@@ -130,21 +130,21 @@
    <item row="8" column="2">
     <widget class="QLabel" name="lblComingShowDays_2">
      <property name="text">
-      <string>days</string>
+      <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
    <item row="9" column="2">
     <widget class="QLabel" name="lblComingHighlightDays_2">
      <property name="text">
-      <string>days</string>
+      <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
    <item row="17" column="2">
     <widget class="QLabel" name="lblPastShowDays_2">
      <property name="text">
-      <string>days</string>
+      <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>

@@ -1,153 +1,136 @@
 #ifndef BIRTHDAYLIST_APPLET_H
 #define BIRTHDAYLIST_APPLET_H
 
-/* ************************************************
- *  @name: addressbook.h 
- *  @author: Meinhard Ritscher
- *  @date: 2008-10-21
+/**
+ * @file    birthdaylist_applet.h
+ * @author  Karol Slanina
+ * @version 0.5.0
  *
- *  $Id:  $
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
  *
- *  Description
- *  ============
- *
- *
- *  Histrory
- *  ============
- *
- * ********************************************** */
-/* *************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 or (at your option)    *
- *   any later version.                                                    *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY of FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
- *   General Public Licencse for more details.                             *
- *                                                                         *
- *   A copy of the license should be part of the package. If not you can   *
- *   find it here: http://www.gnu.org/licenses/gpl.html                    *
- *                                                                         *
- ***************************************************************************/
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details at
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+
 
 #include "ui_birthdaylist_datasource_config.h"
 #include "ui_birthdaylist_contents_config.h"
 #include "ui_birthdaylist_appearance_config.h"
 
+#include <QStandardItemModel>
 
-//Plasma
 #include <Plasma/PopupApplet>
-#include <Plasma/Svg>
 #include <Plasma/DataEngine>
-#include <Plasma/TreeView>
 
-class QSizeF;
 class AbstractAnnualEventEntry;
-class QStandardItemModel;
-class QTreeView;
+namespace Plasma {
+    class TreeView;
+}
 
 
-class KBirthdayApplet : public Plasma::PopupApplet
-{
-Q_OBJECT
+class BirthdayListApplet : public Plasma::PopupApplet {
+    Q_OBJECT
 
-friend class KBirthdayDialog;
+public:
+    BirthdayListApplet(QObject *parent, const QVariantList &args);
+    ~BirthdayListApplet();
 
-    public:
-        KBirthdayApplet(QObject *parent, const QVariantList &args);
-        ~KBirthdayApplet();
+    /** Initializes the applet (called by Plasma automatically). */
+    void init();
 
-        void paintInterface(QPainter *painter,
-                            const QStyleOptionGraphicsItem *option,
-                            const QRect& contentsRect);
-        /**
-        * initialize the applet (called by plasma automatically)
-        */
-        void init();
-
-        /**
-        * The widget that displays the list of devices.
-        */
-        //QWidget *widget();
+    /** Creates the widget that will be shown in the Plasma applet. */
     QGraphicsWidget *graphicsWidget();
+
+private slots:
+    /** Receives a notification about changes in the address book and current date. */
+    void dataUpdated(const QString &name, const Plasma::DataEngine::Data &data);
+    /** Receives a notification when the user accepts the configuration change. */
+    void configAccepted();
+    /** Receives a notification when the system plasma theme is changed. */
+    void plasmaThemeChanged();
+
+private:
+    /** Creates the configuration dialog and fills it with current settings. */
+    void createConfigurationInterface(KConfigDialog *parent);
+
+    /** Updates the list of entries after the data update */
+    void updateEventList(const Plasma::DataEngine::Data &data);
+    /** Returns the name from the current nameday calendar belonging to the given date. */
+    QString getNamedayString(QDate date);
+
+    /** Updates the internal model of the tree view after the data update */
     void updateModels();
-
-    protected:
-        void createConfigurationInterface(KConfigDialog *parent);
-        void constraintsEvent(Plasma::Constraints constraints);
-        void useCurrentPlasmaTheme();
-        void setColumnWidths();
-
-    public slots:
-        void dataUpdated(const QString &name, const Plasma::DataEngine::Data &data);
-
-    protected slots:
-        void configAccepted();
-        
-    private:
-        void updateEventList(const Plasma::DataEngine::Data &data);
-        bool testThreshold(const int remainingDays);
-        int printEvent(QPainter* p, int x, int y, int width, const AbstractAnnualEventEntry* entry);
-        QString getNamedayString(QDate date);
+    /** Sets the colors for the model items according to the applet configuration */
+    void setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item);
+    /** Resizes the column widths of the tree view */
+    void setTreeColumnWidths();
+    /** Changes the tree and item colors according to the current Plasma theme. */
+    void usePlasmaThemeColors();
 
 
-    private:
-        /** @brief The configuration dialog. */
-        Ui::BirthdayListDataSourceConfig m_ui_datasource;
-        Ui::BirthdayListContentsConfig m_ui_contents;
-        Ui::BirthdayListAppearanceConfig m_ui_appearance;
+    /** Shortcut to the data engine providing contact data and nameday calendars */
+    Plasma::DataEngine *m_dataEngine;
+    /** Name of the KABC field where namedays can be found */
+    QString m_kabcNamedayString;
+    /** Name of the KABC field where anniversaries can be found */
+    QString m_kabcAnniversaryString;
+    /** List of language codes for all available nameday calendars (used in the data engine queries) */
+    QList<QString> m_namedayLangCodes;
+    /** List of language names for all available nameday calendars (used in the configuration dialog) */
+    QList<QString> m_namedayLangStrings;
+    /** Language code of the currently used nameday calendar */
+    QString m_curNamedayLangCode;
+    /** Local copy of the currently used nameday calendar */
+    QHash<QString, QVariant> m_curLangNamedayList;
 
-        /** @brief  The dialog where events are displayed when in panel.*/
-        QGraphicsWidget *m_graphicsWidget;
-        Plasma::TreeView *m_treeView;
-        QStandardItemModel *m_model;
-    /** @brief  Set to true if plasmoid lives on a panel.*/
-        bool m_isOnPanel;
-    /** @brief A pointer to address book dataengine. */
-        Plasma::DataEngine *m_pKabcEngine;
-        QString m_kabcNamedayString;
-        QString m_kabcAnniversaryString;
+    /** Complete event list */
+    QList<AbstractAnnualEventEntry*> m_listEntries;
+    /** Internal data model of the tree view */
+    QStandardItemModel m_model;
 
-        QList<AbstractAnnualEventEntry*> m_listEntries;
-
-        QString m_curNamedayLangCode;
-        QList<QString> m_namedayLangCodes;
-        QList<QString> m_namedayLangStrings;
-        QHash<QString, QVariant> m_curLangNamedayList;
-    /** @brief the icon used when the applet is in the taskbar */
-        Plasma::IconWidget *m_pIcon;
+    QGraphicsWidget *m_graphicsWidget;
+    Plasma::TreeView *m_treeView;
 
 
-        bool m_showColumnHeaders;
-        bool m_showColName;
-        bool m_showColAge;
-        bool m_showColDate;
-        bool m_showColRemaining;
+    Ui::BirthdayListDataSourceConfig m_ui_datasource;
+    Ui::BirthdayListContentsConfig m_ui_contents;
+    Ui::BirthdayListAppearanceConfig m_ui_appearance;
 
-        bool m_showNamedays;
-        bool m_aggregateNamedays;
-        bool m_showAnniversaries;
+    bool m_showColumnHeaders;
+    bool m_showColName;
+    bool m_showColAge;
+    bool m_showColDate;
+    bool m_showColWhen;
 
-        int m_eventThreshold;
-        int m_highlightThreshold;
-        bool m_isHighlightForeground;
-        QBrush m_brushHighlightForeground;
-        bool m_isHighlightBackground;
-        QBrush m_brushHighlightBackground;
+    bool m_showNamedays;
+    bool m_aggregateNamedays;
+    bool m_showAnniversaries;
 
-        int m_pastThreshold;
-        bool m_isPastForeground;
-        QBrush m_brushPastForeground;
-        bool m_isPastBackground;
-        QBrush m_brushPastBackground;
+    int m_eventThreshold;
+    int m_highlightThreshold;
+    bool m_isHighlightForeground;
+    QBrush m_brushHighlightForeground;
+    bool m_isHighlightBackground;
+    QBrush m_brushHighlightBackground;
 
-        int m_columnWidthName;
-        int m_columnWidthAge;
-        int m_columnWidthDate;
-        int m_columnWidthRemaining;
+    int m_pastThreshold;
+    bool m_isPastForeground;
+    QBrush m_brushPastForeground;
+    bool m_isPastBackground;
+    QBrush m_brushPastBackground;
+
+    int m_columnWidthName;
+    int m_columnWidthAge;
+    int m_columnWidthDate;
+    int m_columnWidthWhen;
 };
+
 
 #endif //BIRTHDAYLIST_APPLET_H
