@@ -6,7 +6,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: BirthdayList 0.5.0\n"
+"Project-Id-Version: BirthdayList 0.5.1\n"
 "Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
 "POT-Creation-Date: 2010-03-05 17:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"

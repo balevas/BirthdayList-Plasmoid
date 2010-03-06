@@ -4,7 +4,7 @@
 /**
  * @file    birthdaylist_dataengine.h
  * @author  Karol Slanina
- * @version 0.5.0
+ * @version 0.5.1
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
