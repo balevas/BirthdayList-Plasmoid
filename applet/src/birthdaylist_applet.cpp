@@ -1,7 +1,7 @@
 /**
  * @file    birthdaylist_applet.cpp
  * @author  Karol Slanina
- * @version 0.5.1
+ * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <QTreeView>
 #include <QGraphicsLinearLayout>
+#include <QStackedWidget>
 
 #include <KConfigDialog>
 #include <KDebug>
@@ -35,13 +36,21 @@ K_EXPORT_PLASMA_APPLET(birthdaylist, BirthdayListApplet)
 
 static const char *UTC_SOURCE = "UTC";
 
-static QString dateFormat("d. M.");
-
 BirthdayListApplet::BirthdayListApplet(QObject *parent, const QVariantList &args)
 : Plasma::PopupApplet(parent, args),
-m_dataEngine(0),
-m_kabcNamedayString("Nameday"),
-m_kabcAnniversaryString("Anniversary"),
+m_eventDataSource(EDS_Akonadi),
+m_dataEngine_namedays(0),
+m_dataEngine_contacts(0),
+m_dataEngine_kabc(0),
+m_dataEngine_akonadi(0),
+m_dataEngine_thunderbird(0),
+m_akoCollection(""),
+m_akoColNamedayDateFieldString("Nameday"),
+m_akoColIsNamedayByGivenNameField(false),
+m_akoColAnniversaryFieldString("Anniversary"),
+m_kabcNamedayDateFieldString("Nameday"),
+m_kabcIsNamedayByGivenNameField(false),
+m_kabcAnniversaryFieldString("Anniversary"),
 m_model(0, 3),
 m_graphicsWidget(0),
 m_treeView(0),
@@ -50,9 +59,14 @@ m_showColName(true),
 m_showColAge(true),
 m_showColDate(true),
 m_showColWhen(true),
+m_showNicknames(true),
 m_showNamedays(true),
-m_aggregateNamedays(true),
+m_namedayDisplayMode(NDM_AggregateEvents),
 m_showAnniversaries(true),
+m_isTodaysForeground(false),
+m_brushTodaysForeground(QColor(255, 255, 255)),
+m_isTodaysBackground(true),
+m_brushTodaysBackground(QColor(128, 0, 0)),
 m_eventThreshold(30),
 m_highlightThreshold(2),
 m_isHighlightForeground(false),
@@ -64,10 +78,14 @@ m_isPastForeground(false),
 m_brushPastForeground(QColor(0, 0, 0)),
 m_isPastBackground(true),
 m_brushPastBackground(QColor(160, 0, 0)),
+m_selectedDateFormat(0),
 m_columnWidthName(0),
 m_columnWidthAge(0),
 m_columnWidthDate(0),
 m_columnWidthWhen(0) {
+    m_possibleDateFormats << "d. M." << "dd. MM."
+            << "d-M" << "dd-MM" << "M-d" << "MM-dd"
+            << "d/M" << "dd/MM" << "M/d" << "MM/dd";
     setBackgroundHints(DefaultBackground);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setHasConfigurationInterface(true);
@@ -82,14 +100,25 @@ void BirthdayListApplet::init() {
     setPopupIcon(KIcon("bl_cookie", NULL));
 
     KConfigGroup configGroup = config();
-    m_kabcNamedayString = configGroup.readEntry("KABC Nameday String", "Nameday");
-    m_kabcAnniversaryString = configGroup.readEntry("KABC Anniversary String", "Anniversary");
+    QString eventDataSource = configGroup.readEntry("Event Data Source", "");
+    if (eventDataSource == "Akonadi") m_eventDataSource = EDS_Akonadi;
+    else if (eventDataSource == "Thunderbird") m_eventDataSource = EDS_Thunderbird;
+    else m_eventDataSource = EDS_KABC;
+
+    m_akoCollection = configGroup.readEntry("Akonadi Collection", "");
+    m_akoColNamedayDateFieldString = configGroup.readEntry("Akonadi Nameday String", "Nameday");
+    m_akoColIsNamedayByGivenNameField = configGroup.readEntry("Akonadi Nameday By GivenName", false);
+    m_akoColAnniversaryFieldString = configGroup.readEntry("Akonadi Anniversary String", "Anniversary");
+
+    m_kabcNamedayDateFieldString = configGroup.readEntry("KABC Nameday String", "Nameday");
+    m_kabcIsNamedayByGivenNameField = configGroup.readEntry("KABC Nameday By GivenName", false);
+    m_kabcAnniversaryFieldString = configGroup.readEntry("KABC Anniversary String", "Anniversary");
     m_curNamedayLangCode = configGroup.readEntry("Nameday Calendar LangCode", "");
 
-    m_dataEngine = dataEngine("birthdaylist");
-    if (m_dataEngine && m_dataEngine->isValid()) {
+    m_dataEngine_namedays = dataEngine("birthdaylist");
+    if (m_dataEngine_namedays && m_dataEngine_namedays->isValid()) {
 
-        QHash<QString, QVariant> namedayLangCodeInfo = m_dataEngine->query("NamedayLists");
+        QHash<QString, QVariant> namedayLangCodeInfo = m_dataEngine_namedays->query("NamedayLists");
         m_namedayLangCodes = namedayLangCodeInfo.keys();
         qSort(m_namedayLangCodes);
 
@@ -102,15 +131,35 @@ void BirthdayListApplet::init() {
 
         if (!m_namedayLangCodes.contains(m_curNamedayLangCode)) m_curNamedayLangCode = "";
         if (!m_curNamedayLangCode.isEmpty()) {
-            m_curLangNamedayList = m_dataEngine->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
+            m_curLangNamedayList = m_dataEngine_namedays->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
         }
-
-        m_dataEngine->query(QString("KabcNamedayString_%1").arg(m_kabcNamedayString));
-        m_dataEngine->query(QString("KabcAnniversaryString_%1").arg(m_kabcAnniversaryString));
-        m_dataEngine->connectSource("KabcContactInfo", this);
     } else {
         setFailedToLaunch(true, "Could not load birthdaylist dataEngine");
     }
+
+    m_dataEngine_kabc = dataEngine("birthdaylist");
+    if (m_dataEngine_kabc && m_dataEngine_kabc->isValid()) {
+        m_dataEngine_kabc->query(QString("SetNamedayField_%1").arg(m_kabcNamedayDateFieldString));
+        m_dataEngine_kabc->query(QString("SetAnniversaryField_%1").arg(m_kabcAnniversaryFieldString));
+    } else {
+        setFailedToLaunch(true, "Could not load birthdaylist dataEngine");
+    }
+
+    m_dataEngine_akonadi = dataEngine("birthdaylist_akonadi");
+    if (m_dataEngine_akonadi && m_dataEngine_akonadi->isValid()) {
+        m_dataEngine_akonadi->query(QString("SetCurrentCollection_%1").arg(m_akoCollection));
+        m_dataEngine_akonadi->query(QString("SetNamedayField_%1").arg(m_akoColNamedayDateFieldString));
+        m_dataEngine_akonadi->query(QString("SetAnniversaryField_%1").arg(m_akoColAnniversaryFieldString));
+    }
+
+    m_dataEngine_thunderbird = dataEngine("birthdaylist_thunderbird");
+    if (m_dataEngine_thunderbird && m_dataEngine_thunderbird->isValid()) {
+    }
+
+    if (m_eventDataSource == EDS_Akonadi) m_dataEngine_contacts = m_dataEngine_akonadi;
+    else if (m_eventDataSource == EDS_Thunderbird) m_dataEngine_contacts = m_dataEngine_thunderbird;
+    else m_dataEngine_contacts = m_dataEngine_kabc;
+    m_dataEngine_contacts->connectSource("ContactInfo", this);
 
     Plasma::DataEngine* timeEngine = dataEngine("time");
     if (timeEngine) {
@@ -118,6 +167,8 @@ void BirthdayListApplet::init() {
     } else {
         kDebug() << "Warning: Could not load time dataEngine - no nightly update possible";
     }
+
+    m_showNicknames = configGroup.readEntry("Show Nicknames", true);
 
     m_showColumnHeaders = configGroup.readEntry("Show Column Headers", true);
     //m_showColName = configGroup.readEntry("Show Name Column", true);
@@ -127,8 +178,19 @@ void BirthdayListApplet::init() {
     m_showColWhen = configGroup.readEntry("Show When Column", true);
 
     m_showNamedays = configGroup.readEntry("Show Namedays", true);
-    m_aggregateNamedays = configGroup.readEntry("Aggregate Namedays", true);
+    QString namedayDisplayMode = configGroup.readEntry("Nameday Display Mode", "");
+    if (namedayDisplayMode == "IndividualEvents") m_namedayDisplayMode = NDM_IndividualEvents;
+    else if (namedayDisplayMode == "AllCalendarNames") m_namedayDisplayMode = NDM_AllCalendarNames;
+    else m_namedayDisplayMode = NDM_AggregateEvents;
+
     m_showAnniversaries = configGroup.readEntry("Show Anniversaries", true);
+
+    m_isTodaysForeground = configGroup.readEntry("Todays Foreground Enabled", false);
+    QColor todaysForeground = configGroup.readEntry("Todays Foreground Color", QColor(255, 255, 255));
+    m_brushTodaysForeground = QBrush(todaysForeground);
+    m_isTodaysBackground = configGroup.readEntry("Todays Background Enabled", true);
+    QColor todaysBackground = configGroup.readEntry("Todays Background Color", QColor(128, 0, 0));
+    m_brushTodaysBackground = QBrush(todaysBackground);
 
     m_eventThreshold = configGroup.readEntry("Event Threshold", 30);
     m_highlightThreshold = configGroup.readEntry("Highlight Threshold", 2);
@@ -147,6 +209,8 @@ void BirthdayListApplet::init() {
     m_isPastBackground = configGroup.readEntry("Past Background Enabled", false);
     QColor pastBackground = configGroup.readEntry("Past Background Color", QColor(160, 160, 160));
     m_brushPastBackground = QBrush(pastBackground);
+
+    m_selectedDateFormat = configGroup.readEntry("Date Format", 0);
 
     m_columnWidthName = configGroup.readEntry("Name Column Width", 0);
     m_columnWidthAge = configGroup.readEntry("Age Column Width", 0);
@@ -193,10 +257,10 @@ QGraphicsWidget *BirthdayListApplet::graphicsWidget() {
 void BirthdayListApplet::dataUpdated(const QString &name, const Plasma::DataEngine::Data &data) {
     kDebug() << "Update of birthday list entries, triggered by data source" << name;
 
-    if (name == "KabcContactInfo") {
+    if (name == "ContactInfo") {
         updateEventList(data);
     } else if (name == UTC_SOURCE) {
-        updateEventList(m_dataEngine->query("KabcContactInfo"));
+        updateEventList(m_dataEngine_contacts->query("ContactInfo"));
     }
 
     updateModels();
@@ -204,8 +268,25 @@ void BirthdayListApplet::dataUpdated(const QString &name, const Plasma::DataEngi
 }
 
 void BirthdayListApplet::configAccepted() {
-    m_kabcNamedayString = m_ui_datasource.lineEditNamedayField->text();
-    m_kabcAnniversaryString = m_ui_datasource.lineEditAnniversaryField->text();
+    QString selectedDataSource;
+    if (m_ui_datasource.cmbDataSource->count() > 0) {
+        selectedDataSource = m_ui_datasource.cmbDataSource->itemText(m_ui_datasource.cmbDataSource->currentIndex());
+    }
+    if (selectedDataSource == "Akonadi") m_eventDataSource = EDS_Akonadi;
+    else if (selectedDataSource == "Thunderbird") m_eventDataSource = EDS_Thunderbird;
+    else m_eventDataSource = EDS_KABC;
+
+    if (m_ui_datasource.cmbAkoCollection->isEnabled()) {
+        m_akoCollection = m_ui_datasource.cmbAkoCollection->itemData(m_ui_datasource.cmbAkoCollection->currentIndex()).toString();
+    }
+    else m_akoCollection = "";
+    m_akoColNamedayDateFieldString = m_ui_datasource.lineEditAkoNamedayDateField->text();
+    m_akoColIsNamedayByGivenNameField = m_ui_datasource.rbAkoNamedayNameField->isChecked();
+    m_akoColAnniversaryFieldString = m_ui_datasource.lineEditAkoAnniversaryField->text();
+
+    m_kabcNamedayDateFieldString = m_ui_datasource.lineEditKabNamedayDateField->text();
+    m_kabcIsNamedayByGivenNameField = m_ui_datasource.rbKabNamedayNameField->isChecked();
+    m_kabcAnniversaryFieldString = m_ui_datasource.lineEditKabAnniversaryField->text();
 
     m_showColumnHeaders = m_ui_contents.chckShowColumnHeaders->isChecked();
     m_showColName = m_ui_contents.chckShowColName->isChecked();
@@ -213,10 +294,20 @@ void BirthdayListApplet::configAccepted() {
     m_showColDate = m_ui_contents.chckShowColDate->isChecked();
     m_showColWhen = m_ui_contents.chckShowColWhen->isChecked();
 
+    m_showNicknames = m_ui_contents.chckShowNicknames->isChecked();
+
     m_showNamedays = m_ui_contents.chckShowNamedays->isChecked();
-    m_aggregateNamedays = m_ui_contents.chckAggrNamedays->isChecked();
     m_curNamedayLangCode = m_namedayLangCodes[m_ui_contents.cmbNamedayCalendar->currentIndex()];
+    if (m_ui_contents.rbNamedayShowIndEvents->isChecked()) m_namedayDisplayMode = NDM_IndividualEvents;
+    else if (m_ui_contents.rbNamedayShowAllFromCal->isChecked()) m_namedayDisplayMode = NDM_AllCalendarNames;
+    else m_namedayDisplayMode = NDM_AggregateEvents;
+
     m_showAnniversaries = m_ui_contents.chckShowAnniversaries->isChecked();
+
+    m_isTodaysForeground = m_ui_appearance.chckTodaysForeground->isChecked();
+    m_brushTodaysForeground.setColor(m_ui_appearance.colorbtnTodaysForeground->color());
+    m_isTodaysBackground = m_ui_appearance.chckTodaysBackground->isChecked();
+    m_brushTodaysBackground.setColor(m_ui_appearance.colorbtnTodaysBackground->color());
 
     m_eventThreshold = m_ui_appearance.spinComingShowDays->value();
     m_highlightThreshold = m_ui_appearance.spinComingHighlightDays->value();
@@ -232,6 +323,8 @@ void BirthdayListApplet::configAccepted() {
     m_isPastBackground = m_ui_appearance.chckPastBackground->isChecked();
     m_brushPastBackground.setColor(m_ui_appearance.colorbtnPastBackground->color());
 
+    m_selectedDateFormat = m_ui_appearance.cmbDateDisplayFormat->currentIndex();
+
     QTreeView *qTreeView = m_treeView->nativeWidget();
     m_columnWidthName = qTreeView->columnWidth(0);
     m_columnWidthAge = qTreeView->columnWidth(1);
@@ -241,8 +334,18 @@ void BirthdayListApplet::configAccepted() {
 
     KConfigGroup configGroup = config();
 
-    configGroup.writeEntry("KABC Nameday String", m_kabcNamedayString);
-    configGroup.writeEntry("KABC Anniversary String", m_kabcAnniversaryString);
+    if (m_eventDataSource == EDS_KABC) configGroup.writeEntry("Event Data Source", "KABC");
+    else if (m_eventDataSource == EDS_Thunderbird) configGroup.writeEntry("Event Data Source", "Thunderbird");
+    else configGroup.writeEntry("Event Data Source", "Akonadi");
+
+    if (!m_akoCollection.isEmpty()) configGroup.writeEntry("Akonadi Collection", m_akoCollection);
+    configGroup.writeEntry("Akonadi Nameday String", m_akoColNamedayDateFieldString);
+    configGroup.writeEntry("Akonadi Nameday By GivenName", m_akoColIsNamedayByGivenNameField);
+    configGroup.writeEntry("Akonadi Anniversary String", m_akoColAnniversaryFieldString);
+
+    configGroup.writeEntry("KABC Nameday String", m_kabcNamedayDateFieldString);
+    configGroup.writeEntry("KABC Nameday By GivenName", m_kabcIsNamedayByGivenNameField);
+    configGroup.writeEntry("KABC Anniversary String", m_kabcAnniversaryFieldString);
 
     configGroup.writeEntry("Show Column Headers", m_showColumnHeaders);
     //configGroup.writeEntry("Show Name Column", m_showColName);
@@ -250,9 +353,14 @@ void BirthdayListApplet::configAccepted() {
     configGroup.writeEntry("Show Date Column", m_showColDate);
     configGroup.writeEntry("Show When Column", m_showColWhen);
 
+    configGroup.writeEntry("Show Nicknames", m_showNicknames);
+
     configGroup.writeEntry("Show Namedays", m_showNamedays);
-    configGroup.writeEntry("Aggregate Namedays", m_aggregateNamedays);
     configGroup.writeEntry("Nameday Calendar LangCode", m_curNamedayLangCode);
+    if (m_namedayDisplayMode == NDM_IndividualEvents) configGroup.writeEntry("Nameday Display Mode", "IndividualEvents");
+    else if (m_namedayDisplayMode == NDM_AllCalendarNames) configGroup.writeEntry("Nameday Display Mode", "AllCalendarNames");
+    else configGroup.writeEntry("Nameday Display Mode", "AggregateEvents");
+
     configGroup.writeEntry("Show Anniversaries", m_showAnniversaries);
 
     configGroup.writeEntry("Event Threshold", m_eventThreshold);
@@ -262,21 +370,42 @@ void BirthdayListApplet::configAccepted() {
     configGroup.writeEntry("Highlight Background Enabled", m_isHighlightBackground);
     configGroup.writeEntry("Highlight Background Color", m_brushHighlightBackground.color());
 
+    configGroup.writeEntry("Todays Foreground Enabled", m_isTodaysForeground);
+    configGroup.writeEntry("Todays Foreground Color", m_brushTodaysForeground.color());
+    configGroup.writeEntry("Todays Background Enabled", m_isTodaysBackground);
+    configGroup.writeEntry("Todays Background Color", m_brushTodaysBackground.color());
+
     configGroup.writeEntry("Past Threshold", m_pastThreshold);
     configGroup.writeEntry("Past Foreground Enabled", m_isPastForeground);
     configGroup.writeEntry("Past Foreground Color", m_brushPastForeground.color());
     configGroup.writeEntry("Past Background Enabled", m_isPastBackground);
     configGroup.writeEntry("Past Background Color", m_brushPastBackground.color());
 
+    configGroup.writeEntry("Date Format", m_selectedDateFormat);
+
     configGroup.writeEntry("Name Column Width", m_columnWidthName);
     configGroup.writeEntry("Age Column Width", m_columnWidthAge);
     configGroup.writeEntry("Date Column Width", m_columnWidthDate);
     configGroup.writeEntry("When Column Width", m_columnWidthWhen);
 
-    m_curLangNamedayList = m_dataEngine->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
-    m_dataEngine->query(QString("KabcNamedayString_%1").arg(m_kabcNamedayString));
-    m_dataEngine->query(QString("KabcAnniversaryString_%1").arg(m_kabcAnniversaryString));
-    updateEventList(m_dataEngine->query("KabcContactInfo"));
+    m_curLangNamedayList = m_dataEngine_namedays->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
+    m_dataEngine_kabc->query(QString("SetNamedayField_%1").arg(m_kabcNamedayDateFieldString));
+    m_dataEngine_kabc->query(QString("SetAnniversaryField_%1").arg(m_kabcAnniversaryFieldString));
+
+    m_dataEngine_akonadi->query(QString("SetCurrentCollection_%1").arg(m_akoCollection));
+    m_dataEngine_akonadi->query(QString("SetNamedayField_%1").arg(m_akoColNamedayDateFieldString));
+    m_dataEngine_akonadi->query(QString("SetAnniversaryField_%1").arg(m_akoColAnniversaryFieldString));
+
+    if (m_eventDataSource == EDS_Akonadi) m_dataEngine_contacts = m_dataEngine_akonadi;
+    else if (m_eventDataSource == EDS_Thunderbird) m_dataEngine_contacts = m_dataEngine_thunderbird;
+    else m_dataEngine_contacts = m_dataEngine_kabc;
+
+    m_dataEngine_akonadi->disconnectSource("ContactInfo", this);
+    m_dataEngine_thunderbird->disconnectSource("ContactInfo", this);
+    m_dataEngine_kabc->disconnectSource("ContactInfo", this);
+    m_dataEngine_contacts->connectSource("ContactInfo", this);
+
+    updateEventList(m_dataEngine_contacts->query("ContactInfo"));
 
     updateModels();
     update();
@@ -302,8 +431,49 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     parent->addPage(contentsWidget, i18n("Contents"), "view-form-table");
     parent->addPage(appearanceWidget, i18n("Appearance"), "preferences-desktop-theme");
 
-    m_ui_datasource.lineEditNamedayField->setText(m_kabcNamedayString);
-    m_ui_datasource.lineEditAnniversaryField->setText(m_kabcAnniversaryString);
+    m_ui_datasource.cmbDataSource->clear();
+    if (m_dataEngine_kabc->isValid()) {
+        m_ui_datasource.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
+        if (m_eventDataSource == EDS_KABC) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+    }
+    else m_ui_datasource.stckWidgetDSConfPages->removeWidget(m_ui_datasource.pageKabConfig);
+
+    if (m_dataEngine_akonadi->isValid()) {
+        m_ui_datasource.cmbDataSource->addItem(i18n("Akonadi"), QVariant("Akonadi"));
+        if (m_eventDataSource == EDS_Akonadi) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+    }
+    else m_ui_datasource.stckWidgetDSConfPages->removeWidget(m_ui_datasource.pageAkonadiConfig);
+
+    if (m_dataEngine_thunderbird->isValid()) {
+        m_ui_datasource.cmbDataSource->addItem(i18n("Thunderbird"), QVariant("Thunderbird"));
+        if (m_eventDataSource == EDS_Thunderbird) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+    }
+    else m_ui_datasource.stckWidgetDSConfPages->removeWidget(m_ui_datasource.pageThunderbirdConfig);
+
+    m_ui_datasource.cmbAkoCollection->clear();
+    Plasma::DataEngine::Data data_collections = m_dataEngine_akonadi->query("Collections");
+    QHashIterator<QString, QVariant> collectionsIt(data_collections);
+    while (collectionsIt.hasNext()) {
+        collectionsIt.next();
+        QVariantHash collectionInfo = collectionsIt.value().toHash();
+        m_ui_datasource.cmbAkoCollection->addItem(collectionInfo["Name"].toString(), collectionInfo["Resource"]);
+        if (collectionInfo["Resource"].toString() == m_akoCollection) {
+            m_ui_datasource.cmbAkoCollection->setCurrentIndex(m_ui_datasource.cmbAkoCollection->count()-1);
+        }
+    }
+    if (m_ui_datasource.cmbAkoCollection->count() == 0) {
+        m_ui_datasource.cmbAkoCollection->addItem(i18nc("No Akonadi collections", "No collections available"));
+        m_ui_datasource.cmbAkoCollection->setEnabled(false);
+    }
+    else m_ui_datasource.cmbAkoCollection->setEnabled(true);
+
+    m_ui_datasource.lineEditAkoNamedayDateField->setText(m_akoColNamedayDateFieldString);
+    m_ui_datasource.rbAkoNamedayNameField->setChecked(m_akoColIsNamedayByGivenNameField);
+    m_ui_datasource.lineEditAkoAnniversaryField->setText(m_akoColAnniversaryFieldString);
+
+    m_ui_datasource.lineEditKabNamedayDateField->setText(m_kabcNamedayDateFieldString);
+    m_ui_datasource.rbKabNamedayNameField->setChecked(m_kabcIsNamedayByGivenNameField);
+    m_ui_datasource.lineEditKabAnniversaryField->setText(m_kabcAnniversaryFieldString);
 
     m_ui_contents.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
     m_ui_contents.chckShowColName->setChecked(m_showColName);
@@ -311,16 +481,24 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     m_ui_contents.chckShowColDate->setChecked(m_showColDate);
     m_ui_contents.chckShowColWhen->setChecked(m_showColWhen);
 
+    m_ui_contents.chckShowNicknames->setChecked(m_showNicknames);
+
     m_ui_contents.chckShowNamedays->setChecked(m_showNamedays);
-    m_ui_contents.chckAggrNamedays->setChecked(m_aggregateNamedays);
+    m_ui_contents.rbNamedayShowIndEvents->setChecked(m_namedayDisplayMode == NDM_IndividualEvents);
+    m_ui_contents.rbNamedayShowAllFromCal->setChecked(m_namedayDisplayMode == NDM_AllCalendarNames);
+    m_ui_contents.rbNamedayShowAggrEvents->setChecked(m_namedayDisplayMode == NDM_AggregateEvents);
+
     m_ui_contents.cmbNamedayCalendar->clear();
     m_ui_contents.cmbNamedayCalendar->addItems(m_namedayLangStrings);
     if (m_namedayLangCodes.contains(m_curNamedayLangCode)) {
         m_ui_contents.cmbNamedayCalendar->setCurrentIndex(m_namedayLangCodes.indexOf(m_curNamedayLangCode));
-    } else {
-        m_ui_contents.cmbNamedayCalendar->setCurrentIndex(0);
-    }
+    } else m_ui_contents.cmbNamedayCalendar->setCurrentIndex(0);
     m_ui_contents.chckShowAnniversaries->setChecked(m_showAnniversaries);
+
+    m_ui_appearance.chckTodaysForeground->setChecked(m_isTodaysForeground);
+    m_ui_appearance.colorbtnTodaysForeground->setColor(m_brushTodaysForeground.color());
+    m_ui_appearance.chckTodaysBackground->setChecked(m_isTodaysBackground);
+    m_ui_appearance.colorbtnTodaysBackground->setColor(m_brushTodaysBackground.color());
 
     m_ui_appearance.spinComingShowDays->setValue(m_eventThreshold);
     m_ui_appearance.spinComingHighlightDays->setValue(m_highlightThreshold);
@@ -335,12 +513,20 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     m_ui_appearance.chckPastBackground->setChecked(m_isPastBackground);
     m_ui_appearance.colorbtnPastBackground->setColor(m_brushPastBackground.color());
 
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lblNamedayField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lineEditNamedayField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lblAnniversaryField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lineEditAnniversaryField, SLOT(setEnabled(bool)));
+    m_ui_appearance.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
+
+
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lblKabNamedayIdentifyBy, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.rbKabNamedayNameField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.cmbKabNamedayNameField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.rbKabNamedayDateField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lineEditKabNamedayDateField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lblKabAnniversaryField, SLOT(setEnabled(bool)));
+    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lineEditKabAnniversaryField, SLOT(setEnabled(bool)));
 
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
+
+    parent->resize(parent->minimumSizeHint());
 }
 
 void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
@@ -361,8 +547,15 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
         QVariantHash contactInfo = contactIt.value().toHash();
 
         QString contactName = contactInfo["Name"].toString();
+        QString contactNickname = contactInfo["Nickname"].toString();
+        if (m_showNicknames && !contactNickname.isEmpty()) contactName = contactNickname;
         QDate contactBirthday = contactInfo["Birthday"].toDate();
-        QDate contactNameday = contactInfo["Nameday"].toDate();
+        QDate contactNameday;
+        if ((m_eventDataSource == EDS_KABC && m_kabcIsNamedayByGivenNameField) ||
+            (m_eventDataSource == EDS_Akonadi && m_akoColIsNamedayByGivenNameField)) {
+            contactNameday = getNamedayByGivenName(contactInfo["Given name"].toString());
+        }
+        else contactNameday = contactInfo["Nameday"].toDate();
         QDate contactAnniversary = contactInfo["Anniversary"].toDate();
         //kDebug() << "KABC contact:" << contactName << ", B" << contactBirthday << ", N" << contactNameday << ", A" << contactAnniversary;
 
@@ -370,7 +563,12 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
             m_listEntries.append(new BirthdayEntry(contactName, contactBirthday));
         }
         if (m_showNamedays && contactNameday.isValid()) {
-            namedayEntries.append(new NamedayEntry(contactName, contactNameday));
+            QDate firstNameday = contactNameday;
+            if (contactBirthday.isValid()) {
+                firstNameday.setDate(contactBirthday.year(), contactNameday.month(), contactNameday.day());
+                if (firstNameday < contactBirthday) firstNameday = firstNameday.addYears(1);
+            }
+            namedayEntries.append(new NamedayEntry(contactName, firstNameday));
         }
         if (m_showAnniversaries && contactAnniversary.isValid()) {
             m_listEntries.append(new AnniversaryEntry(contactName, contactAnniversary));
@@ -378,10 +576,20 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
     }
 
     // if desired, join together nameday entries from the same day
-    if (m_aggregateNamedays) {
+    if (m_namedayDisplayMode == NDM_AggregateEvents || m_namedayDisplayMode == NDM_AllCalendarNames) {
         qSort(namedayEntries.begin(), namedayEntries.end(), AbstractAnnualEventEntry::lessThan);
-        QMap<QDate, AggregatedNamedayEntry*> aggregatedEntries;
         int curYear = QDate::currentDate().year();
+        QMap<QDate, AggregatedNamedayEntry*> aggregatedEntries;
+
+        // if all calendar names are to be shown, prepare entries for the visualised period
+        if (m_namedayDisplayMode == NDM_AllCalendarNames) {
+            QDate initialDate = QDate::currentDate().addDays(-m_pastThreshold);
+            QDate finalDate = initialDate.addYears(1);
+
+            for (QDate date=initialDate; date<finalDate; date = date.addDays(1)) {
+                aggregatedEntries[date] = new AggregatedNamedayEntry(getNamedayString(date), date);
+            }
+        }
 
         foreach(NamedayEntry *namedayEntry, namedayEntries) {
             const QDate namedayDate = namedayEntry->date();
@@ -400,7 +608,7 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
         foreach(AggregatedNamedayEntry *entry, aggregatedEntries) {
             m_listEntries.append(entry);
         }
-    } else {
+    } else if (m_namedayDisplayMode == NDM_IndividualEvents) {
 
         foreach(NamedayEntry *entry, namedayEntries) {
             m_listEntries.append(entry);
@@ -413,19 +621,38 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
     kDebug() << "New list entries created, total count" << m_listEntries.size();
 }
 
+QDate BirthdayListApplet::getNamedayByGivenName(QString givenName) {
+    if (givenName.isEmpty()) return QDate();
+
+    QDate initialDate = QDate::currentDate().addDays(-m_pastThreshold);
+    QDate finalDate = initialDate.addYears(1);
+    for (QDate date=initialDate; date<finalDate; date = date.addDays(1)) {
+        QStringList calendarNames = getNamedayString(date).split(QRegExp("\\W+"), QString::SkipEmptyParts);
+
+        // if the name can be found, return the nameday in the future
+        // (if the contact has a birthday, the date will be moved to his first nameday
+        // so that the correct age can be shown; othewise we'll know that the age is unknown)
+        if (calendarNames.contains(givenName)) return date.addYears(1);
+    }
+
+    return QDate();
+}
+
 QString BirthdayListApplet::getNamedayString(QDate date) {
     QVariant namedayStringEntry = m_curLangNamedayList[date.toString("MM-dd")];
     if (namedayStringEntry.isValid()) return namedayStringEntry.toString();
-    else return date.toString(dateFormat);
+    else return date.toString(m_possibleDateFormats[m_selectedDateFormat]);
 }
 
 void BirthdayListApplet::updateModels() {
-    qDebug() << "CREATING BIRTHDAY MODEL";
+    qDebug() << "Creating BirthdayList model";
 
     m_model.clear();
     QStringList headerTitles;
     headerTitles << i18n("Name") << i18n("Age") << i18n("Date") << i18n("When");
     m_model.setHorizontalHeaderLabels(headerTitles);
+
+    QString dateFormat = m_possibleDateFormats[m_selectedDateFormat];
 
     QStandardItem *parentItem = m_model.invisibleRootItem();
 
@@ -436,8 +663,8 @@ void BirthdayListApplet::updateModels() {
 
         if (showEvent) {
             QList<QStandardItem*> items;
-            entry->createModelItems(items);
-            foreach(QStandardItem *item, items) setModelItemColors(entry, item);
+            entry->createModelItems(items, dateFormat);
+            for (int i=0; i<items.size(); ++i) setModelItemColors(entry, items[i], i);
 
             parentItem->appendRow(items);
         }
@@ -447,13 +674,19 @@ void BirthdayListApplet::updateModels() {
     usePlasmaThemeColors();
 }
 
-void BirthdayListApplet::setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item) {
+void BirthdayListApplet::setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum) {
     item->setEditable(false);
 
-    if (entry->remainingDays() < 0) {
+    Q_UNUSED(colNum)
+    //if (colNum>0) item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+    if (entry->remainingDays() == 0) {
+        if (m_isTodaysForeground) item->setForeground(m_brushTodaysForeground);
+        if (m_isTodaysBackground) item->setBackground(m_brushTodaysBackground);
+    } else if (entry->remainingDays() < 0) {
         if (m_isPastForeground) item->setForeground(m_brushPastForeground);
         if (m_isPastBackground) item->setBackground(m_brushPastBackground);
-    } else if (entry->remainingDays() < m_highlightThreshold) {
+    } else if (entry->remainingDays() <= m_highlightThreshold) {
         if (m_isHighlightForeground) item->setForeground(m_brushHighlightForeground);
         if (m_isHighlightBackground) item->setBackground(m_brushHighlightBackground);
     }
@@ -461,7 +694,7 @@ void BirthdayListApplet::setModelItemColors(const AbstractAnnualEventEntry *entr
     for (int row = 0; row < item->rowCount(); ++row) {
         for (int col = 0; col < item->columnCount(); ++col) {
             QStandardItem *child = item->child(row, col);
-            if (child) setModelItemColors(entry, child);
+            if (child) setModelItemColors(entry, child, col);
         }
     }
 }

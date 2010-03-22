@@ -2,6 +2,7 @@ project(plasma-engine-birthdaylist)
 
 # Find the required Libaries
 find_package(KDE4 REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KDE4_ENABLE_EXCEPTIONS}")
 include(KDE4Defaults)
 
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
@@ -9,8 +10,6 @@ include_directories(
    ${CMAKE_SOURCE_DIR}
    ${CMAKE_BINARY_DIR}
    ${KDE4_INCLUDES} )
-
-add_subdirectory(namedaydefs)
 
 # We add our source code here
 set(birthdaylist_engine_SRC birthdaylist_dataengine.cpp)

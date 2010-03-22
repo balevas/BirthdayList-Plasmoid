@@ -4,7 +4,7 @@
 /**
  * @file    birthdaylistentry.h
  * @author  Karol Slanina
- * @version 0.5.1
+ * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ public:
     }
 
     /** Creates the representation of this entry in the tree view's model. */
-    virtual void createModelItems(QList<QStandardItem*> &items) const = 0;
+    virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const = 0;
 
     /** Comparator used to sort the event entries by time. */
     static bool lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b);
@@ -91,7 +91,7 @@ public:
     BirthdayEntry(const QString &name, const QDate &date);
     virtual ~BirthdayEntry();
 
-    virtual void createModelItems(QList<QStandardItem*> &items) const;
+    virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
 
 private:
     static KIcon m_icon;
@@ -111,7 +111,7 @@ public:
         m_aggregated = aggregated;
     }
 
-    virtual void createModelItems(QList<QStandardItem*> &items) const;
+    virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
 
 private:
     bool m_aggregated;
@@ -130,7 +130,7 @@ public:
     /** Registers the given nameday entry in the aggregation. */
     void addNamedayEntry(NamedayEntry *namedayEntry);
 
-    virtual void createModelItems(QList<QStandardItem*> &items) const;
+    virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
 
 private:
     QList<NamedayEntry *> m_storedEntries;
@@ -146,7 +146,7 @@ public:
     AnniversaryEntry(const QString &name, const QDate &date);
     virtual ~AnniversaryEntry();
 
-    virtual void createModelItems(QList<QStandardItem*> &items) const;
+    virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
 
 private:
     static KIcon m_icon;

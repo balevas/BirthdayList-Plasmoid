@@ -1,0 +1,470 @@
+# BirthdayList Plasmoid translation template
+# This file is distributed under the same license as the BirthdayList package.
+#
+# Author: Karol Slanina <karol.slanina@gmail.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: BirthdayList 0.5.1\n"
+"Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
+"POT-Creation-Date: 2010-03-21 20:03+0100\n"
+"PO-Revision-Date: 2010-03-21 14:45+0100\n"
+"Last-Translator: Karol Slanina <karol.slanina@gmail.com>\n"
+"Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.0\n"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:41
+#. i18n: ectx: property (text), widget (QLabel, lblTitleComingEvents)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:408 po/rc.cpp:3
+#: rc.cpp:3
+msgid "Coming events"
+msgstr "Budúce udalosti"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:48
+#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:409 po/rc.cpp:6
+#: rc.cpp:6
+msgid "Show events within next:"
+msgstr "Zobraziť udalosti počas nasledujúcich:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:64
+#. i18n: ectx: property (text), widget (QLabel, lblTitlePastEvents)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:410 po/rc.cpp:9
+#: rc.cpp:9
+msgid "Past events"
+msgstr "Uplynulé udalosti"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:87
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:411 po/rc.cpp:12
+#: rc.cpp:12
+msgid "Highlight events within next:"
+msgstr "Zvýrazniť udalosti počas nasledujúcich:"
+
+#: build/src/applet/ui_birthdaylist_appearance_config.h:412
+#: build/src/applet/ui_birthdaylist_appearance_config.h:413
+#: build/src/applet/ui_birthdaylist_appearance_config.h:414
+msgid "days"
+msgstr "dní"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:195
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightForeground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:237
+#. i18n: ectx: property (text), widget (QLabel, lblPastForeground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:302
+#. i18n: ectx: property (text), widget (QLabel, lblTodaysForeground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:195
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightForeground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:237
+#. i18n: ectx: property (text), widget (QLabel, lblPastForeground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:302
+#. i18n: ectx: property (text), widget (QLabel, lblTodaysForeground)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:416
+#: build/src/applet/ui_birthdaylist_appearance_config.h:418
+#: build/src/applet/ui_birthdaylist_appearance_config.h:422 po/rc.cpp:24
+#: po/rc.cpp:27 po/rc.cpp:36 rc.cpp:24 rc.cpp:27 rc.cpp:36
+msgid "Custom foreground:"
+msgstr "Vlastná farba textu:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:279
+#. i18n: ectx: property (text), widget (QLabel, lblPastBackground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:385
+#. i18n: ectx: property (text), widget (QLabel, lblTodaysBackground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:411
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightBackground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:279
+#. i18n: ectx: property (text), widget (QLabel, lblPastBackground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:385
+#. i18n: ectx: property (text), widget (QLabel, lblTodaysBackground)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:411
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightBackground)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:420
+#: build/src/applet/ui_birthdaylist_appearance_config.h:425
+#: build/src/applet/ui_birthdaylist_appearance_config.h:426 po/rc.cpp:30
+#: po/rc.cpp:39 po/rc.cpp:42 rc.cpp:30 rc.cpp:39 rc.cpp:42
+msgid "Custom background:"
+msgstr "Vlastné pozadie:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:295
+#. i18n: ectx: property (text), widget (QLabel, lblTitleTodaysEvents)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:421 po/rc.cpp:33
+#: rc.cpp:33
+msgid "Today's events"
+msgstr "Dnešné udalosti"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:466
+#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:428 po/rc.cpp:45
+#: rc.cpp:45
+msgid "Show events within last:"
+msgstr "Zobraziť udalosti počas uplynulých:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:482
+#. i18n: ectx: property (text), widget (QLabel, lblTitleDateFormat)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:429 po/rc.cpp:48
+#: rc.cpp:48
+msgid "Date format"
+msgstr "Formát dátumu:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:518
+#. i18n: ectx: property (text), widget (QLabel, lblDateDisplayFormat)
+#: build/src/applet/ui_birthdaylist_appearance_config.h:430 po/rc.cpp:51
+#: rc.cpp:51
+msgid "Date display format:"
+msgstr "Formát zobrazenia dátumu:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContentsConfig)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListDataSourceConfig)
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContentsConfig)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:14
+#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListDataSourceConfig)
+#: build/src/applet/ui_birthdaylist_contents_config.h:283
+#: build/src/applet/ui_birthdaylist_datasource_config.h:353 po/rc.cpp:54
+#: po/rc.cpp:113 rc.cpp:54 rc.cpp:113
+msgid "Form"
+msgstr "Formulár"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:26
+#. i18n: ectx: property (text), widget (QLabel, lblTitleTable)
+#: build/src/applet/ui_birthdaylist_contents_config.h:284 po/rc.cpp:57
+#: rc.cpp:57
+msgid "Table"
+msgstr "Tabuľka"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:46
+#. i18n: ectx: property (text), widget (QLabel, lblShowColumnHeaders)
+#: build/src/applet/ui_birthdaylist_contents_config.h:285 po/rc.cpp:60
+#: rc.cpp:60
+msgid "Show column headers:"
+msgstr "Zobraziť hlavičku:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:94
+#. i18n: ectx: property (text), widget (QLabel, lblTitleNamedays)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:215
+#. i18n: ectx: property (text), widget (QLabel, lblKabTitleNamedays)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:245
+#. i18n: ectx: property (text), widget (QLabel, lblAkoTitleNamedays)
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:94
+#. i18n: ectx: property (text), widget (QLabel, lblTitleNamedays)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:215
+#. i18n: ectx: property (text), widget (QLabel, lblKabTitleNamedays)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:245
+#. i18n: ectx: property (text), widget (QLabel, lblAkoTitleNamedays)
+#: build/src/applet/ui_birthdaylist_contents_config.h:287
+#: build/src/applet/ui_birthdaylist_datasource_config.h:364
+#: build/src/applet/ui_birthdaylist_datasource_config.h:365 po/rc.cpp:63
+#: po/rc.cpp:139 po/rc.cpp:142 rc.cpp:63 rc.cpp:139 rc.cpp:142
+msgid "Namedays"
+msgstr "Meniny"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:123
+#. i18n: ectx: property (text), widget (QLabel, lblTitleAnniversaries)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:202
+#. i18n: ectx: property (text), widget (QLabel, lblKabTitleAnniversaries)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:281
+#. i18n: ectx: property (text), widget (QLabel, lblAkoTitleAnniversaries)
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:123
+#. i18n: ectx: property (text), widget (QLabel, lblTitleAnniversaries)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:202
+#. i18n: ectx: property (text), widget (QLabel, lblKabTitleAnniversaries)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:281
+#. i18n: ectx: property (text), widget (QLabel, lblAkoTitleAnniversaries)
+#: build/src/applet/ui_birthdaylist_contents_config.h:288
+#: build/src/applet/ui_birthdaylist_datasource_config.h:363
+#: build/src/applet/ui_birthdaylist_datasource_config.h:367 po/rc.cpp:66
+#: po/rc.cpp:136 po/rc.cpp:148 rc.cpp:66 rc.cpp:136 rc.cpp:148
+msgid "Anniversaries"
+msgstr "Výročia"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:130
+#. i18n: ectx: property (text), widget (QLabel, lblShowAnniversaries)
+#: build/src/applet/ui_birthdaylist_contents_config.h:289 po/rc.cpp:69
+#: rc.cpp:69
+msgid "Show anniversaries:"
+msgstr "Zobrazovať výročia:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:159
+#. i18n: ectx: property (text), widget (QLabel, lblShowNamedays)
+#: build/src/applet/ui_birthdaylist_contents_config.h:291 po/rc.cpp:72
+#: rc.cpp:72
+msgid "Show namedays:"
+msgstr "Zobrazovať meniny:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:202
+#. i18n: ectx: property (text), widget (QLabel, lblNamedayCalendar)
+#: build/src/applet/ui_birthdaylist_contents_config.h:293 po/rc.cpp:75
+#: rc.cpp:75
+msgid "Nameday calendar:"
+msgstr "Kalendár menín:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:218
+#. i18n: ectx: property (text), widget (QCheckBox, chckShowColDate)
+#: build/src/applet/ui_birthdaylist_contents_config.h:294 po/rc.cpp:78
+#: src/applet/birthdaylist_applet.cpp:652 rc.cpp:78
+msgid "Date"
+msgstr "Dátum"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:228
+#. i18n: ectx: property (text), widget (QLabel, lblShowColumns)
+#: build/src/applet/ui_birthdaylist_contents_config.h:295 po/rc.cpp:81
+#: rc.cpp:81
+msgid "Show columns:"
+msgstr "Zobraziť stĺpce:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:238
+#. i18n: ectx: property (text), widget (QCheckBox, chckShowColWhen)
+#: build/src/applet/ui_birthdaylist_contents_config.h:296 po/rc.cpp:84
+#: src/applet/birthdaylist_applet.cpp:652 rc.cpp:84
+msgid "When"
+msgstr "Kedy"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:251
+#. i18n: ectx: property (text), widget (QCheckBox, chckShowColName)
+#: build/src/applet/ui_birthdaylist_contents_config.h:297 po/rc.cpp:87
+#: src/applet/birthdaylist_applet.cpp:652 rc.cpp:87
+msgid "Name"
+msgstr "Meno"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:264
+#. i18n: ectx: property (text), widget (QCheckBox, chckShowColAge)
+#: build/src/applet/ui_birthdaylist_contents_config.h:298 po/rc.cpp:90
+#: src/applet/birthdaylist_applet.cpp:652 rc.cpp:90
+msgid "Age"
+msgstr "Vek"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:280
+#. i18n: ectx: property (text), widget (QLabel, lblTitleNames)
+#: build/src/applet/ui_birthdaylist_contents_config.h:299 po/rc.cpp:93
+#: rc.cpp:93
+msgid "Names"
+msgstr "Mená"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:287
+#. i18n: ectx: property (text), widget (QLabel, lblShowNicknames)
+#: build/src/applet/ui_birthdaylist_contents_config.h:300 po/rc.cpp:96
+#: rc.cpp:96
+msgid "Show nicknames if available:"
+msgstr "Zobrazovať prezývku ak je k dispozícii:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:336
+#. i18n: ectx: property (text), widget (QLabel, lblNamedayDisplayMode)
+#: build/src/applet/ui_birthdaylist_contents_config.h:302 po/rc.cpp:99
+#: rc.cpp:99
+msgid "Nameday display mode:"
+msgstr "Spôsob zobrazenia menín:"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:346
+#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowIndEvents)
+#: build/src/applet/ui_birthdaylist_contents_config.h:303 po/rc.cpp:102
+#: rc.cpp:102
+msgid "Individual events"
+msgstr "Jednotlivé udalosti"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:356
+#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAllFromCal)
+#: build/src/applet/ui_birthdaylist_contents_config.h:304 po/rc.cpp:106
+#: rc.cpp:106
+msgid "All names from calendar"
+msgstr "Všetky mená v kalendári"
+
+#. i18n: file: src/applet/birthdaylist_contents_config.ui:366
+#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAggrEvents)
+#: build/src/applet/ui_birthdaylist_contents_config.h:305 po/rc.cpp:110
+#: rc.cpp:110
+msgid "Aggregated events"
+msgstr "Združené udalosti"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:65
+#. i18n: ectx: property (text), widget (QLabel, lblDataSource)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:354 po/rc.cpp:116
+#: rc.cpp:116
+msgid "Data source:"
+msgstr "Zdroj dát:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:97
+#. i18n: ectx: property (text), widget (QRadioButton, rbKabNamedayDateField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:297
+#. i18n: ectx: property (text), widget (QRadioButton, rbAkoNamedayDateField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:97
+#. i18n: ectx: property (text), widget (QRadioButton, rbKabNamedayDateField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:297
+#. i18n: ectx: property (text), widget (QRadioButton, rbAkoNamedayDateField)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:355
+#: build/src/applet/ui_birthdaylist_datasource_config.h:369 po/rc.cpp:119
+#: po/rc.cpp:154 rc.cpp:119 rc.cpp:154
+msgid "Date field:"
+msgstr "Pole s dátumom:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:122
+#. i18n: ectx: property (text), widget (QLabel, lblKabNamedayIdentifyBy)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:265
+#. i18n: ectx: property (text), widget (QLabel, lblAkoNamedayIdentifyBy)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:122
+#. i18n: ectx: property (text), widget (QLabel, lblKabNamedayIdentifyBy)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:265
+#. i18n: ectx: property (text), widget (QLabel, lblAkoNamedayIdentifyBy)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:356
+#: build/src/applet/ui_birthdaylist_datasource_config.h:366 po/rc.cpp:123
+#: po/rc.cpp:145 rc.cpp:123 rc.cpp:145
+msgid "Identify by:"
+msgstr "Identifikovať cez:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:137
+#. i18n: ectx: property (text), widget (QRadioButton, rbKabNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:314
+#. i18n: ectx: property (text), widget (QRadioButton, rbAkoNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:137
+#. i18n: ectx: property (text), widget (QRadioButton, rbKabNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:314
+#. i18n: ectx: property (text), widget (QRadioButton, rbAkoNamedayNameField)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:357
+#: build/src/applet/ui_birthdaylist_datasource_config.h:370 po/rc.cpp:126
+#: po/rc.cpp:157 rc.cpp:126 rc.cpp:157
+msgid "Name field:"
+msgstr "Pole s menom:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:157
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbKabNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:325
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbAkoNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:157
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbKabNamedayNameField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:325
+#. i18n: ectx: property (text), item, widget (QComboBox, cmbAkoNamedayNameField)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:360
+#: build/src/applet/ui_birthdaylist_datasource_config.h:373 po/rc.cpp:130
+#: po/rc.cpp:160 rc.cpp:130 rc.cpp:160
+msgid "Given name"
+msgstr "Krstné meno"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:167
+#. i18n: ectx: property (text), widget (QLabel, lblKabAnniversaryField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:288
+#. i18n: ectx: property (text), widget (QLabel, lblAkoAnniversaryField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:167
+#. i18n: ectx: property (text), widget (QLabel, lblKabAnniversaryField)
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:288
+#. i18n: ectx: property (text), widget (QLabel, lblAkoAnniversaryField)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:362
+#: build/src/applet/ui_birthdaylist_datasource_config.h:368 po/rc.cpp:133
+#: po/rc.cpp:151 rc.cpp:133 rc.cpp:151
+msgid "Anniversary field:"
+msgstr "Pole pre výročie:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:373
+#. i18n: ectx: property (text), widget (QLabel, lblAkoTitleCollections)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:375 po/rc.cpp:163
+#: rc.cpp:163
+msgid "Collections"
+msgstr "Kolekcie:"
+
+#. i18n: file: src/applet/birthdaylist_datasource_config.ui:380
+#. i18n: ectx: property (text), widget (QLabel, lblAkoCollection)
+#: build/src/applet/ui_birthdaylist_datasource_config.h:376 po/rc.cpp:166
+#: rc.cpp:166
+msgid "Akonadi collection:"
+msgstr "Akonadi kolekcia:"
+
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:123
+#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays_2)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:130
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays_2)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:137
+#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays_2)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:123
+#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays_2)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:130
+#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays_2)
+#. i18n: file: src/applet/birthdaylist_appearance_config.ui:137
+#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays_2)
+#: po/rc.cpp:15 po/rc.cpp:18 po/rc.cpp:21 rc.cpp:15 rc.cpp:18 rc.cpp:21
+msgctxt "label: show events within x <days>"
+msgid "days"
+msgstr "dní"
+
+#: po/rc.cpp:167 rc.cpp:167
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "Karol Slanina"
+
+#: po/rc.cpp:168 rc.cpp:168
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "karol.slanina@gmail.com"
+
+#: src/applet/birthdaylist_applet.cpp:130
+msgctxt "No nameday calendar (combo box item)"
+msgid "None"
+msgstr "Žiadny"
+
+#: src/applet/birthdaylist_applet.cpp:430
+msgid "Data source"
+msgstr "Zdroj dát"
+
+#: src/applet/birthdaylist_applet.cpp:431
+msgid "Contents"
+msgstr "Obsah"
+
+#: src/applet/birthdaylist_applet.cpp:432
+msgid "Appearance"
+msgstr "Vzhľad"
+
+#: src/applet/birthdaylist_applet.cpp:436
+msgid "KDE Address Book"
+msgstr "KDE Adresár"
+
+#: src/applet/birthdaylist_applet.cpp:442
+msgid "Akonadi"
+msgstr "Akonadi"
+
+#: src/applet/birthdaylist_applet.cpp:448
+msgid "Thunderbird"
+msgstr "Thunderbird"
+
+#: src/applet/birthdaylist_applet.cpp:465
+msgctxt "No Akonadi collections"
+msgid "No collections available"
+msgstr "žiadne k dispozícii"
+
+#: src/applet/birthdaylistentry.cpp:60
+msgid "1 day ago"
+msgid_plural "%1 days ago"
+msgstr[0] "včera"
+msgstr[1] "pred %1 dňami"
+msgstr[2] "pred %1 dňami"
+
+#: src/applet/birthdaylistentry.cpp:62
+msgid "2 days ago"
+msgstr "predvčerom"
+
+#: src/applet/birthdaylistentry.cpp:64
+msgid "yesterday"
+msgstr "včera"
+
+#: src/applet/birthdaylistentry.cpp:66
+msgid "today"
+msgstr "dnes"
+
+#: src/applet/birthdaylistentry.cpp:68
+msgid "tomorrow"
+msgstr "zajtra"
+
+#: src/applet/birthdaylistentry.cpp:70
+msgid "in 2 days"
+msgstr "pozajtra"
+
+#: src/applet/birthdaylistentry.cpp:72
+msgid "in 1 day"
+msgid_plural "in %1 days"
+msgstr[0] "zajtra"
+msgstr[1] "o %1 dni"
+msgstr[2] "o %1 dní"
+
+#~ msgid "Aggregate namedays by name:"
+#~ msgstr "Zlučovať meniny podľa mena:"

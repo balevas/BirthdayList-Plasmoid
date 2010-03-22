@@ -9,3 +9,14 @@
 
         ============= V 0.5.1 ==================
         - Added kde-look URL to desktop and translation files
+
+        ============= V 0.6.0 ==================
+        - Fixed nameday field parsing bug (namedays added by old, e.g. v4.1 KAddressBook GUI were not found)
+        - New (optional) way of nameday identification: compare contact given name with calendar names
+          (useful for countries where commonly used names are listed once in the calendar)
+        - Option to show all names in the calendar regardless of the contact names
+        - Akonadi contact collections can be used as data source (experimental support, separately installable)
+        - Optional preference of nicknames over contact 'formatted names'
+        - Customizable foreground/background color for today's events
+        - Selectable date format output
+        - Czech and German translations

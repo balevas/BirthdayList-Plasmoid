@@ -1,7 +1,7 @@
 /**
  * @file    birthdaylistentry.cpp
  * @author  Karol Slanina
- * @version 0.5.1
+ * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
 #include "birthdaylistentry.h"
 
 #include <KLocalizedString>
+#include <../QtGui/qstandarditemmodel.h>
 
 
 int AbstractAnnualEventEntry::m_pastThreshold = 7;
@@ -81,11 +82,11 @@ BirthdayEntry::BirthdayEntry(const QString &name, const QDate &date)
 BirthdayEntry::~BirthdayEntry() {
 }
 
-void BirthdayEntry::createModelItems(QList<QStandardItem*> &items) const {
+void BirthdayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(BirthdayEntry::m_icon);
     items.append(new QStandardItem(QString::number(m_age)));
-    items.append(new QStandardItem(m_date.toString("d. M.")));
+    items.append(new QStandardItem(m_date.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
 }
 
@@ -97,11 +98,12 @@ NamedayEntry::NamedayEntry(const QString &name, const QDate &date)
 NamedayEntry::~NamedayEntry() {
 }
 
-void NamedayEntry::createModelItems(QList<QStandardItem*> &items) const {
+void NamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(NamedayEntry::m_icon);
-    items.append(new QStandardItem(QString::number(m_age)));
-    items.append(new QStandardItem(m_aggregated ? "" : m_date.toString("d. M.")));
+    if (m_age >= 0) items.append(new QStandardItem(QString::number(m_age)));
+    else items.append(new QStandardItem("?"));
+    items.append(new QStandardItem(m_aggregated ? "" : m_date.toString(dateFormat)));
     items.append(new QStandardItem(m_aggregated ? "" : remainingDaysString(remainingDays())));
 }
 
@@ -123,16 +125,17 @@ void AggregatedNamedayEntry::addNamedayEntry(NamedayEntry *namedayEntry) {
     m_storedEntries.append(namedayEntry);
 }
 
-void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items) const {
-    items.append(new QStandardItem(QString("%1 (%2)").arg(m_name).arg(m_storedEntries.size())));
+void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const {
+    if (m_storedEntries.empty()) items.append(new QStandardItem(m_name));
+    else items.append(new QStandardItem(QString("%1 (%2)").arg(m_name).arg(m_storedEntries.size())));
     items[0]->setIcon(AggregatedNamedayEntry::m_icon);
     items.append(new QStandardItem(""));
-    items.append(new QStandardItem(m_date.toString("d. M.")));
+    items.append(new QStandardItem(m_date.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
 
     foreach(NamedayEntry *storedEntry, m_storedEntries) {
         QList<QStandardItem*> storedEntryItems;
-        storedEntry->createModelItems(storedEntryItems);
+        storedEntry->createModelItems(storedEntryItems, dateFormat);
         items[0]->appendRow(storedEntryItems);
     }
 }
@@ -145,10 +148,10 @@ AnniversaryEntry::AnniversaryEntry(const QString &name, const QDate &date)
 AnniversaryEntry::~AnniversaryEntry() {
 }
 
-void AnniversaryEntry::createModelItems(QList<QStandardItem*> &items) const {
+void AnniversaryEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(AnniversaryEntry::m_icon);
     items.append(new QStandardItem(QString::number(m_age)));
-    items.append(new QStandardItem(m_date.toString("d. M.")));
+    items.append(new QStandardItem(m_date.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
 }

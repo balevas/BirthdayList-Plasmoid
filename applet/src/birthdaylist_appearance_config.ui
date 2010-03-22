@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>278</width>
-    <height>308</height>
+    <width>324</width>
+    <height>552</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,10 +23,10 @@
    </size>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="0" colspan="3">
+   <item row="11" column="0" colspan="3">
     <widget class="QLabel" name="lblTitleComingEvents">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -42,17 +42,17 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="13" column="0">
     <widget class="QLabel" name="lblComingShowDays">
      <property name="text">
-      <string>Show events within:</string>
+      <string>Show events within next:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
-   <item row="16" column="0" colspan="3">
+   <item row="21" column="0" colspan="3">
     <widget class="QLabel" name="lblTitlePastEvents">
      <property name="font">
       <font>
@@ -65,7 +65,7 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
+   <item row="20" column="0" colspan="3">
     <spacer name="spacerComingEventsBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -81,17 +81,17 @@
      </property>
     </spacer>
    </item>
-   <item row="9" column="0">
+   <item row="14" column="0">
     <widget class="QLabel" name="lblComingHighlightDays">
      <property name="text">
-      <string>Highlight events within:</string>
+      <string>Highlight events within next:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="14" column="1">
     <widget class="QSpinBox" name="spinComingHighlightDays">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -107,17 +107,7 @@
      </property>
     </widget>
    </item>
-   <item row="17" column="0">
-    <widget class="QLabel" name="lblPastShowDays">
-     <property name="text">
-      <string>Show events within:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="17" column="1">
+   <item row="22" column="1">
     <widget class="QSpinBox" name="spinPastShowDays">
      <property name="maximum">
       <number>30</number>
@@ -127,28 +117,28 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="2">
+   <item row="13" column="2">
     <widget class="QLabel" name="lblComingShowDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="2">
+   <item row="14" column="2">
     <widget class="QLabel" name="lblComingHighlightDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="17" column="2">
+   <item row="22" column="2">
     <widget class="QLabel" name="lblPastShowDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="13" column="1">
     <widget class="QSpinBox" name="spinComingShowDays">
      <property name="maximum">
       <number>335</number>
@@ -158,7 +148,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="1" colspan="2">
+   <item row="15" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlComingHighlightForeground">
      <item>
       <widget class="QCheckBox" name="chckComingHighlightForeground">
@@ -199,39 +189,7 @@
      </item>
     </layout>
    </item>
-   <item row="14" column="1" colspan="2">
-    <layout class="QHBoxLayout" name="hlComingHighlightBackground">
-     <item>
-      <widget class="QCheckBox" name="chckComingHighlightBackground">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="KColorButton" name="colorbtnComingHighlightBackground">
-       <property name="color">
-        <color>
-         <red>128</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="defaultColor">
-        <color>
-         <red>128</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="10" column="0">
+   <item row="15" column="0">
     <widget class="QLabel" name="lblComingHighlightForeground">
      <property name="text">
       <string>Custom foreground:</string>
@@ -241,30 +199,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="0">
-    <widget class="QLabel" name="lblComingHighlightBackground">
-     <property name="text">
-      <string>Custom background:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="3" rowspan="5">
-    <spacer name="spacerScreenRight">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="18" column="1" colspan="2">
+   <item row="23" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlPastForeground">
      <item>
       <widget class="QCheckBox" name="chckPastForeground">
@@ -296,7 +231,7 @@
      </item>
     </layout>
    </item>
-   <item row="18" column="0">
+   <item row="23" column="0">
     <widget class="QLabel" name="lblPastForeground">
      <property name="text">
       <string>Custom foreground:</string>
@@ -306,7 +241,7 @@
      </property>
     </widget>
    </item>
-   <item row="20" column="1" colspan="2">
+   <item row="25" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlPastBackground">
      <item>
       <widget class="QCheckBox" name="chckPastBackground">
@@ -338,7 +273,7 @@
      </item>
     </layout>
    </item>
-   <item row="20" column="0">
+   <item row="25" column="0">
     <widget class="QLabel" name="lblPastBackground">
      <property name="text">
       <string>Custom background:</string>
@@ -348,7 +283,223 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="0" colspan="3">
+   <item row="7" column="0" colspan="3">
+    <widget class="QLabel" name="lblTitleTodaysEvents">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Today's events</string>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="lblTodaysForeground">
+     <property name="text">
+      <string>Custom foreground:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="hlTodaysForeground">
+     <item>
+      <widget class="QCheckBox" name="chckTodaysForeground">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="KColorButton" name="colorbtnTodaysForeground">
+       <property name="color">
+        <color>
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </property>
+       <property name="defaultColor">
+        <color>
+         <red>255</red>
+         <green>255</green>
+         <blue>255</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="9" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="hlTodaysBackground">
+     <item>
+      <widget class="QCheckBox" name="chckTodaysBackground">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="KColorButton" name="colorbtnTodaysBackground">
+       <property name="color">
+        <color>
+         <red>128</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="defaultColor">
+        <color>
+         <red>128</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="lblTodaysBackground">
+     <property name="text">
+      <string>Custom background:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0" colspan="3">
+    <spacer name="spacerTodaysEventsBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="16" column="0">
+    <widget class="QLabel" name="lblComingHighlightBackground">
+     <property name="text">
+      <string>Custom background:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="hlComingHighlightBackground">
+     <item>
+      <widget class="QCheckBox" name="chckComingHighlightBackground">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="KColorButton" name="colorbtnComingHighlightBackground">
+       <property name="color">
+        <color>
+         <red>128</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+       <property name="defaultColor">
+        <color>
+         <red>128</red>
+         <green>0</green>
+         <blue>0</blue>
+        </color>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="16" column="3">
+    <spacer name="spacerScreenRight">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="22" column="0">
+    <widget class="QLabel" name="lblPastShowDays">
+     <property name="text">
+      <string>Show events within last:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="27" column="0">
+    <widget class="QLabel" name="lblTitleDateFormat">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Date format</string>
+     </property>
+    </widget>
+   </item>
+   <item row="26" column="0" colspan="3">
+    <spacer name="spacerPastEventsBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="29" column="0" colspan="3">
     <spacer name="spacerScreenBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -361,6 +512,70 @@
      </property>
     </spacer>
    </item>
+   <item row="28" column="0">
+    <widget class="QLabel" name="lblDateDisplayFormat">
+     <property name="text">
+      <string>Date display format:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="28" column="1" colspan="2">
+    <widget class="QComboBox" name="cmbDateDisplayFormat">
+     <item>
+      <property name="text">
+       <string notr="true">31. 1.</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">31. 01.</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">31-1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">31-01</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">1-31</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">01-31</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">31/1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">31/01</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">1/31</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string notr="true">01/31</string>
+      </property>
+     </item>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -371,6 +586,10 @@
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>chckTodaysForeground</tabstop>
+  <tabstop>colorbtnTodaysForeground</tabstop>
+  <tabstop>chckTodaysBackground</tabstop>
+  <tabstop>colorbtnTodaysBackground</tabstop>
   <tabstop>spinComingShowDays</tabstop>
   <tabstop>spinComingHighlightDays</tabstop>
   <tabstop>chckComingHighlightForeground</tabstop>
@@ -382,6 +601,7 @@
   <tabstop>colorbtnPastForeground</tabstop>
   <tabstop>chckPastBackground</tabstop>
   <tabstop>colorbtnPastBackground</tabstop>
+  <tabstop>cmbDateDisplayFormat</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -393,11 +613,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>164</x>
-     <y>137</y>
+     <y>254</y>
     </hint>
     <hint type="destinationlabel">
      <x>226</x>
-     <y>141</y>
+     <y>258</y>
     </hint>
    </hints>
   </connection>
@@ -408,12 +628,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>151</x>
-     <y>99</y>
+     <x>164</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
-     <x>198</x>
-     <y>99</y>
+     <x>226</x>
+     <y>215</y>
     </hint>
    </hints>
   </connection>
@@ -424,12 +644,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>151</x>
-     <y>256</y>
+     <x>164</x>
+     <y>380</y>
     </hint>
     <hint type="destinationlabel">
-     <x>198</x>
-     <y>256</y>
+     <x>226</x>
+     <y>384</y>
     </hint>
    </hints>
   </connection>
@@ -440,12 +660,44 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>151</x>
-     <y>225</y>
+     <x>164</x>
+     <y>349</y>
     </hint>
     <hint type="destinationlabel">
-     <x>198</x>
-     <y>225</y>
+     <x>226</x>
+     <y>353</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chckTodaysForeground</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorbtnTodaysForeground</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>144</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>46</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chckTodaysBackground</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>colorbtnTodaysBackground</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>146</x>
+     <y>74</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>72</y>
     </hint>
    </hints>
   </connection>

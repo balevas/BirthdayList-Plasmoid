@@ -10,3 +10,13 @@ Special thanks to
 
 - David Vignoni
   for the creation of Nuvola icons, which are used in BirthdayList
+
+- Dan Vrátil
+   for writing a series of articles on the creation of plasmoids (in Czech)
+   http://www.abclinuxu.cz/serialy/plasmoid-jak-se-pise
+
+- Gerd Fleischer
+  for the creation of EventList plasmoid,
+  based on which I added Akonadi support to BirthdayList
+
+and all who contributed by providing translations (see AUTHORS), reporting bugs or giving new ideas.

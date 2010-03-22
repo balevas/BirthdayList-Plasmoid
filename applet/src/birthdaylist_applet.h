@@ -4,7 +4,7 @@
 /**
  * @file    birthdaylist_applet.h
  * @author  Karol Slanina
- * @version 0.5.1
+ * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -62,25 +62,49 @@ private:
 
     /** Updates the list of entries after the data update */
     void updateEventList(const Plasma::DataEngine::Data &data);
+    /** Returns the nameday date by comparing the contact's given name with the calendar entries */
+    QDate getNamedayByGivenName(QString givenName);
     /** Returns the name from the current nameday calendar belonging to the given date. */
     QString getNamedayString(QDate date);
 
     /** Updates the internal model of the tree view after the data update */
     void updateModels();
     /** Sets the colors for the model items according to the applet configuration */
-    void setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item);
+    void setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum);
     /** Resizes the column widths of the tree view */
     void setTreeColumnWidths();
     /** Changes the tree and item colors according to the current Plasma theme. */
     void usePlasmaThemeColors();
 
 
+    enum EventDataSource { EDS_Akonadi, EDS_KABC, EDS_Thunderbird };
+    EventDataSource m_eventDataSource;
     /** Shortcut to the data engine providing contact data and nameday calendars */
-    Plasma::DataEngine *m_dataEngine;
-    /** Name of the KABC field where namedays can be found */
-    QString m_kabcNamedayString;
+    Plasma::DataEngine *m_dataEngine_namedays;
+    Plasma::DataEngine *m_dataEngine_contacts;
+    Plasma::DataEngine *m_dataEngine_kabc;
+    Plasma::DataEngine *m_dataEngine_akonadi;
+    Plasma::DataEngine *m_dataEngine_thunderbird;
+
+    /** Name of the Akonadi collection to be used */
+    QString m_akoCollection;
+    /** Name of the Akonadi collection field where namedays can be found */
+    QString m_akoColNamedayDateFieldString;
+    /** True if namedays are identified by comparing names with calendar;
+     *  false if they are defined by explicit date */
+    bool m_akoColIsNamedayByGivenNameField;
     /** Name of the KABC field where anniversaries can be found */
-    QString m_kabcAnniversaryString;
+    QString m_akoColAnniversaryFieldString;
+
+    /** Name of the KABC field where namedays can be found */
+    QString m_kabcNamedayDateFieldString;
+    /** True if namedays are identified by comparing names with calendar;
+     *  false if they are defined by explicit date */
+    bool m_kabcIsNamedayByGivenNameField;
+    /** Name of the KABC field where anniversaries can be found */
+    QString m_kabcAnniversaryFieldString;
+
+
     /** List of language codes for all available nameday calendars (used in the data engine queries) */
     QList<QString> m_namedayLangCodes;
     /** List of language names for all available nameday calendars (used in the configuration dialog) */
@@ -98,10 +122,10 @@ private:
     QGraphicsWidget *m_graphicsWidget;
     Plasma::TreeView *m_treeView;
 
-
     Ui::BirthdayListDataSourceConfig m_ui_datasource;
     Ui::BirthdayListContentsConfig m_ui_contents;
     Ui::BirthdayListAppearanceConfig m_ui_appearance;
+
 
     bool m_showColumnHeaders;
     bool m_showColName;
@@ -109,9 +133,17 @@ private:
     bool m_showColDate;
     bool m_showColWhen;
 
+    bool m_showNicknames;
+
     bool m_showNamedays;
-    bool m_aggregateNamedays;
+    enum NamedayDisplayMode { NDM_AggregateEvents, NDM_IndividualEvents, NDM_AllCalendarNames };
+    NamedayDisplayMode m_namedayDisplayMode;
     bool m_showAnniversaries;
+
+    bool m_isTodaysForeground;
+    QBrush m_brushTodaysForeground;
+    bool m_isTodaysBackground;
+    QBrush m_brushTodaysBackground;
 
     int m_eventThreshold;
     int m_highlightThreshold;
@@ -125,6 +157,9 @@ private:
     QBrush m_brushPastForeground;
     bool m_isPastBackground;
     QBrush m_brushPastBackground;
+
+    QStringList m_possibleDateFormats;
+    int m_selectedDateFormat;
 
     int m_columnWidthName;
     int m_columnWidthAge;

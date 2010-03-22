@@ -10,8 +10,5 @@ include (FindKdepimLibs)
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${CMAKE_SOURCE_DIR}/libkdepim/)
 
-add_subdirectory(src/applet)
-add_subdirectory(src/dataengine)
-add_subdirectory(icons)
-add_subdirectory(po)
+add_subdirectory(src)
 
