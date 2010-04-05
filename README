@@ -29,7 +29,7 @@ Names shown for aggregated nameday entries are taken from the selectable country
 nameday calendar.
 
 Contact information is taken from the KDE Address Book or a selected Akonadi collection.
-In the future I also plan to add support for Mozilla Calendar.
+In the future I also plan to add support for Mozilla Thunderbird Address Book.
 
 
 3. Installation
@@ -59,14 +59,17 @@ Akonadi support can be removed by executing
 
 4. Troubleshooting
 ----------------------------------
-Namedays can be defined by 2 different ways:
+Namedays can be defined by 2 different ways or their combination:
 1. Defining a nameday date for every contact. Year will be ignored, contact's age is
 shown based on his birthday. You can use the Anniversary field if you prefer namedays
-over annoversaries, or you can define your own custom date field.
+over anniversaries, or you can define your own custom date field.
 Unfortunately the KDE address book in KDE 4.4 does not support custom fields,
 you will have to edit the std.vcf file manually. A valid line for a nameday may look
 like this:
 X-KADDRESSBOOK-Nameday:1900-03-20
+2. Matching of your contact's given name with the particular name in the country-specific calendar.
+The options 1 and 2 can be combined; in case that the nameday date is defined for a particular
+contact, it is always prefered over automatically generated nameday using the contact's given name.
 
 If you want to add a custom nameday calendar, create a new text file under the data engine
 installation directory, e.g. /usr/share/apps/plasma_engine_birthdaylist/namedaydefs/
@@ -86,12 +89,7 @@ open kaddressbook and follow the steps below:
 - the contacts you will be adding to this address book should appear in the plasmoid.
 
 Please have in mind that Akonadi support is experimental. Akonadi has only been fully enabled
-in the KDE Address Book with the 4.4 release and I have already experienced problems when
-the plasmoid starts earlier than Akonadi server. In that case, the plasmoid cannot see
-any data from Akonadi, just restarting the Akonadi server does not work. The only work-around
-is to restart Plasma by command-line. (kquitapp plasma-desktop; kstart plasma-desktop)
-The same behaviour was seen in the EventList plasmoid, which shows Calendar events from Akonadi.
-This issue will be addressed in the nearest correction releases, any help/suggestions are welcome.
+in the KDE Address Book with the 4.4 release. 
 
 Akonadi support makes it possible to use Google Contacts as input. Please bear in mind that the
 current version of Google data Akonadi resource does not provide birthdays or any other custom

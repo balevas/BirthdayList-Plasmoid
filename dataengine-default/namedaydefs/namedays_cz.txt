@@ -67,7 +67,7 @@
 03-06 Miroslav
 03-07 Tomáš
 03-08 Gabriela
-03-09 Františka
+03-09 Františka, Rebeka
 03-10 Viktorie
 03-11 Anděla
 03-12 Řehoř
@@ -96,7 +96,7 @@
 04-04 Ivana
 04-05 Miroslava
 04-06 Vendula
-04-07 Heřman
+04-07 Heřman, Hermína
 04-08 Ema
 04-09 Dušan
 04-10 Darja
@@ -105,7 +105,7 @@
 04-13 Aleš
 04-14 Vincenc
 04-15 Anastázie
-04-16 Irena
+04-16 Irena, Bernadeta
 04-17 Rudolf
 04-18 Valérie
 04-19 Rostislav
@@ -127,7 +127,7 @@
 05-05 Klaudie
 05-06 Radoslav
 05-07 Stanislav
-05-08 Státní svátek
+05-08 Den osvobození
 05-09 Ctibor
 05-10 Blažena
 05-11 Svatava
@@ -157,7 +157,7 @@
 06-04 Dalibor
 06-05 Dobroslav
 06-06 Norbert
-06-07 Iveta
+06-07 Iveta, Slavoj
 06-08 Medard
 06-09 Stanislava
 06-10 Gita
@@ -225,7 +225,7 @@
 08-11 Zuzana
 08-12 Klára
 08-13 Alena
-08-14 Alan
+08-14 Alan, Sylva
 08-15 Hana
 08-16 Jáchym
 08-17 Petra
@@ -291,7 +291,7 @@
 10-16 Havel
 10-17 Hedvika
 10-18 Lukáš
-10-19 Michaela
+10-19 Michaela, Michala
 10-20 Vendelín
 10-21 Brigita
 10-22 Sabina

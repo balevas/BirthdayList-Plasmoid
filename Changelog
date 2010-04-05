@@ -20,3 +20,11 @@
         - Customizable foreground/background color for today's events
         - Selectable date format output
         - Czech and German translations
+
+        ============= V 0.6.1 ==================
+        - Fixed Akonadi startup issue
+        - Namedays can now be identified by both date field and given name (date field preferred)
+        - Removed "?" as unknown age for nameday entries (no text instead)
+        - Custom colors can be turned off for lines that have no references to any contact (e.g. all names from calendar)
+        - Polish and French nameday calendars added
+
