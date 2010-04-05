@@ -60,6 +60,9 @@ public:
     /** Creates the representation of this entry in the tree view's model. */
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const = 0;
 
+    /** Indicates if this entry is bound to one or more events in the selected address book. */
+    virtual bool hasEvent() const = 0;
+
     /** Comparator used to sort the event entries by time. */
     static bool lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b);
 
@@ -92,6 +95,7 @@ public:
     virtual ~BirthdayEntry();
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
+    virtual bool hasEvent() const;
 
 private:
     static KIcon m_icon;
@@ -112,6 +116,7 @@ public:
     }
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
+    virtual bool hasEvent() const;
 
 private:
     bool m_aggregated;
@@ -131,6 +136,7 @@ public:
     void addNamedayEntry(NamedayEntry *namedayEntry);
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
+    virtual bool hasEvent() const;
 
 private:
     QList<NamedayEntry *> m_storedEntries;
@@ -147,6 +153,7 @@ public:
     virtual ~AnniversaryEntry();
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
+    virtual bool hasEvent() const;
 
 private:
     static KIcon m_icon;

@@ -90,17 +90,16 @@ private:
     QString m_akoCollection;
     /** Name of the Akonadi collection field where namedays can be found */
     QString m_akoColNamedayDateFieldString;
-    /** True if namedays are identified by comparing names with calendar;
-     *  false if they are defined by explicit date */
-    bool m_akoColIsNamedayByGivenNameField;
-    /** Name of the KABC field where anniversaries can be found */
+    /** Mode to identify namedays for Akonadi contacts */
+    enum NamedayIdentificationMode { NIM_DateField, NIM_GivenName, NIM_Both };
+    NamedayIdentificationMode m_akoNamedayIdentificationMode;
+    /** Name of the Akonadi collection field where anniversaries can be found */
     QString m_akoColAnniversaryFieldString;
 
     /** Name of the KABC field where namedays can be found */
     QString m_kabcNamedayDateFieldString;
-    /** True if namedays are identified by comparing names with calendar;
-     *  false if they are defined by explicit date */
-    bool m_kabcIsNamedayByGivenNameField;
+    /** Mode to identify namedays for KABC contacts */
+    NamedayIdentificationMode m_kabcNamedayIdentificationMode;
     /** Name of the KABC field where anniversaries can be found */
     QString m_kabcAnniversaryFieldString;
 
@@ -144,6 +143,7 @@ private:
     QBrush m_brushTodaysForeground;
     bool m_isTodaysBackground;
     QBrush m_brushTodaysBackground;
+    bool m_isTodaysHighlightNoEvents;
 
     int m_eventThreshold;
     int m_highlightThreshold;
@@ -151,12 +151,14 @@ private:
     QBrush m_brushHighlightForeground;
     bool m_isHighlightBackground;
     QBrush m_brushHighlightBackground;
+    bool m_isComingHighlightNoEvents;
 
     int m_pastThreshold;
     bool m_isPastForeground;
     QBrush m_brushPastForeground;
     bool m_isPastBackground;
     QBrush m_brushPastBackground;
+    bool m_isPastHighlightNoEvents;
 
     QStringList m_possibleDateFormats;
     int m_selectedDateFormat;

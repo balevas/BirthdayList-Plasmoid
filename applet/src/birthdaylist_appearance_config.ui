@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>324</width>
-    <height>552</height>
+    <width>468</width>
+    <height>605</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    </size>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="11" column="0" colspan="3">
+   <item row="12" column="0" colspan="3">
     <widget class="QLabel" name="lblTitleComingEvents">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -42,7 +42,7 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
+   <item row="14" column="0">
     <widget class="QLabel" name="lblComingShowDays">
      <property name="text">
       <string>Show events within next:</string>
@@ -52,7 +52,7 @@
      </property>
     </widget>
    </item>
-   <item row="21" column="0" colspan="3">
+   <item row="23" column="0" colspan="3">
     <widget class="QLabel" name="lblTitlePastEvents">
      <property name="font">
       <font>
@@ -65,7 +65,7 @@
      </property>
     </widget>
    </item>
-   <item row="20" column="0" colspan="3">
+   <item row="22" column="0" colspan="3">
     <spacer name="spacerComingEventsBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -81,7 +81,7 @@
      </property>
     </spacer>
    </item>
-   <item row="14" column="0">
+   <item row="15" column="0">
     <widget class="QLabel" name="lblComingHighlightDays">
      <property name="text">
       <string>Highlight events within next:</string>
@@ -91,7 +91,7 @@
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="15" column="1">
     <widget class="QSpinBox" name="spinComingHighlightDays">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -107,7 +107,7 @@
      </property>
     </widget>
    </item>
-   <item row="22" column="1">
+   <item row="24" column="1">
     <widget class="QSpinBox" name="spinPastShowDays">
      <property name="maximum">
       <number>30</number>
@@ -117,28 +117,28 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="2">
+   <item row="14" column="2">
     <widget class="QLabel" name="lblComingShowDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="14" column="2">
+   <item row="15" column="2">
     <widget class="QLabel" name="lblComingHighlightDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="22" column="2">
+   <item row="24" column="2">
     <widget class="QLabel" name="lblPastShowDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
+   <item row="14" column="1">
     <widget class="QSpinBox" name="spinComingShowDays">
      <property name="maximum">
       <number>335</number>
@@ -148,7 +148,7 @@
      </property>
     </widget>
    </item>
-   <item row="15" column="1" colspan="2">
+   <item row="16" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlComingHighlightForeground">
      <item>
       <widget class="QCheckBox" name="chckComingHighlightForeground">
@@ -189,7 +189,7 @@
      </item>
     </layout>
    </item>
-   <item row="15" column="0">
+   <item row="16" column="0">
     <widget class="QLabel" name="lblComingHighlightForeground">
      <property name="text">
       <string>Custom foreground:</string>
@@ -199,7 +199,7 @@
      </property>
     </widget>
    </item>
-   <item row="23" column="1" colspan="2">
+   <item row="25" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlPastForeground">
      <item>
       <widget class="QCheckBox" name="chckPastForeground">
@@ -231,7 +231,7 @@
      </item>
     </layout>
    </item>
-   <item row="23" column="0">
+   <item row="25" column="0">
     <widget class="QLabel" name="lblPastForeground">
      <property name="text">
       <string>Custom foreground:</string>
@@ -241,7 +241,7 @@
      </property>
     </widget>
    </item>
-   <item row="25" column="1" colspan="2">
+   <item row="27" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlPastBackground">
      <item>
       <widget class="QCheckBox" name="chckPastBackground">
@@ -273,7 +273,7 @@
      </item>
     </layout>
    </item>
-   <item row="25" column="0">
+   <item row="27" column="0">
     <widget class="QLabel" name="lblPastBackground">
      <property name="text">
       <string>Custom background:</string>
@@ -389,7 +389,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="0" colspan="3">
+   <item row="11" column="0" colspan="3">
     <spacer name="spacerTodaysEventsBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -405,7 +405,7 @@
      </property>
     </spacer>
    </item>
-   <item row="16" column="0">
+   <item row="17" column="0">
     <widget class="QLabel" name="lblComingHighlightBackground">
      <property name="text">
       <string>Custom background:</string>
@@ -415,7 +415,7 @@
      </property>
     </widget>
    </item>
-   <item row="16" column="1" colspan="2">
+   <item row="17" column="1" colspan="2">
     <layout class="QHBoxLayout" name="hlComingHighlightBackground">
      <item>
       <widget class="QCheckBox" name="chckComingHighlightBackground">
@@ -447,7 +447,7 @@
      </item>
     </layout>
    </item>
-   <item row="16" column="3">
+   <item row="17" column="3">
     <spacer name="spacerScreenRight">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -460,7 +460,7 @@
      </property>
     </spacer>
    </item>
-   <item row="22" column="0">
+   <item row="24" column="0">
     <widget class="QLabel" name="lblPastShowDays">
      <property name="text">
       <string>Show events within last:</string>
@@ -470,7 +470,7 @@
      </property>
     </widget>
    </item>
-   <item row="27" column="0">
+   <item row="30" column="0">
     <widget class="QLabel" name="lblTitleDateFormat">
      <property name="font">
       <font>
@@ -483,7 +483,7 @@
      </property>
     </widget>
    </item>
-   <item row="26" column="0" colspan="3">
+   <item row="29" column="0" colspan="3">
     <spacer name="spacerPastEventsBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -499,7 +499,7 @@
      </property>
     </spacer>
    </item>
-   <item row="29" column="0" colspan="3">
+   <item row="32" column="0" colspan="3">
     <spacer name="spacerScreenBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -512,7 +512,7 @@
      </property>
     </spacer>
    </item>
-   <item row="28" column="0">
+   <item row="31" column="0">
     <widget class="QLabel" name="lblDateDisplayFormat">
      <property name="text">
       <string>Date display format:</string>
@@ -522,7 +522,7 @@
      </property>
     </widget>
    </item>
-   <item row="28" column="1" colspan="2">
+   <item row="31" column="1" colspan="2">
     <widget class="QComboBox" name="cmbDateDisplayFormat">
      <item>
       <property name="text">
@@ -574,6 +574,66 @@
        <string notr="true">01/31</string>
       </property>
      </item>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="lblTodaysHighlightNoEvent">
+     <property name="text">
+      <string>Highlight lines with no events:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="21" column="0">
+    <widget class="QLabel" name="lblComingHighlightNoEvent">
+     <property name="text">
+      <string>Highlight lines with no events:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="28" column="0">
+    <widget class="QLabel" name="lblPastHighlightNoEvent">
+     <property name="text">
+      <string>Highlight lines with no events:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="1" colspan="2">
+    <widget class="QCheckBox" name="chckTodaysHighlightNoEvent">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="21" column="1" colspan="2">
+    <widget class="QCheckBox" name="chckComingHighlightNoEvent">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="28" column="1" colspan="2">
+    <widget class="QCheckBox" name="chckPastHighlightNoEvent">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>

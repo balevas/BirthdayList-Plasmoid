@@ -46,10 +46,10 @@ m_dataEngine_akonadi(0),
 m_dataEngine_thunderbird(0),
 m_akoCollection(""),
 m_akoColNamedayDateFieldString("Nameday"),
-m_akoColIsNamedayByGivenNameField(false),
+m_akoNamedayIdentificationMode(NIM_Both),
 m_akoColAnniversaryFieldString("Anniversary"),
 m_kabcNamedayDateFieldString("Nameday"),
-m_kabcIsNamedayByGivenNameField(false),
+m_kabcNamedayIdentificationMode(NIM_Both),
 m_kabcAnniversaryFieldString("Anniversary"),
 m_model(0, 3),
 m_graphicsWidget(0),
@@ -67,17 +67,20 @@ m_isTodaysForeground(false),
 m_brushTodaysForeground(QColor(255, 255, 255)),
 m_isTodaysBackground(true),
 m_brushTodaysBackground(QColor(128, 0, 0)),
+m_isTodaysHighlightNoEvents(true),
 m_eventThreshold(30),
 m_highlightThreshold(2),
 m_isHighlightForeground(false),
 m_brushHighlightForeground(QColor(255, 255, 255)),
 m_isHighlightBackground(true),
 m_brushHighlightBackground(QColor(128, 0, 0)),
+m_isComingHighlightNoEvents(false),
 m_pastThreshold(2),
 m_isPastForeground(false),
 m_brushPastForeground(QColor(0, 0, 0)),
 m_isPastBackground(true),
 m_brushPastBackground(QColor(160, 0, 0)),
+m_isPastHighlightNoEvents(true),
 m_selectedDateFormat(0),
 m_columnWidthName(0),
 m_columnWidthAge(0),
@@ -107,12 +110,19 @@ void BirthdayListApplet::init() {
 
     m_akoCollection = configGroup.readEntry("Akonadi Collection", "");
     m_akoColNamedayDateFieldString = configGroup.readEntry("Akonadi Nameday String", "Nameday");
-    m_akoColIsNamedayByGivenNameField = configGroup.readEntry("Akonadi Nameday By GivenName", false);
     m_akoColAnniversaryFieldString = configGroup.readEntry("Akonadi Anniversary String", "Anniversary");
+    QString akoNIMString = configGroup.readEntry("Akonadi Nameday Identification Mode", "");
+    if (akoNIMString == "Date Field") m_akoNamedayIdentificationMode = NIM_DateField;
+    else if (akoNIMString == "Given Name") m_akoNamedayIdentificationMode = NIM_GivenName;
+    else m_akoNamedayIdentificationMode = NIM_Both;
 
     m_kabcNamedayDateFieldString = configGroup.readEntry("KABC Nameday String", "Nameday");
-    m_kabcIsNamedayByGivenNameField = configGroup.readEntry("KABC Nameday By GivenName", false);
     m_kabcAnniversaryFieldString = configGroup.readEntry("KABC Anniversary String", "Anniversary");
+    QString kabcNIMString = configGroup.readEntry("KABC Nameday Identification Mode", "");
+    if (kabcNIMString == "Date Field") m_kabcNamedayIdentificationMode = NIM_DateField;
+    else if (kabcNIMString == "Given Name") m_kabcNamedayIdentificationMode = NIM_GivenName;
+    else m_kabcNamedayIdentificationMode = NIM_Both;
+
     m_curNamedayLangCode = configGroup.readEntry("Nameday Calendar LangCode", "");
 
     m_dataEngine_namedays = dataEngine("birthdaylist");
@@ -195,6 +205,7 @@ void BirthdayListApplet::init() {
     m_isTodaysBackground = configGroup.readEntry("Todays Background Enabled", true);
     QColor todaysBackground = configGroup.readEntry("Todays Background Color", QColor(128, 0, 0));
     m_brushTodaysBackground = QBrush(todaysBackground);
+    m_isTodaysHighlightNoEvents = configGroup.readEntry("Todays Highlight No Events", true);
 
     m_eventThreshold = configGroup.readEntry("Event Threshold", 30);
     m_highlightThreshold = configGroup.readEntry("Highlight Threshold", 2);
@@ -204,6 +215,7 @@ void BirthdayListApplet::init() {
     m_isHighlightBackground = configGroup.readEntry("Highlight Background Enabled", true);
     QColor highlightBackground = configGroup.readEntry("Highlight Background Color", QColor(128, 0, 0));
     m_brushHighlightBackground = QBrush(highlightBackground);
+    m_isComingHighlightNoEvents = configGroup.readEntry("Coming Highlight No Events", false);
 
     m_pastThreshold = configGroup.readEntry("Past Threshold", 2);
     AbstractAnnualEventEntry::setPastThreshold(m_pastThreshold);
@@ -213,6 +225,7 @@ void BirthdayListApplet::init() {
     m_isPastBackground = configGroup.readEntry("Past Background Enabled", false);
     QColor pastBackground = configGroup.readEntry("Past Background Color", QColor(160, 160, 160));
     m_brushPastBackground = QBrush(pastBackground);
+    m_isPastHighlightNoEvents = configGroup.readEntry("Past Highlight No Events", true);
 
     m_selectedDateFormat = configGroup.readEntry("Date Format", 0);
 
@@ -285,12 +298,16 @@ void BirthdayListApplet::configAccepted() {
     }
     else m_akoCollection = "";
     m_akoColNamedayDateFieldString = m_ui_datasource.lineEditAkoNamedayDateField->text();
-    m_akoColIsNamedayByGivenNameField = m_ui_datasource.rbAkoNamedayNameField->isChecked();
     m_akoColAnniversaryFieldString = m_ui_datasource.lineEditAkoAnniversaryField->text();
+    if (m_ui_datasource.rbAkoNamedayDateField->isChecked()) m_akoNamedayIdentificationMode = NIM_DateField;
+    else if (m_ui_datasource.rbAkoNamedayNameField->isChecked()) m_akoNamedayIdentificationMode = NIM_GivenName;
+    else m_akoNamedayIdentificationMode = NIM_Both;
 
     m_kabcNamedayDateFieldString = m_ui_datasource.lineEditKabNamedayDateField->text();
-    m_kabcIsNamedayByGivenNameField = m_ui_datasource.rbKabNamedayNameField->isChecked();
     m_kabcAnniversaryFieldString = m_ui_datasource.lineEditKabAnniversaryField->text();
+    if (m_ui_datasource.rbKabNamedayDateField->isChecked()) m_kabcNamedayIdentificationMode = NIM_DateField;
+    else if (m_ui_datasource.rbKabNamedayNameField->isChecked()) m_kabcNamedayIdentificationMode = NIM_GivenName;
+    else m_kabcNamedayIdentificationMode = NIM_Both;
 
     m_showColumnHeaders = m_ui_contents.chckShowColumnHeaders->isChecked();
     m_showColName = m_ui_contents.chckShowColName->isChecked();
@@ -312,6 +329,7 @@ void BirthdayListApplet::configAccepted() {
     m_brushTodaysForeground.setColor(m_ui_appearance.colorbtnTodaysForeground->color());
     m_isTodaysBackground = m_ui_appearance.chckTodaysBackground->isChecked();
     m_brushTodaysBackground.setColor(m_ui_appearance.colorbtnTodaysBackground->color());
+    m_isTodaysHighlightNoEvents = m_ui_appearance.chckTodaysHighlightNoEvent->isChecked();
 
     m_eventThreshold = m_ui_appearance.spinComingShowDays->value();
     m_highlightThreshold = m_ui_appearance.spinComingHighlightDays->value();
@@ -319,6 +337,7 @@ void BirthdayListApplet::configAccepted() {
     m_brushHighlightForeground.setColor(m_ui_appearance.colorbtnComingHighlightForeground->color());
     m_isHighlightBackground = m_ui_appearance.chckComingHighlightBackground->isChecked();
     m_brushHighlightBackground.setColor(m_ui_appearance.colorbtnComingHighlightBackground->color());
+    m_isComingHighlightNoEvents = m_ui_appearance.chckComingHighlightNoEvent->isChecked();
 
     m_pastThreshold = m_ui_appearance.spinPastShowDays->value();
     AbstractAnnualEventEntry::setPastThreshold(m_pastThreshold);
@@ -326,6 +345,7 @@ void BirthdayListApplet::configAccepted() {
     m_brushPastForeground.setColor(m_ui_appearance.colorbtnPastForeground->color());
     m_isPastBackground = m_ui_appearance.chckPastBackground->isChecked();
     m_brushPastBackground.setColor(m_ui_appearance.colorbtnPastBackground->color());
+    m_isPastHighlightNoEvents = m_ui_appearance.chckPastHighlightNoEvent->isChecked();
 
     m_selectedDateFormat = m_ui_appearance.cmbDateDisplayFormat->currentIndex();
 
@@ -344,12 +364,16 @@ void BirthdayListApplet::configAccepted() {
 
     if (!m_akoCollection.isEmpty()) configGroup.writeEntry("Akonadi Collection", m_akoCollection);
     configGroup.writeEntry("Akonadi Nameday String", m_akoColNamedayDateFieldString);
-    configGroup.writeEntry("Akonadi Nameday By GivenName", m_akoColIsNamedayByGivenNameField);
     configGroup.writeEntry("Akonadi Anniversary String", m_akoColAnniversaryFieldString);
+    if (m_akoNamedayIdentificationMode == NIM_DateField) configGroup.writeEntry("Akonadi Nameday Identification Mode", "Date Field");
+    else if (m_akoNamedayIdentificationMode == NIM_GivenName) configGroup.writeEntry("Akonadi Nameday Identification Mode", "Given Name");
+    else configGroup.writeEntry("Akonadi Nameday Identification Mode", "Both");
 
     configGroup.writeEntry("KABC Nameday String", m_kabcNamedayDateFieldString);
-    configGroup.writeEntry("KABC Nameday By GivenName", m_kabcIsNamedayByGivenNameField);
     configGroup.writeEntry("KABC Anniversary String", m_kabcAnniversaryFieldString);
+    if (m_kabcNamedayIdentificationMode == NIM_DateField) configGroup.writeEntry("KABC Nameday Identification Mode", "Date Field");
+    else if (m_kabcNamedayIdentificationMode == NIM_GivenName) configGroup.writeEntry("KABC Nameday Identification Mode", "Given Name");
+    else configGroup.writeEntry("KABC Nameday Identification Mode", "Both");
 
     configGroup.writeEntry("Show Column Headers", m_showColumnHeaders);
     //configGroup.writeEntry("Show Name Column", m_showColName);
@@ -373,17 +397,20 @@ void BirthdayListApplet::configAccepted() {
     configGroup.writeEntry("Highlight Foreground Color", m_brushHighlightForeground.color());
     configGroup.writeEntry("Highlight Background Enabled", m_isHighlightBackground);
     configGroup.writeEntry("Highlight Background Color", m_brushHighlightBackground.color());
+    configGroup.writeEntry("Coming Highlight No Events", m_isComingHighlightNoEvents);
 
     configGroup.writeEntry("Todays Foreground Enabled", m_isTodaysForeground);
     configGroup.writeEntry("Todays Foreground Color", m_brushTodaysForeground.color());
     configGroup.writeEntry("Todays Background Enabled", m_isTodaysBackground);
     configGroup.writeEntry("Todays Background Color", m_brushTodaysBackground.color());
+    configGroup.writeEntry("Todays Highlight No Events", m_isTodaysHighlightNoEvents);
 
     configGroup.writeEntry("Past Threshold", m_pastThreshold);
     configGroup.writeEntry("Past Foreground Enabled", m_isPastForeground);
     configGroup.writeEntry("Past Foreground Color", m_brushPastForeground.color());
     configGroup.writeEntry("Past Background Enabled", m_isPastBackground);
     configGroup.writeEntry("Past Background Color", m_brushPastBackground.color());
+    configGroup.writeEntry("Past Highlight No Events", m_isPastHighlightNoEvents);
 
     configGroup.writeEntry("Date Format", m_selectedDateFormat);
 
@@ -481,13 +508,17 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     }
     else m_ui_datasource.cmbAkoCollection->setEnabled(true);
 
+    m_ui_datasource.rbAkoNamedayDateField->setChecked(m_akoNamedayIdentificationMode == NIM_DateField);
     m_ui_datasource.lineEditAkoNamedayDateField->setText(m_akoColNamedayDateFieldString);
-    m_ui_datasource.rbAkoNamedayNameField->setChecked(m_akoColIsNamedayByGivenNameField);
+    m_ui_datasource.rbAkoNamedayNameField->setChecked(m_akoNamedayIdentificationMode == NIM_GivenName);
     m_ui_datasource.lineEditAkoAnniversaryField->setText(m_akoColAnniversaryFieldString);
+    m_ui_datasource.rbAkoNamedayBothFields->setChecked(m_akoNamedayIdentificationMode == NIM_Both);
 
+    m_ui_datasource.rbKabNamedayDateField->setChecked(m_kabcNamedayIdentificationMode == NIM_DateField);
     m_ui_datasource.lineEditKabNamedayDateField->setText(m_kabcNamedayDateFieldString);
-    m_ui_datasource.rbKabNamedayNameField->setChecked(m_kabcIsNamedayByGivenNameField);
+    m_ui_datasource.rbKabNamedayNameField->setChecked(m_kabcNamedayIdentificationMode == NIM_GivenName);
     m_ui_datasource.lineEditKabAnniversaryField->setText(m_kabcAnniversaryFieldString);
+    m_ui_datasource.rbKabNamedayBothFields->setChecked(m_kabcNamedayIdentificationMode == NIM_Both);
 
     m_ui_contents.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
     m_ui_contents.chckShowColName->setChecked(m_showColName);
@@ -513,6 +544,7 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     m_ui_appearance.colorbtnTodaysForeground->setColor(m_brushTodaysForeground.color());
     m_ui_appearance.chckTodaysBackground->setChecked(m_isTodaysBackground);
     m_ui_appearance.colorbtnTodaysBackground->setColor(m_brushTodaysBackground.color());
+    m_ui_appearance.chckTodaysHighlightNoEvent->setChecked(m_isTodaysHighlightNoEvents);
 
     m_ui_appearance.spinComingShowDays->setValue(m_eventThreshold);
     m_ui_appearance.spinComingHighlightDays->setValue(m_highlightThreshold);
@@ -520,12 +552,14 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
     m_ui_appearance.colorbtnComingHighlightForeground->setColor(m_brushHighlightForeground.color());
     m_ui_appearance.chckComingHighlightBackground->setChecked(m_isHighlightBackground);
     m_ui_appearance.colorbtnComingHighlightBackground->setColor(m_brushHighlightBackground.color());
+    m_ui_appearance.chckComingHighlightNoEvent->setChecked(m_isComingHighlightNoEvents);
 
     m_ui_appearance.spinPastShowDays->setValue(m_pastThreshold);
     m_ui_appearance.chckPastForeground->setChecked(m_isPastForeground);
     m_ui_appearance.colorbtnPastForeground->setColor(m_brushPastForeground.color());
     m_ui_appearance.chckPastBackground->setChecked(m_isPastBackground);
     m_ui_appearance.colorbtnPastBackground->setColor(m_brushPastBackground.color());
+    m_ui_appearance.chckPastHighlightNoEvent->setChecked(m_isPastHighlightNoEvents);
 
     m_ui_appearance.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
 
@@ -554,6 +588,10 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
     // store nameday entries separately (so that they can be aggregated)
     QList<NamedayEntry *> namedayEntries;
 
+    NamedayIdentificationMode curNamedayIdentificationMode;
+    if (m_eventDataSource == EDS_Akonadi) curNamedayIdentificationMode = m_akoNamedayIdentificationMode;
+    else curNamedayIdentificationMode = m_kabcNamedayIdentificationMode;
+
     // iterate over the contacts from the data engine and create appropriate list entries
     QHashIterator<QString, QVariant> contactIt(data);
     while (contactIt.hasNext()) {
@@ -565,11 +603,13 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
         if (m_showNicknames && !contactNickname.isEmpty()) contactName = contactNickname;
         QDate contactBirthday = contactInfo["Birthday"].toDate();
         QDate contactNameday;
-        if ((m_eventDataSource == EDS_KABC && m_kabcIsNamedayByGivenNameField) ||
-            (m_eventDataSource == EDS_Akonadi && m_akoColIsNamedayByGivenNameField)) {
-            contactNameday = getNamedayByGivenName(contactInfo["Given name"].toString());
+        if (curNamedayIdentificationMode == NIM_DateField) contactNameday = contactInfo["Nameday"].toDate();
+        else if (curNamedayIdentificationMode == NIM_GivenName) contactNameday = getNamedayByGivenName(contactInfo["Given name"].toString());
+        else {
+            contactNameday = contactInfo["Nameday"].toDate();
+            if (!contactNameday.isValid()) contactNameday = getNamedayByGivenName(contactInfo["Given name"].toString());
         }
-        else contactNameday = contactInfo["Nameday"].toDate();
+
         QDate contactAnniversary = contactInfo["Anniversary"].toDate();
         //kDebug() << "KABC contact:" << contactName << ", B" << contactBirthday << ", N" << contactNameday << ", A" << contactAnniversary;
 
@@ -695,14 +735,20 @@ void BirthdayListApplet::setModelItemColors(const AbstractAnnualEventEntry *entr
     //if (colNum>0) item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     if (entry->remainingDays() == 0) {
-        if (m_isTodaysForeground) item->setForeground(m_brushTodaysForeground);
-        if (m_isTodaysBackground) item->setBackground(m_brushTodaysBackground);
+        if (entry->hasEvent() || m_isTodaysHighlightNoEvents) {
+            if (m_isTodaysForeground) item->setForeground(m_brushTodaysForeground);
+            if (m_isTodaysBackground) item->setBackground(m_brushTodaysBackground);
+        }
     } else if (entry->remainingDays() < 0) {
-        if (m_isPastForeground) item->setForeground(m_brushPastForeground);
-        if (m_isPastBackground) item->setBackground(m_brushPastBackground);
+        if (entry->hasEvent() || m_isPastHighlightNoEvents) {
+            if (m_isPastForeground) item->setForeground(m_brushPastForeground);
+            if (m_isPastBackground) item->setBackground(m_brushPastBackground);
+        }
     } else if (entry->remainingDays() <= m_highlightThreshold) {
-        if (m_isHighlightForeground) item->setForeground(m_brushHighlightForeground);
-        if (m_isHighlightBackground) item->setBackground(m_brushHighlightBackground);
+        if (entry->hasEvent() || m_isComingHighlightNoEvents) {
+            if (m_isHighlightForeground) item->setForeground(m_brushHighlightForeground);
+            if (m_isHighlightBackground) item->setBackground(m_brushHighlightBackground);
+        }
     }
 
     for (int row = 0; row < item->rowCount(); ++row) {
