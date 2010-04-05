@@ -61,10 +61,13 @@ protected:
     bool updateSourceEvent(const QString& source);
 
 private slots:
+    /** Starts Akonadi server after the initialization of the data engine. */
+    void initAkonadi();
     /** Receives the Akonadi collection update signals. */
     void slotCollectionChanged();
-
+    /** Receives notification when Akonadi is started. */
     void slotAkonadiStarted();
+    /** Receives notification when Akonadi is stopped. */
     void slotAkonadiStopped();
 
 private:
@@ -85,7 +88,7 @@ private:
 
 
     Akonadi::Monitor *m_akonadiMonitor;
-    QHash<QString, const Akonadi::Collection *> collectionMap;
+    QHash<QString, const Akonadi::Collection *> m_collectionMap;
 
     QString m_currentCollectionResource;
     QString m_anniversaryField;

@@ -138,27 +138,31 @@ void BirthdayListApplet::init() {
     }
 
     m_dataEngine_kabc = dataEngine("birthdaylist");
-    if (m_dataEngine_kabc && m_dataEngine_kabc->isValid()) {
-        m_dataEngine_kabc->query(QString("SetNamedayField_%1").arg(m_kabcNamedayDateFieldString));
-        m_dataEngine_kabc->query(QString("SetAnniversaryField_%1").arg(m_kabcAnniversaryFieldString));
-    } else {
+    m_dataEngine_akonadi = dataEngine("birthdaylist_akonadi");
+    m_dataEngine_thunderbird = dataEngine("birthdaylist_thunderbird");
+    if (!m_dataEngine_kabc || !m_dataEngine_kabc->isValid()) {
         setFailedToLaunch(true, "Could not load birthdaylist dataEngine");
     }
 
-    m_dataEngine_akonadi = dataEngine("birthdaylist_akonadi");
-    if (m_dataEngine_akonadi && m_dataEngine_akonadi->isValid()) {
+    QString namedayDateFieldString, anniversaryFieldString;
+
+    if (m_eventDataSource == EDS_Akonadi) {
+        m_dataEngine_contacts = m_dataEngine_akonadi;
         m_dataEngine_akonadi->query(QString("SetCurrentCollection_%1").arg(m_akoCollection));
-        m_dataEngine_akonadi->query(QString("SetNamedayField_%1").arg(m_akoColNamedayDateFieldString));
-        m_dataEngine_akonadi->query(QString("SetAnniversaryField_%1").arg(m_akoColAnniversaryFieldString));
+        namedayDateFieldString = m_akoColNamedayDateFieldString;
+        anniversaryFieldString = m_akoColAnniversaryFieldString;
+    }
+    else if (m_eventDataSource == EDS_Thunderbird) {
+        m_dataEngine_contacts = m_dataEngine_thunderbird;
+    }
+    else {
+        m_dataEngine_contacts = m_dataEngine_kabc;
+        namedayDateFieldString = m_kabcNamedayDateFieldString;
+        anniversaryFieldString = m_kabcAnniversaryFieldString;
     }
 
-    m_dataEngine_thunderbird = dataEngine("birthdaylist_thunderbird");
-    if (m_dataEngine_thunderbird && m_dataEngine_thunderbird->isValid()) {
-    }
-
-    if (m_eventDataSource == EDS_Akonadi) m_dataEngine_contacts = m_dataEngine_akonadi;
-    else if (m_eventDataSource == EDS_Thunderbird) m_dataEngine_contacts = m_dataEngine_thunderbird;
-    else m_dataEngine_contacts = m_dataEngine_kabc;
+    m_dataEngine_contacts->query(QString("SetNamedayField_%1").arg(namedayDateFieldString));
+    m_dataEngine_contacts->query(QString("SetAnniversaryField_%1").arg(anniversaryFieldString));
     m_dataEngine_contacts->connectSource("ContactInfo", this);
 
     Plasma::DataEngine* timeEngine = dataEngine("time");
@@ -389,20 +393,30 @@ void BirthdayListApplet::configAccepted() {
     configGroup.writeEntry("When Column Width", m_columnWidthWhen);
 
     m_curLangNamedayList = m_dataEngine_namedays->query(QString("NamedayList_%1").arg(m_curNamedayLangCode));
-    m_dataEngine_kabc->query(QString("SetNamedayField_%1").arg(m_kabcNamedayDateFieldString));
-    m_dataEngine_kabc->query(QString("SetAnniversaryField_%1").arg(m_kabcAnniversaryFieldString));
 
-    m_dataEngine_akonadi->query(QString("SetCurrentCollection_%1").arg(m_akoCollection));
-    m_dataEngine_akonadi->query(QString("SetNamedayField_%1").arg(m_akoColNamedayDateFieldString));
-    m_dataEngine_akonadi->query(QString("SetAnniversaryField_%1").arg(m_akoColAnniversaryFieldString));
+    QString namedayDateFieldString, anniversaryFieldString;
 
-    if (m_eventDataSource == EDS_Akonadi) m_dataEngine_contacts = m_dataEngine_akonadi;
-    else if (m_eventDataSource == EDS_Thunderbird) m_dataEngine_contacts = m_dataEngine_thunderbird;
-    else m_dataEngine_contacts = m_dataEngine_kabc;
+    if (m_eventDataSource == EDS_Akonadi) {
+        m_dataEngine_contacts = m_dataEngine_akonadi;
+        m_dataEngine_akonadi->query(QString("SetCurrentCollection_%1").arg(m_akoCollection));
+        namedayDateFieldString = m_akoColNamedayDateFieldString;
+        anniversaryFieldString = m_akoColAnniversaryFieldString;
+    }
+    else if (m_eventDataSource == EDS_Thunderbird) {
+        m_dataEngine_contacts = m_dataEngine_thunderbird;
+    }
+    else {
+        m_dataEngine_contacts = m_dataEngine_kabc;
+        namedayDateFieldString = m_kabcNamedayDateFieldString;
+        anniversaryFieldString = m_kabcAnniversaryFieldString;
+    }
 
     m_dataEngine_akonadi->disconnectSource("ContactInfo", this);
     m_dataEngine_thunderbird->disconnectSource("ContactInfo", this);
     m_dataEngine_kabc->disconnectSource("ContactInfo", this);
+
+    m_dataEngine_contacts->query(QString("SetNamedayField_%1").arg(namedayDateFieldString));
+    m_dataEngine_contacts->query(QString("SetAnniversaryField_%1").arg(anniversaryFieldString));
     m_dataEngine_contacts->connectSource("ContactInfo", this);
 
     updateEventList(m_dataEngine_contacts->query("ContactInfo"));

@@ -19,6 +19,7 @@
 #include "birthdaylist_akonadi_dataengine.h"
 
 #include <QFile>
+#include <QTimer>
 
 #include <KDebug>
 #include <KStandardDirs>
@@ -53,17 +54,10 @@ BirthdayListAkonadiDataEngine::BirthdayListAkonadiDataEngine(QObject* parent, co
     m_anniversaryField = "Anniversary";
     m_namedayField = "Nameday";
 
-    if (Akonadi::Control::start()) {
-        m_akonadiMonitor = new Akonadi::Monitor();
-        connect(m_akonadiMonitor, SIGNAL(itemChanged (const Akonadi::Item &, const QSet< QByteArray > &)), this, SLOT(slotCollectionChanged()));
-        connect(m_akonadiMonitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)), this, SLOT(slotCollectionChanged()));
-        connect(m_akonadiMonitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(slotCollectionChanged()));
-        kDebug() << "Akonadi successfully started";
-    }
-    else kDebug() << "Akonadi could not be started";
+    m_akonadiMonitor = 0;
 
-    connect(Akonadi::ServerManager::self(), SIGNAL(started()), this, SLOT(slotAkonadiStarted()));
-    connect(Akonadi::ServerManager::self(), SIGNAL(stopped()), this, SLOT(slotAkonadiStopped()));
+    Akonadi::ServerManager::start();
+    QTimer::singleShot(100, this, SLOT(initAkonadi()));
 }
 
 BirthdayListAkonadiDataEngine::~BirthdayListAkonadiDataEngine() {
@@ -76,6 +70,35 @@ QStringList BirthdayListAkonadiDataEngine::sources() const {
     sources << source_contactInfo;
 
     return sources;
+}
+
+void BirthdayListAkonadiDataEngine::initAkonadi()
+{
+    kDebug() << "Starting Akonadi";
+    Akonadi::Control::start();
+
+    if (Akonadi::ServerManager::isRunning()) {
+        kDebug() << "Akonadi already running";
+        m_akonadiMonitor = new Akonadi::Monitor();
+        connect(m_akonadiMonitor, SIGNAL(itemChanged (const Akonadi::Item &, const QSet< QByteArray > &)), this, SLOT(slotCollectionChanged()));
+        connect(m_akonadiMonitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)), this, SLOT(slotCollectionChanged()));
+        connect(m_akonadiMonitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(slotCollectionChanged()));
+
+        connect(Akonadi::ServerManager::self(), SIGNAL(started()), this, SLOT(slotAkonadiStarted()));
+        connect(Akonadi::ServerManager::self(), SIGNAL(stopped()), this, SLOT(slotAkonadiStopped()));
+
+        // now that Akonadi is up, see what collections are available
+        updateCollectionList();
+        // if the visualisation has requested certain collection already, its name has been remembered
+        // now complete the setting of this collection
+        setCurrentCollection(m_currentCollectionResource);
+        // read the contacts from the required collection, this will also update the visualisation
+        updateContactInfo();
+    }
+    else {
+        kDebug() << "Akonadi not running, going to check again in 5s";
+        QTimer::singleShot(5000, this, SLOT(initAkonadi()));
+    }
 }
 
 bool BirthdayListAkonadiDataEngine::sourceRequestEvent(const QString &name) {
@@ -109,27 +132,30 @@ void BirthdayListAkonadiDataEngine::slotCollectionChanged() {
 }
 
 void BirthdayListAkonadiDataEngine::slotAkonadiStarted() {
-    kDebug() << "BirthdayList detected Akonadi start";
+    kDebug() << "BirthdayList Akonadi data engine detected Akonadi start";
     m_akonadiMonitor = new Akonadi::Monitor();
     connect(m_akonadiMonitor, SIGNAL(itemChanged (const Akonadi::Item &, const QSet< QByteArray > &)), this, SLOT(slotCollectionChanged()));
     connect(m_akonadiMonitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)), this, SLOT(slotCollectionChanged()));
     connect(m_akonadiMonitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(slotCollectionChanged()));
 
     updateCollectionList();
+    setCurrentCollection(m_currentCollectionResource);
     updateContactInfo();
 }
 
 void BirthdayListAkonadiDataEngine::slotAkonadiStopped() {
-    kDebug() << "BirthdayList detected Akonadi stop";
+    kDebug() << "BirthdayList Akonadi data engine detected Akonadi stop";
     delete m_akonadiMonitor;
     m_akonadiMonitor = 0;
+    
     updateCollectionList();
     updateContactInfo();
 }
 
 bool BirthdayListAkonadiDataEngine::updateCollectionList() {
     removeAllData(source_akonadiCollections);
-    collectionMap.clear();
+    setData(source_akonadiCollections, DataEngine::Data());
+    m_collectionMap.clear();
     if (m_akonadiMonitor == 0) return true;
 
     Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
@@ -149,7 +175,7 @@ bool BirthdayListAkonadiDataEngine::updateCollectionList() {
             akonadiCollectionInfo.insert("Resource", collection.resource());
 
             setData(source_akonadiCollections, QString::number(collection.id()), akonadiCollectionInfo);
-            collectionMap[collection.resource()] = &collection;
+            m_collectionMap[collection.resource()] = &collection;
         }
     }
 
@@ -157,19 +183,17 @@ bool BirthdayListAkonadiDataEngine::updateCollectionList() {
 }
 
 void BirthdayListAkonadiDataEngine::setCurrentCollection(QString resource) {
+    this->m_currentCollectionResource = resource;
+
     if (m_akonadiMonitor == 0) return;
 
     updateCollectionList();
-    const Akonadi::Collection *collection = collectionMap[resource];
-
-    this->m_currentCollectionResource = resource;
+    const Akonadi::Collection *collection = m_collectionMap[resource];
 
     if (collection) {
         m_akonadiMonitor->setAllMonitored(false);
         m_akonadiMonitor->setCollectionMonitored(*collection, true);
     }
-
-    updateContactInfo();
 }
 
 void BirthdayListAkonadiDataEngine::setAnniversaryField(QString anniversaryField) {
@@ -183,7 +207,9 @@ void BirthdayListAkonadiDataEngine::setNamedayField(QString namedayField) {
 }
 
 bool BirthdayListAkonadiDataEngine::updateContactInfo() {
+    kDebug() << "Updating contact information";
     removeAllData(source_contactInfo);
+    setData(source_contactInfo, DataEngine::Data());
     if (m_akonadiMonitor == 0) return true;
 
     Akonadi::CollectionFetchJob job(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
