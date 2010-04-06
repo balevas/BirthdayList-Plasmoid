@@ -27,7 +27,7 @@ msgstr "Kommende Termine"
 #. i18n: ectx: property (text), widget (QLabel, lblComingShowDays)
 #: build/src/ui_birthdaylist_appearance_config.h:451 po/rc.cpp:6 rc.cpp:6
 msgid "Show events within next:"
-msgstr "Zeige Termine inerhalb:"
+msgstr "Zeige Termine innerhalb:"
 
 #. i18n: file: src/birthdaylist_appearance_config.ui:64
 #. i18n: ectx: property (text), widget (QLabel, lblTitlePastEvents)
@@ -125,9 +125,8 @@ msgstr "Angezeigtes Datumsformat:"
 #: build/src/ui_birthdaylist_appearance_config.h:474
 #: build/src/ui_birthdaylist_appearance_config.h:475 po/rc.cpp:64 po/rc.cpp:67
 #: po/rc.cpp:70 rc.cpp:64 rc.cpp:67 rc.cpp:70
-#, fuzzy
 msgid "Highlight lines with no events:"
-msgstr "Markierte Termine innerhalb:"
+msgstr "Hervorgehobene Linien ohne Termine:"
 
 #. i18n: file: src/birthdaylist_contents_config.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContentsConfig)
@@ -369,7 +368,7 @@ msgstr "Jubiläumsfeld:"
 #: build/src/ui_birthdaylist_datasource_config.h:403 po/rc.cpp:161
 #: po/rc.cpp:194 rc.cpp:161 rc.cpp:194
 msgid "Both, preferring date field"
-msgstr ""
+msgstr "Beide, bevorzugt Datumsfeld"
 
 #. i18n: file: src/birthdaylist_datasource_config.ui:389
 #. i18n: ectx: property (text), widget (QLabel, lblAkoTitleCollections)
