@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: BirthdayList 0.6.0\n"
 "Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
 "POT-Creation-Date: 2010-04-06 00:50+0200\n"
-"PO-Revision-Date: 2010-03-21 23:50+0100\n"
-"Last-Translator: Ondřej Kuda <ondrej.kuda@gmail.com>\n"
-"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"PO-Revision-Date: 2010-04-09 21:26+0200\n"
+"Last-Translator: Karol Slanina <karol.slanina@gmail.com>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -125,9 +125,8 @@ msgstr "Formát zobrazení data:"
 #: build/src/ui_birthdaylist_appearance_config.h:474
 #: build/src/ui_birthdaylist_appearance_config.h:475 po/rc.cpp:64 po/rc.cpp:67
 #: po/rc.cpp:70 rc.cpp:64 rc.cpp:67 rc.cpp:70
-#, fuzzy
 msgid "Highlight lines with no events:"
-msgstr "Zvýraznit budoucí události v rámci:"
+msgstr "Zvýraznit řádky bez událostí:"
 
 #. i18n: file: src/birthdaylist_contents_config.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContentsConfig)
@@ -369,7 +368,7 @@ msgstr "Pole pro výročí:"
 #: build/src/ui_birthdaylist_datasource_config.h:403 po/rc.cpp:161
 #: po/rc.cpp:194 rc.cpp:161 rc.cpp:194
 msgid "Both, preferring date field"
-msgstr ""
+msgstr "Obou, upřednostnit pole s datem"
 
 #. i18n: file: src/birthdaylist_datasource_config.ui:389
 #. i18n: ectx: property (text), widget (QLabel, lblAkoTitleCollections)
