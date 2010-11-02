@@ -4,7 +4,6 @@
 /**
  * @file    birthdaylist_applet.h
  * @author  Karol Slanina
- * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -22,6 +21,7 @@
 
 #include "ui_birthdaylist_datasource_config.h"
 #include "ui_birthdaylist_contents_config.h"
+#include "ui_birthdaylist_filter_config.h"
 #include "ui_birthdaylist_appearance_config.h"
 
 #include <QStandardItemModel>
@@ -47,14 +47,18 @@ public:
 
     /** Creates the widget that will be shown in the Plasma applet. */
     QGraphicsWidget *graphicsWidget();
-
+    virtual QList<QAction *> contextualActions();
+    
 private slots:
+    void dataSourceChanged(const QString &name);
     /** Receives a notification about changes in the address book and current date. */
     void dataUpdated(const QString &name, const Plasma::DataEngine::Data &data);
     /** Receives a notification when the user accepts the configuration change. */
     void configAccepted();
     /** Receives a notification when the system plasma theme is changed. */
     void plasmaThemeChanged();
+    void sendEmail();
+    void visitHomepage();
 
 private:
     /** Creates the configuration dialog and fills it with current settings. */
@@ -62,6 +66,7 @@ private:
 
     /** Updates the list of entries after the data update */
     void updateEventList(const Plasma::DataEngine::Data &data);
+    QDate getContactDateField(const QVariantHash &contactInfo, QString fieldName);
     /** Returns the nameday date by comparing the contact's given name with the calendar entries */
     QDate getNamedayByGivenName(QString givenName);
     /** Returns the name from the current nameday calendar belonging to the given date. */
@@ -76,7 +81,7 @@ private:
     /** Changes the tree and item colors according to the current Plasma theme. */
     void usePlasmaThemeColors();
 
-
+    
     enum EventDataSource { EDS_Akonadi, EDS_KABC, EDS_Thunderbird };
     EventDataSource m_eventDataSource;
     /** Shortcut to the data engine providing contact data and nameday calendars */
@@ -85,23 +90,18 @@ private:
     Plasma::DataEngine *m_dataEngine_kabc;
     Plasma::DataEngine *m_dataEngine_akonadi;
     Plasma::DataEngine *m_dataEngine_thunderbird;
+    
+    QString m_dataSourceName;
 
     /** Name of the Akonadi collection to be used */
     QString m_akoCollection;
     /** Name of the Akonadi collection field where namedays can be found */
-    QString m_akoColNamedayDateFieldString;
+    QString m_namedayDateFieldString;
     /** Mode to identify namedays for Akonadi contacts */
     enum NamedayIdentificationMode { NIM_DateField, NIM_GivenName, NIM_Both };
-    NamedayIdentificationMode m_akoNamedayIdentificationMode;
+    NamedayIdentificationMode m_namedayIdentificationMode;
     /** Name of the Akonadi collection field where anniversaries can be found */
-    QString m_akoColAnniversaryFieldString;
-
-    /** Name of the KABC field where namedays can be found */
-    QString m_kabcNamedayDateFieldString;
-    /** Mode to identify namedays for KABC contacts */
-    NamedayIdentificationMode m_kabcNamedayIdentificationMode;
-    /** Name of the KABC field where anniversaries can be found */
-    QString m_kabcAnniversaryFieldString;
+    QString m_anniversaryFieldString;
 
 
     /** List of language codes for all available nameday calendars (used in the data engine queries) */
@@ -123,6 +123,7 @@ private:
 
     Ui::BirthdayListDataSourceConfig m_ui_datasource;
     Ui::BirthdayListContentsConfig m_ui_contents;
+    Ui::BirthdayListFilterConfig m_ui_filter;
     Ui::BirthdayListAppearanceConfig m_ui_appearance;
 
 
@@ -138,6 +139,12 @@ private:
     enum NamedayDisplayMode { NDM_AggregateEvents, NDM_IndividualEvents, NDM_AllCalendarNames };
     NamedayDisplayMode m_namedayDisplayMode;
     bool m_showAnniversaries;
+    
+    enum FilterType { FT_Off, FT_Category, FT_CustomField, FT_CustomFieldPrefix };
+    FilterType m_filterType;
+    QString m_customFieldName;
+    QString m_customFieldPrefix;
+    QString m_filterValue;
 
     bool m_isTodaysForeground;
     QBrush m_brushTodaysForeground;

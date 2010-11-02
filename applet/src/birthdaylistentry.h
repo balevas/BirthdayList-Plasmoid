@@ -4,7 +4,6 @@
 /**
  * @file    birthdaylistentry.h
  * @author  Karol Slanina
- * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or

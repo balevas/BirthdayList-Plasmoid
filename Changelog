@@ -28,3 +28,5 @@
         - Custom colors can be turned off for lines that have no references to any contact (e.g. all names from calendar)
         - Polish and French nameday calendars added
 
+        ============= V 0.6.2 ==================
+        - Applet minimum size reduced to 10x10

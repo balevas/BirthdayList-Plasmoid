@@ -1,7 +1,6 @@
 /**
  * @file    birthdaylist_dataengine.cpp
  * @author  Karol Slanina
- * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -42,18 +41,10 @@ K_EXPORT_PLASMA_DATAENGINE(birthdaylist_akonadi, BirthdayListAkonadiDataEngine);
 
 
 const QString BirthdayListAkonadiDataEngine::source_akonadiCollections("Collections");
-const QString BirthdayListAkonadiDataEngine::source_contactInfo("ContactInfo");
-const QString BirthdayListAkonadiDataEngine::source_setCurrentCollectionPrefix("SetCurrentCollection_");
-const QString BirthdayListAkonadiDataEngine::source_setNamedayFieldPrefix("SetNamedayField_");
-const QString BirthdayListAkonadiDataEngine::source_setAnniversaryFieldPrefix("SetAnniversaryField_");
+const QString BirthdayListAkonadiDataEngine::source_contactListPrefix("Contacts_");
 
 BirthdayListAkonadiDataEngine::BirthdayListAkonadiDataEngine(QObject* parent, const QVariantList& args)
 : Plasma::DataEngine(parent, args) {
-    m_akonadiMonitor = 0;
-    m_currentCollectionResource = "";
-    m_anniversaryField = "Anniversary";
-    m_namedayField = "Nameday";
-
     m_akonadiMonitor = 0;
 
     Akonadi::ServerManager::start();
@@ -67,7 +58,6 @@ BirthdayListAkonadiDataEngine::~BirthdayListAkonadiDataEngine() {
 QStringList BirthdayListAkonadiDataEngine::sources() const {
     QStringList sources;
     sources << source_akonadiCollections;
-    sources << source_contactInfo;
 
     return sources;
 }
@@ -80,20 +70,18 @@ void BirthdayListAkonadiDataEngine::initAkonadi()
     if (Akonadi::ServerManager::isRunning()) {
         kDebug() << "Akonadi already running";
         m_akonadiMonitor = new Akonadi::Monitor();
+        //m_akonadiMonitor->setAllMonitored(true);
         connect(m_akonadiMonitor, SIGNAL(itemChanged (const Akonadi::Item &, const QSet< QByteArray > &)), this, SLOT(slotCollectionChanged()));
         connect(m_akonadiMonitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)), this, SLOT(slotCollectionChanged()));
         connect(m_akonadiMonitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(slotCollectionChanged()));
-
+        
         connect(Akonadi::ServerManager::self(), SIGNAL(started()), this, SLOT(slotAkonadiStarted()));
         connect(Akonadi::ServerManager::self(), SIGNAL(stopped()), this, SLOT(slotAkonadiStopped()));
 
         // now that Akonadi is up, see what collections are available
         updateCollectionList();
-        // if the visualisation has requested certain collection already, its name has been remembered
-        // now complete the setting of this collection
-        setCurrentCollection(m_currentCollectionResource);
         // read the contacts from the required collection, this will also update the visualisation
-        updateContactInfo();
+        updateAllContactLists();
     }
     else {
         kDebug() << "Akonadi not running, going to check again in 5s";
@@ -102,45 +90,37 @@ void BirthdayListAkonadiDataEngine::initAkonadi()
 }
 
 bool BirthdayListAkonadiDataEngine::sourceRequestEvent(const QString &name) {
-    if (name == source_contactInfo ||
-            name == source_akonadiCollections ||
-            name.startsWith(source_setCurrentCollectionPrefix) ||
-            name.startsWith(source_setNamedayFieldPrefix) ||
-            name.startsWith(source_setAnniversaryFieldPrefix)) {
+    if (name == source_akonadiCollections || name.startsWith(source_contactListPrefix))
         return updateSourceEvent(name);
-    } else return false;
+    else return false;
 }
 
 bool BirthdayListAkonadiDataEngine::updateSourceEvent(const QString &name) {
-    if (name == source_contactInfo) {
-        return updateContactInfo();
-    } else if (name == source_akonadiCollections) {
+    if (name == source_akonadiCollections) {
         return updateCollectionList();
-    } else if (name.startsWith(source_setCurrentCollectionPrefix)) {
-        setCurrentCollection(name.mid(source_setCurrentCollectionPrefix.size()));
-    } else if (name.startsWith(source_setNamedayFieldPrefix)) {
-        setNamedayField(name.mid(source_setNamedayFieldPrefix.size()));
-    } else if (name.startsWith(source_setAnniversaryFieldPrefix)) {
-        setAnniversaryField(name.mid(source_setAnniversaryFieldPrefix.size()));
+    } else if (name.startsWith(source_contactListPrefix)) {
+        return updateContactList(name.mid(source_contactListPrefix.size()));
     }
 
     return false;
 }
 
 void BirthdayListAkonadiDataEngine::slotCollectionChanged() {
-    updateContactInfo();
+    updateCollectionList();
+    updateAllContactLists();
 }
 
 void BirthdayListAkonadiDataEngine::slotAkonadiStarted() {
     kDebug() << "BirthdayList Akonadi data engine detected Akonadi start";
+
     m_akonadiMonitor = new Akonadi::Monitor();
+    //m_akonadiMonitor->setAllMonitored(true);
     connect(m_akonadiMonitor, SIGNAL(itemChanged (const Akonadi::Item &, const QSet< QByteArray > &)), this, SLOT(slotCollectionChanged()));
     connect(m_akonadiMonitor, SIGNAL(itemAdded(const Akonadi::Item &, const Akonadi::Collection &)), this, SLOT(slotCollectionChanged()));
     connect(m_akonadiMonitor, SIGNAL(itemRemoved(const Akonadi::Item &)), this, SLOT(slotCollectionChanged()));
 
     updateCollectionList();
-    setCurrentCollection(m_currentCollectionResource);
-    updateContactInfo();
+    updateAllContactLists();
 }
 
 void BirthdayListAkonadiDataEngine::slotAkonadiStopped() {
@@ -149,13 +129,13 @@ void BirthdayListAkonadiDataEngine::slotAkonadiStopped() {
     m_akonadiMonitor = 0;
     
     updateCollectionList();
-    updateContactInfo();
+    updateAllContactLists();
 }
 
 bool BirthdayListAkonadiDataEngine::updateCollectionList() {
     removeAllData(source_akonadiCollections);
     setData(source_akonadiCollections, DataEngine::Data());
-    m_collectionMap.clear();
+    m_collectionResourceMap.clear();
     if (m_akonadiMonitor == 0) return true;
 
     Akonadi::CollectionFetchJob *job = new Akonadi::CollectionFetchJob(Akonadi::Collection::root(),
@@ -175,49 +155,51 @@ bool BirthdayListAkonadiDataEngine::updateCollectionList() {
             akonadiCollectionInfo.insert("Resource", collection.resource());
 
             setData(source_akonadiCollections, QString::number(collection.id()), akonadiCollectionInfo);
-            m_collectionMap[collection.resource()] = &collection;
+            m_collectionIdMap[QString::number(collection.id())] = collection.resource();
+            m_collectionResourceMap[collection.resource()] = &collection;
         }
     }
 
     return true;
 }
 
-void BirthdayListAkonadiDataEngine::setCurrentCollection(QString resource) {
-    this->m_currentCollectionResource = resource;
-
-    if (m_akonadiMonitor == 0) return;
-
-    updateCollectionList();
-    const Akonadi::Collection *collection = m_collectionMap[resource];
-
-    if (collection) {
-        m_akonadiMonitor->setAllMonitored(false);
-        m_akonadiMonitor->setCollectionMonitored(*collection, true);
+bool BirthdayListAkonadiDataEngine::updateAllContactLists() {
+    foreach (const QString &collectionName, m_viewedCollections) {
+        updateContactList(collectionName);
     }
+    
+    return true;
 }
+    
+bool BirthdayListAkonadiDataEngine::updateContactList(QString collectionName) {
+    kDebug() << "Updating contact information for " << collectionName;
+    m_viewedCollections.insert(collectionName);
+    QString dataSourceName = source_contactListPrefix + collectionName;
 
-void BirthdayListAkonadiDataEngine::setAnniversaryField(QString anniversaryField) {
-    this->m_anniversaryField = anniversaryField;
-    updateContactInfo();
-}
+    if (m_akonadiMonitor == 0) {
+        removeAllData(dataSourceName);
+        setData(dataSourceName, DataEngine::Data());
+        return true;
+    }
 
-void BirthdayListAkonadiDataEngine::setNamedayField(QString namedayField) {
-    this->m_namedayField = namedayField;
-    updateContactInfo();
-}
+    QString resourceName;
+    if (m_collectionResourceMap.contains(collectionName)) resourceName = collectionName;
+    else if (m_collectionIdMap.contains(collectionName)) resourceName = m_collectionIdMap[collectionName];
+    else {
+        removeAllData(dataSourceName);
+        setData(dataSourceName, DataEngine::Data());
+        return true;
+    }
 
-bool BirthdayListAkonadiDataEngine::updateContactInfo() {
-    kDebug() << "Updating contact information";
-    removeAllData(source_contactInfo);
-    setData(source_contactInfo, DataEngine::Data());
-    if (m_akonadiMonitor == 0) return true;
+    const Akonadi::Collection *collection = m_collectionResourceMap[resourceName];
+    if (collection) m_akonadiMonitor->setCollectionMonitored(*collection, true);
 
     Akonadi::CollectionFetchJob job(Akonadi::Collection::root(), Akonadi::CollectionFetchJob::Recursive);
     Akonadi::CollectionFetchScope jobScope;
-    jobScope.setResource(m_currentCollectionResource);
+    jobScope.setResource(resourceName);
     job.setFetchScope(jobScope);
 
-    QList<QVariant> events;
+    DataEngine::Data newData;
     if (job.exec()) {
         Akonadi::Collection::List collections = job.collections();
         int readEntries = 0;
@@ -228,43 +210,48 @@ bool BirthdayListAkonadiDataEngine::updateContactInfo() {
 
             if (ijob.exec()) {
                 Akonadi::Item::List items = ijob.items();
-
                 foreach(const Akonadi::Item &item, items) {
                     if (item.hasPayload<KABC::Addressee > ()) {
                         KABC::Addressee kabcAddressee = item.payload<KABC::Addressee > ();
-
+                        
                         QHash<QString, QVariant> addresseeInfo;
-                        addresseeInfo.insert("Name", kabcAddressee.formattedName());
+                        QString addresseeName = kabcAddressee.formattedName();
+                        if (addresseeName.isEmpty()) addresseeName = kabcAddressee.assembledName();
+                        if (addresseeName.isEmpty()) addresseeName = kabcAddressee.name();
+                        
+                        addresseeInfo.insert("Name", addresseeName);
                         addresseeInfo.insert("Nickname", kabcAddressee.nickName());
                         addresseeInfo.insert("Given name", kabcAddressee.givenName());
+                        addresseeInfo.insert("Email", kabcAddressee.preferredEmail());
+                        addresseeInfo.insert("Homepage", kabcAddressee.url());
 
                         QDate birthdayDate = kabcAddressee.birthday().date();
                         if (birthdayDate.isValid()) {
                             addresseeInfo.insert("Birthday", birthdayDate);
                         }
-                        // try to read the custom fields with and without "X-" prefix, since both forms can be used
-                        QDate namedayDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", m_namedayField), Qt::ISODate);
-                        if (!namedayDate.isValid()) namedayDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", QString("X-%1").arg(m_namedayField)), Qt::ISODate);
-                        if (namedayDate.isValid()) {
-                            // ignore year (set the following year so that it's clear it's nonsense)
-                            namedayDate.setDate(QDate::currentDate().year() + 1, namedayDate.month(), namedayDate.day());
-                            addresseeInfo.insert("Nameday", namedayDate);
-                        }
-                        // try to read the custom fields with and without "X-" prefix, since both forms can be used
-                        QDate anniversaryDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", m_anniversaryField), Qt::ISODate);
-                        if (!anniversaryDate.isValid()) anniversaryDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", QString("X-%1").arg(m_anniversaryField)), Qt::ISODate);
-                        if (anniversaryDate.isValid()) {
-                            addresseeInfo.insert("Anniversary", anniversaryDate);
+                        
+                        addresseeInfo.insert("Categories", kabcAddressee.categories());
+                        
+                        for (int i=0; i<kabcAddressee.customs().size(); ++i) {
+                            int separatorPos = kabcAddressee.customs()[i].indexOf(":");
+                            QString fieldName = kabcAddressee.customs()[i].left(separatorPos);
+                            QString fieldValue = kabcAddressee.customs()[i].mid(separatorPos + 1);
+
+                            addresseeInfo.insert(QString("Custom_%1").arg(fieldName), fieldValue);
                         }
 
-                        setData(source_contactInfo, kabcAddressee.uid(), addresseeInfo);
+                        newData.insert(kabcAddressee.uid(), addresseeInfo);
                         ++readEntries;
                     }
                 }
             }
         }
+
+        kDebug() << "Read " << readEntries << " entries from the Akonadi collection " << collectionName;
     }
 
+    removeAllData(dataSourceName);
+    setData(dataSourceName, newData);
     return true;
 }
 

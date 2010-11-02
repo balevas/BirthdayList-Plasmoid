@@ -1,7 +1,6 @@
 /**
  * @file    birthdaylist_dataengine.cpp
  * @author  Karol Slanina
- * @version 0.6.0
  *
  * @section LICENSE
  * This program is free software; you can redistribute it and/or
@@ -24,23 +23,17 @@
 #include <KStandardDirs>
 
 #include <kabc/stdaddressbook.h>
-#include <kabc/field.h>
 
 
 K_EXPORT_PLASMA_DATAENGINE(birthdaylist, BirthdayListDataEngine);
 
 
-const QString BirthdayListDataEngine::source_contactInfo("ContactInfo");
-const QString BirthdayListDataEngine::source_setNamedayFieldPrefix("SetNamedayField_");
-const QString BirthdayListDataEngine::source_setAnniversaryFieldPrefix("SetAnniversaryField_");
 const QString BirthdayListDataEngine::source_namedayLists("NamedayLists");
 const QString BirthdayListDataEngine::source_namedayListPrefix("NamedayList_");
+const QString BirthdayListDataEngine::source_contactInfo("ContactInfo");
 
 BirthdayListDataEngine::BirthdayListDataEngine(QObject* parent, const QVariantList& args)
 : Plasma::DataEngine(parent, args) {
-    m_anniversaryField = "Anniversary";
-    m_namedayField = "Nameday";
-
     // connect the signal indicating changes in the KDE Address Book with a slot of this
     connect(KABC::StdAddressBook::self(), SIGNAL(addressBookChanged(AddressBook*)), this, SLOT(slotAddressbookChanged()));
 }
@@ -58,10 +51,8 @@ QStringList BirthdayListDataEngine::sources() const {
 
 bool BirthdayListDataEngine::sourceRequestEvent(const QString &name) {
     if (name == source_contactInfo ||
-            name == source_namedayLists ||
-            name.startsWith(source_namedayListPrefix) ||
-            name.startsWith(source_setNamedayFieldPrefix) ||
-            name.startsWith(source_setAnniversaryFieldPrefix)) {
+        name == source_namedayLists ||
+        name.startsWith(source_namedayListPrefix)) {
         return updateSourceEvent(name);
     } else return false;
 }
@@ -73,10 +64,6 @@ bool BirthdayListDataEngine::updateSourceEvent(const QString &name) {
         return updateNamedayLists();
     } else if (name.startsWith(source_namedayListPrefix)) {
         return updateNamedayList(name);
-    } else if (name.startsWith(source_setNamedayFieldPrefix)) {
-        setNamedayField(name.mid(source_setNamedayFieldPrefix.size()));
-    } else if (name.startsWith(source_setAnniversaryFieldPrefix)) {
-        setAnniversaryField(name.mid(source_setAnniversaryFieldPrefix.size()));
     }
 
     return false;
@@ -156,65 +143,46 @@ bool BirthdayListDataEngine::updateNamedayList(QString sourceName) {
     return true;
 }
 
-void BirthdayListDataEngine::setAnniversaryField(QString anniversaryField) {
-    this->m_anniversaryField = anniversaryField;
-    kDebug() << "Setting anniversary string to" << this->m_anniversaryField;
-    updateContactInfo();
-}
-
-void BirthdayListDataEngine::setNamedayField(QString namedayField) {
-    this->m_namedayField = namedayField;
-    kDebug() << "Setting nameday string to" << this->m_namedayField;
-    updateContactInfo();
-}
-
 bool BirthdayListDataEngine::updateContactInfo() {
     removeAllData(source_contactInfo);
     
-    /*
-    // Unfortunately KABC does not show all fields available in Address Book. Anniversary field is not provided by the loop below.
-    QList<KABC::Field*> fields = KABC::Field::allFields();
-    kDebug() << "KABC fields: ";
-    for (int i=0; i<fields.size(); ++i) {
-        kDebug() << "Field #" << i << ": " << fields[i]->label() << ", " << KABC::Field::categoryLabel(fields[i]->category());
-    }*/
-
     // scan all addressbook entries
     KABC::AddressBook *kabcAddressBook = KABC::StdAddressBook::self();
     int readEntries = 0;
 
     for (KABC::AddressBook::Iterator it = kabcAddressBook->begin(); it != kabcAddressBook->end(); ++it) {
         KABC::Addressee kabcAddressee = *it;
-        QHash<QString, QVariant> kabcContactInfo;
+        QHash<QString, QVariant> addresseeInfo;
+        QString addresseeName = kabcAddressee.formattedName();
+        if (addresseeName.isEmpty()) addresseeName = kabcAddressee.assembledName();
+        if (addresseeName.isEmpty()) addresseeName = kabcAddressee.name();
 
-        kabcContactInfo.insert("Name", kabcAddressee.formattedName());
-        kabcContactInfo.insert("Nickname", kabcAddressee.nickName());
-        kabcContactInfo.insert("Given name", kabcAddressee.givenName());
-
+        addresseeInfo.insert("Name", addresseeName);
+        addresseeInfo.insert("Nickname", kabcAddressee.nickName());
+        addresseeInfo.insert("Given name", kabcAddressee.givenName());
+        addresseeInfo.insert("Email", kabcAddressee.preferredEmail());
+        addresseeInfo.insert("Homepage", kabcAddressee.url());
+        
         QDate birthdayDate = kabcAddressee.birthday().date();
         if (birthdayDate.isValid()) {
-            kabcContactInfo.insert("Birthday", birthdayDate);
+            addresseeInfo.insert("Birthday", birthdayDate);
         }
-        // try to read the custom fields with and without "X-" prefix, since both forms can be used
-        QDate namedayDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", m_namedayField), Qt::ISODate);
-        if (!namedayDate.isValid()) namedayDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", QString("X-%1").arg(m_namedayField)), Qt::ISODate);
-        if (namedayDate.isValid()) {
-            // ignore year (set the following year so that it's clear it's nonsense)
-            namedayDate.setDate(QDate::currentDate().year() + 1, namedayDate.month(), namedayDate.day());
-            kabcContactInfo.insert("Nameday", namedayDate);
-        }
-        // try to read the custom fields with and without "X-" prefix, since both forms can be used
-        QDate anniversaryDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", m_anniversaryField), Qt::ISODate);
-        if (!anniversaryDate.isValid()) anniversaryDate = QDate::fromString(kabcAddressee.custom("KADDRESSBOOK", QString("X-%1").arg(m_anniversaryField)), Qt::ISODate);
-        if (anniversaryDate.isValid()) {
-            kabcContactInfo.insert("Anniversary", anniversaryDate);
+        
+        addresseeInfo.insert("Categories", kabcAddressee.categories());
+
+        for (int i=0; i<kabcAddressee.customs().size(); ++i) {
+            int separatorPos = kabcAddressee.customs()[i].indexOf(":");
+            QString fieldName = kabcAddressee.customs()[i].left(separatorPos);
+            QString fieldValue = kabcAddressee.customs()[i].mid(separatorPos + 1);
+
+            addresseeInfo.insert(QString("Custom_%1").arg(fieldName), fieldValue);
         }
 
-        setData(source_contactInfo, kabcAddressee.uid(), kabcContactInfo);
+        setData(source_contactInfo, kabcAddressee.uid(), addresseeInfo);
         ++readEntries;
     }
 
-    kDebug() << "Read" << readEntries << "entries from KADDRESSBOOK";
+    qDebug() << "Read" << readEntries << "entries from KDE Address Book";
     return true;
 }
 

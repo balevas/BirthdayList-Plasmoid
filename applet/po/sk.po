@@ -4,7 +4,7 @@
 # Author: Karol Slanina <karol.slanina@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: BirthdayList 0.6.1\n"
+"Project-Id-Version: BirthdayList 0.6.2\n"
 "Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
 "POT-Creation-Date: 2010-04-06 00:50+0200\n"
 "PO-Revision-Date: 2010-04-06 00:53+0200\n"
