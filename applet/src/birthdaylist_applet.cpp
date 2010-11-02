@@ -246,6 +246,7 @@ QGraphicsWidget *BirthdayListApplet::graphicsWidget() {
         m_treeView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         QTreeView *treeView = m_treeView->nativeWidget();
         treeView->setAlternatingRowColors(true);
+        treeView->setAnimated(true);
         treeView->setAllColumnsShowFocus(true);
         treeView->setRootIsDecorated(false);
         //treeView->setSortingEnabled(true);
