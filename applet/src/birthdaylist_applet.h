@@ -29,6 +29,7 @@
 #include <Plasma/PopupApplet>
 #include <Plasma/DataEngine>
 
+class KAboutData;
 class AbstractAnnualEventEntry;
 namespace Plasma {
     class TreeView;
@@ -49,6 +50,9 @@ public:
     QGraphicsWidget *graphicsWidget();
     virtual QList<QAction *> contextualActions();
     
+protected:
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    
 private slots:
     void dataSourceChanged(const QString &name);
     /** Receives a notification about changes in the address book and current date. */
@@ -59,6 +63,7 @@ private slots:
     void plasmaThemeChanged();
     void sendEmail();
     void visitHomepage();
+    void about();
 
 private:
     /** Creates the configuration dialog and fills it with current settings. */
@@ -71,6 +76,7 @@ private:
     QDate getNamedayByGivenName(QString givenName);
     /** Returns the name from the current nameday calendar belonging to the given date. */
     QString getNamedayString(QDate date);
+    QString getSelectedLineItem(int column);
 
     /** Updates the internal model of the tree view after the data update */
     void updateModels();
@@ -174,6 +180,10 @@ private:
     int m_columnWidthAge;
     int m_columnWidthDate;
     int m_columnWidthWhen;
+    
+    bool m_lastContextMenuEventOnTree;
+    
+    KAboutData *m_aboutData;
 };
 
 

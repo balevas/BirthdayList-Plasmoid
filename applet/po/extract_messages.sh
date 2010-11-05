@@ -1,7 +1,7 @@
 #!/bin/sh
 BASEDIR="../" # root of translatable sources
 PACKAGENAME="BirthdayList" # package name
-PACKAGEVERSION="0.5.1" # package name
+PACKAGEVERSION="0.6.3" # package name
 POTFILE="plasma_applet_birthdaylist.pot" # output file
 BUGADDR="http://kde-look.org/content/show.php?content=121134" # MSGID-Bugs
 WDIR=`pwd` # working dir

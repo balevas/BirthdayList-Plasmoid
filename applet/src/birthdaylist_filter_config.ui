@@ -23,11 +23,11 @@
       </font>
      </property>
      <property name="text">
-      <string>Type</string>
+      <string comment="Filter criterion">Criterion</string>
      </property>
     </widget>
    </item>
-   <item row="19" column="0">
+   <item row="21" column="0">
     <spacer name="spacerScreenBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -43,14 +43,14 @@
    <item row="1" column="0">
     <widget class="QLabel" name="lblFilterType">
      <property name="text">
-      <string>Filter type:</string>
+      <string>Filter criterion:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
-   <item row="13" column="0">
+   <item row="15" column="0">
     <widget class="QLabel" name="lblTitleFilterValue">
      <property name="font">
       <font>
@@ -59,11 +59,11 @@
       </font>
      </property>
      <property name="text">
-      <string>Value</string>
+      <string comment="Value to be matched when filtering contacts">Value</string>
      </property>
     </widget>
    </item>
-   <item row="15" column="0">
+   <item row="17" column="0">
     <widget class="QLabel" name="lblFilterValue">
      <property name="enabled">
       <bool>true</bool>
@@ -78,7 +78,7 @@
       <enum>Qt::LeftToRight</enum>
      </property>
      <property name="text">
-      <string>Filter value:</string>
+      <string comment="Value to be matched when filtering contacts">Match value:</string>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -88,12 +88,12 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="13" column="1">
     <layout class="QHBoxLayout" name="hlCustomFieldPrefix">
      <item>
       <widget class="QRadioButton" name="rbFilterTypeCustomFieldPrefix">
        <property name="text">
-        <string>Custom field (prefix):</string>
+        <string comment="Filter by the selected custom fields (with the given prefix)"/>
        </property>
        <property name="checked">
         <bool>false</bool>
@@ -104,18 +104,29 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditCustomFieldPrefix">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="vlCustomFieldPrefix">
+       <item>
+        <widget class="QLabel" name="lblCustomFieldPrefix">
+         <property name="text">
+          <string>Filter by multiple custom fields (prefix):</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditCustomFieldPrefix">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>
-   <item row="12" column="0">
+   <item row="14" column="0">
     <spacer name="spacerFilterTypeBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -131,12 +142,35 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="1">
+   <item row="1" column="1">
+    <widget class="QRadioButton" name="rbFilterTypeOff">
+     <property name="text">
+      <string>All contacts from the data source</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string>bgFilterType</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QRadioButton" name="rbFilterTypeCategory">
+     <property name="text">
+      <string>Filter by contact category</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string>bgFilterType</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="17" column="1">
+    <widget class="QLineEdit" name="lineEditFilterValue"/>
+   </item>
+   <item row="5" column="1">
     <layout class="QHBoxLayout" name="hlCustomFieldName">
      <item>
       <widget class="QRadioButton" name="rbFilterTypeCustomFieldName">
        <property name="text">
-        <string>Custom field (name):</string>
+        <string comment="Filter by the selected custom field (specific one)"/>
        </property>
        <property name="checked">
         <bool>false</bool>
@@ -147,39 +181,27 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditCustomFieldName">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
+      <layout class="QVBoxLayout" name="vlCustomFieldName">
+       <item>
+        <widget class="QLabel" name="lblCustomFieldName">
+         <property name="text">
+          <string>Filter by the custom field:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEditCustomFieldName">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
-   </item>
-   <item row="1" column="1">
-    <widget class="QRadioButton" name="rbFilterTypeOff">
-     <property name="text">
-      <string>Off</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string>bgFilterType</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QRadioButton" name="rbFilterTypeCategory">
-     <property name="text">
-      <string>Category</string>
-     </property>
-     <attribute name="buttonGroup">
-      <string>bgFilterType</string>
-     </attribute>
-    </widget>
-   </item>
-   <item row="15" column="1">
-    <widget class="QLineEdit" name="lineEditFilterValue"/>
    </item>
   </layout>
  </widget>
