@@ -223,7 +223,7 @@ bool BirthdayListAkonadiDataEngine::updateContactList(QString collectionName) {
                         addresseeInfo.insert("Nickname", kabcAddressee.nickName());
                         addresseeInfo.insert("Given name", kabcAddressee.givenName());
                         addresseeInfo.insert("Email", kabcAddressee.preferredEmail());
-                        addresseeInfo.insert("Homepage", kabcAddressee.url());
+                        addresseeInfo.insert("Homepage", (kabcAddressee.url().isEmpty() ? "" : kabcAddressee.url().url()));
 
                         QDate birthdayDate = kabcAddressee.birthday().date();
                         if (birthdayDate.isValid()) {

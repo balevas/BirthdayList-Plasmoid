@@ -20,6 +20,7 @@
 
 #include <QTreeView>
 #include <QGraphicsLinearLayout>
+#include <QGraphicsSceneContextMenuEvent>
 #include <QStackedWidget>
 #include <QMenu>
 
@@ -27,6 +28,8 @@
 #include <KDebug>
 #include <KToolInvocation>
 #include <KMimeTypeTrader>
+#include <KAboutData>
+#include <KAboutApplicationDialog>
 
 #include <Plasma/Theme>
 #include <Plasma/TreeView>
@@ -50,7 +53,7 @@ m_akoCollection(""),
 m_namedayDateFieldString("Nameday"),
 m_namedayIdentificationMode(NIM_Both),
 m_anniversaryFieldString("Anniversary"),
-m_model(0, 3),
+m_model(0, 5),
 m_graphicsWidget(0),
 m_treeView(0),
 m_showColumnHeaders(true),
@@ -88,18 +91,37 @@ m_selectedDateFormat(0),
 m_columnWidthName(0),
 m_columnWidthAge(0),
 m_columnWidthDate(0),
-m_columnWidthWhen(0) {
+m_columnWidthWhen(0),
+m_lastContextMenuEventOnTree (false) {
     m_possibleDateFormats << "d. M." << "dd. MM."
             << "d-M" << "dd-MM" << "M-d" << "MM-dd"
             << "d/M" << "dd/MM" << "M/d" << "MM/dd";
     setBackgroundHints(DefaultBackground);
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setHasConfigurationInterface(true);
+    
+    m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.6.3", ki18n("Birthday List"),
+    KAboutData::License_GPL,
+    ki18n("Copyright (C) 2010 Karol Slanina"),
+    ki18n("Shows the list of upcoming birthdays, anniversaries and name days"),
+    "http://kde-look.org/content/show.php?content=121134",
+    "http://kde-look.org/content/show.php?content=121134");
+
+    // Authors
+    m_aboutData->setProgramIconName("bl_cookie");
+    m_aboutData->addAuthor(ki18n("Karol Slanina"), ki18n("Plasmoid, data engines, Slovak translation"), "karol.slanina@gmail.com");
+    m_aboutData->addCredit(ki18n("Ondřej Kuda"), ki18n("Czech translation"));
+    m_aboutData->addCredit(ki18n("Andreas Goldbohm"), ki18n("German translation"));
+    m_aboutData->addCredit(ki18n("David Vignoni"), ki18n("Nuvola icons"));
+    m_aboutData->addCredit(ki18n("All people who report bugs, send feedback and new feature requests"));
+    m_aboutData->setTranslator(ki18nc("NAME OF THE TRANSLATORS", "Your names"), ki18nc("EMAIL OF THE TRANSLATORS", "Your emails"));
+    
     resize(350, 200);
 }
 
 BirthdayListApplet::~BirthdayListApplet() {
     delete m_graphicsWidget;
+    delete m_aboutData;
 }
 
 void BirthdayListApplet::init() {
@@ -270,29 +292,60 @@ QGraphicsWidget *BirthdayListApplet::graphicsWidget() {
     return m_graphicsWidget;
 }
 
+void BirthdayListApplet::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
+    m_lastContextMenuEventOnTree = m_treeView->nativeWidget()->underMouse() && !m_treeView->nativeWidget()->header()->underMouse();
+    Plasma::PopupApplet::contextMenuEvent(event);
+}
+
+QString BirthdayListApplet::getSelectedLineItem(int column)
+{
+    QModelIndex idx = m_treeView->nativeWidget()->currentIndex();
+    if (idx.isValid()) return m_model.itemFromIndex((m_model.index(idx.row(), column, idx.parent())))->text();
+    else return "";
+}
+
+
 QList<QAction *> BirthdayListApplet::contextualActions()
 {
     QList<QAction *> currentActions;
 
     QModelIndex idx = m_treeView->nativeWidget()->currentIndex();
-    if (idx.isValid()) {
-        KIcon mailerIcon("internet-mail");
-        QAction *actionSendEmail = new QAction(mailerIcon, i18n("Send Email"), this);
-        connect(actionSendEmail, SIGNAL(triggered()), this, SLOT(sendEmail()));
-        currentActions.append(actionSendEmail);
+    if (m_lastContextMenuEventOnTree && idx.isValid()) {
+       
+       QString name = getSelectedLineItem(0);
 
+       QString selectedEntryEmail = getSelectedLineItem(4);
+        if (!selectedEntryEmail.isEmpty()) {
+            KIcon mailerIcon("internet-mail");
+            QAction *actionSendEmail = new QAction(mailerIcon, QString(i18n("Send Email to %1")).arg(name), this);
+            connect(actionSendEmail, SIGNAL(triggered()), this, SLOT(sendEmail()));
+            currentActions.append(actionSendEmail);
+        }
+        
         KService::Ptr browserService = KMimeTypeTrader::self()->preferredService("text/html");
         KIcon browserIcon("konqueror");
         if (!browserService.isNull()) browserIcon = KIcon(browserService->icon());
 
-        QAction *actionVisitHomepage = new QAction(browserIcon, i18n("Visit Homepage"), this);
-        connect(actionVisitHomepage, SIGNAL(triggered()), this, SLOT(visitHomepage()));
-        currentActions.append(actionVisitHomepage);
+        QString selectedEntryUrl = getSelectedLineItem(5);
+        if (!selectedEntryUrl.isEmpty()) {
+            QAction *actionVisitHomepage = new QAction(browserIcon, QString(i18n("Visit %1's Homepage")).arg(name), this);
+            connect(actionVisitHomepage, SIGNAL(triggered()), this, SLOT(visitHomepage()));
+            currentActions.append(actionVisitHomepage);
+        }
     }
     
-    QAction *separator = new QAction(this);
-    separator->setSeparator(true);
-    currentActions.append(separator);
+    QAction *separator1 = new QAction(this);
+    separator1->setSeparator(true);
+    currentActions.append(separator1);
+
+    KIcon aboutIcon("help-about");
+    QAction *actionAbout = new QAction(aboutIcon, i18nc("Show About Dialog", "About"), this);
+    connect(actionAbout, SIGNAL(triggered()), this, SLOT(about()));
+    currentActions.append(actionAbout);
+
+    QAction *separator2 = new QAction(this);
+    separator2->setSeparator(true);
+    currentActions.append(separator2);
     
     return currentActions;
 }
@@ -646,6 +699,8 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
         }
 
         QDate contactAnniversary = getContactDateField(contactInfo, m_anniversaryFieldString);
+        QString contactEmail = contactInfo["Email"].toString();
+        QString contactUrl = contactInfo["Homepage"].toString();
         
         if (m_filterType == FT_Off) {
             // do nothing; this check comes first as it is the most likely selected option
@@ -671,7 +726,7 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
         //qDebug() << "KABC contact:" << contactName << ", B" << contactBirthday << ", N" << contactNameday << ", A" << contactAnniversary;
 
         if (contactBirthday.isValid()) {
-            m_listEntries.append(new BirthdayEntry(contactName, contactBirthday));
+            m_listEntries.append(new BirthdayEntry(contactName, contactBirthday, contactEmail, contactUrl));
         }
         if (m_showNamedays && contactNameday.isValid()) {
             QDate firstNameday = contactNameday;
@@ -679,10 +734,10 @@ void BirthdayListApplet::updateEventList(const Plasma::DataEngine::Data &data) {
                 firstNameday.setDate(contactBirthday.year(), contactNameday.month(), contactNameday.day());
                 if (firstNameday < contactBirthday) firstNameday = firstNameday.addYears(1);
             }
-            namedayEntries.append(new NamedayEntry(contactName, firstNameday));
+            namedayEntries.append(new NamedayEntry(contactName, firstNameday, contactEmail, contactUrl));
         }
         if (m_showAnniversaries && contactAnniversary.isValid()) {
-            m_listEntries.append(new AnniversaryEntry(contactName, contactAnniversary));
+            m_listEntries.append(new AnniversaryEntry(contactName, contactAnniversary, contactEmail, contactUrl));
         }
     }
 
@@ -773,7 +828,7 @@ void BirthdayListApplet::updateModels() {
 
     m_model.clear();
     QStringList headerTitles;
-    headerTitles << i18n("Name") << i18n("Age") << i18n("Date") << i18n("When");
+    headerTitles << i18n("Name") << i18n("Age") << i18n("Date") << i18n("When") << "" << "";
     m_model.setHorizontalHeaderLabels(headerTitles);
 
     QString dateFormat = m_possibleDateFormats[m_selectedDateFormat];
@@ -838,6 +893,8 @@ void BirthdayListApplet::setTreeColumnWidths() {
     qTreeView->setColumnHidden(1, !m_showColAge);
     qTreeView->setColumnHidden(2, !m_showColDate);
     qTreeView->setColumnHidden(3, !m_showColWhen);
+    qTreeView->setColumnHidden(4, true);
+    qTreeView->setColumnHidden(5, true);
 
     if (m_columnWidthName < 10) qTreeView->resizeColumnToContents(0);
     else qTreeView->setColumnWidth(0, m_columnWidthName);
@@ -886,11 +943,18 @@ void BirthdayListApplet::usePlasmaThemeColors() {
 }
 
 void BirthdayListApplet::sendEmail() {
-  KToolInvocation::invokeMailer("bacon@centrum.sk", "All the greatest!", 0);
+  KToolInvocation::invokeMailer(getSelectedLineItem(4), "");
 }
 
 void BirthdayListApplet::visitHomepage() {
-  KToolInvocation::invokeBrowser("http://www.lidovky.cz");
+  KToolInvocation::invokeBrowser(getSelectedLineItem(5));
 }
+
+void BirthdayListApplet::about() {
+  KAboutApplicationDialog *aboutDialog = new KAboutApplicationDialog(m_aboutData);
+  connect(aboutDialog, SIGNAL(finished()), aboutDialog, SLOT(deleteLater()));
+  aboutDialog->show();
+}
+
 
 #include "birthdaylist_applet.moc"

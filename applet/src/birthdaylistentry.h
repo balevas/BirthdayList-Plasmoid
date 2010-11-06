@@ -33,7 +33,7 @@
  */
 class AbstractAnnualEventEntry {
 public:
-    AbstractAnnualEventEntry(const QString &name, const QDate &date);
+    AbstractAnnualEventEntry(const QString &name, const QDate &date, QString email, QString url);
     virtual ~AbstractAnnualEventEntry();
 
     /** Returns the name of the contact. */
@@ -80,6 +80,8 @@ protected:
     int m_age;
     QDate m_date;
     int m_remainingDays;
+    QString m_email;
+    QString m_url;
 
     static int m_pastThreshold;
 };
@@ -90,7 +92,7 @@ protected:
  */
 class BirthdayEntry : public AbstractAnnualEventEntry {
 public:
-    BirthdayEntry(const QString &name, const QDate &date);
+    BirthdayEntry(const QString &name, const QDate &date, QString email, QString url);
     virtual ~BirthdayEntry();
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;
@@ -106,7 +108,7 @@ private:
  */
 class NamedayEntry : public AbstractAnnualEventEntry {
 public:
-    NamedayEntry(const QString &name, const QDate &date);
+    NamedayEntry(const QString &name, const QDate &date, QString email, QString url);
     virtual ~NamedayEntry();
 
     /** Marks this entry as aggregated (affects visualisation). */
@@ -148,7 +150,7 @@ private:
  */
 class AnniversaryEntry : public AbstractAnnualEventEntry {
 public:
-    AnniversaryEntry(const QString &name, const QDate &date);
+    AnniversaryEntry(const QString &name, const QDate &date, QString email, QString url);
     virtual ~AnniversaryEntry();
 
     virtual void createModelItems(QList<QStandardItem*> &items, QString dateFormat) const;

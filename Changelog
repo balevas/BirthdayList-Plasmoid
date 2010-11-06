@@ -1,4 +1,3 @@
-20100305
         ============= V 0.5.0 ==================
         - Initial release
         - KDE Address Book as the only source
@@ -30,3 +29,8 @@
 
         ============= V 0.6.2 ==================
         - Applet minimum size reduced to 10x10
+
+        ============= V 0.6.3 ==================
+        - Added contact filtering option - by category or custom field(s)
+        - Multiple plasmoid instances can run in parallel, each with different data source / contact filter
+        - Added "Send Email" and "Visit Homepage" context menu items for individual contacts
