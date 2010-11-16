@@ -33,7 +33,7 @@
         ============= V 0.7.0 ==================
         - Added contact filtering option
           - by category (easily editable in kaddressbook)
-          - or by custom field(s) - useful for gmail group filtering over Akonadi
+          - or by custom field(s) - useful for Gmail group filtering (Akonadi googledata engine shows groups as custom fields)
         - Multiple plasmoid instances can run in parallel, each with different data source / contact filter
         - Added "Send Email" and "Visit Homepage" context menu items for individual contacts
         - Reworked configuration dialog

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BirthdayList 0.7.0\n"
 "Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
-"POT-Creation-Date: 2010-11-16 01:41+0100\n"
+"POT-Creation-Date: 2010-11-16 08:54+0100\n"
 "PO-Revision-Date: 2010-11-16 00:41+0100\n"
 "Last-Translator: Karol Slanina <karol.slanina@gmail.com>\n"
 "Language-Team: Slovak <kde-i18n-doc@kde.org>\n"
@@ -25,7 +25,7 @@ msgstr "Budúce udalosti"
 
 #. i18n: file: src/birthdaylist_events_config.ui:253
 #. i18n: ectx: property (text), widget (QLabel, lblComingShowDays)
-#: build/src/ui_birthdaylist_appearance_config.h:451 po/rc.cpp:113 rc.cpp:113
+#: build/src/ui_birthdaylist_appearance_config.h:451 po/rc.cpp:119 rc.cpp:119
 msgid "Show events within next:"
 msgstr "Zobraziť udalosti počas nasledujúcich:"
 
@@ -93,19 +93,19 @@ msgstr "Dnešné udalosti"
 
 #. i18n: file: src/birthdaylist_events_config.ui:293
 #. i18n: ectx: property (text), widget (QLabel, lblPastShowDays)
-#: build/src/ui_birthdaylist_appearance_config.h:470 po/rc.cpp:122 rc.cpp:122
+#: build/src/ui_birthdaylist_appearance_config.h:470 po/rc.cpp:128 rc.cpp:128
 msgid "Show events within last:"
 msgstr "Zobraziť udalosti počas uplynulých:"
 
 #. i18n: file: src/birthdaylist_table_config.ui:212
 #. i18n: ectx: property (text), widget (QLabel, lblTitleDateFormat)
-#: build/src/ui_birthdaylist_appearance_config.h:471 po/rc.cpp:165 rc.cpp:165
+#: build/src/ui_birthdaylist_appearance_config.h:471 po/rc.cpp:171 rc.cpp:171
 msgid "Date format"
 msgstr "Formát dátumu:"
 
 #. i18n: file: src/birthdaylist_table_config.ui:219
 #. i18n: ectx: property (text), widget (QLabel, lblDateDisplayFormat)
-#: build/src/ui_birthdaylist_appearance_config.h:472 po/rc.cpp:168 rc.cpp:168
+#: build/src/ui_birthdaylist_appearance_config.h:472 po/rc.cpp:174 rc.cpp:174
 msgid "Date display format:"
 msgstr "Formát zobrazenia dátumu:"
 
@@ -141,8 +141,8 @@ msgstr "Zvýrazniť riadky bez udalostí:"
 #. i18n: file: src/birthdaylist_table_config.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListTableConfig)
 #: build/src/ui_birthdaylist_contents_config.h:283
-#: build/src/ui_birthdaylist_datasource_config.h:378 po/rc.cpp:45 po/rc.cpp:69
-#: po/rc.cpp:135 rc.cpp:45 rc.cpp:69 rc.cpp:135
+#: build/src/ui_birthdaylist_datasource_config.h:378 po/rc.cpp:45 po/rc.cpp:75
+#: po/rc.cpp:141 rc.cpp:45 rc.cpp:75 rc.cpp:141
 msgid "Form"
 msgstr "Formulár"
 
@@ -153,7 +153,7 @@ msgstr "Tabuľka"
 
 #. i18n: file: src/birthdaylist_table_config.ui:46
 #. i18n: ectx: property (text), widget (QLabel, lblShowColumnHeaders)
-#: build/src/ui_birthdaylist_contents_config.h:285 po/rc.cpp:141 rc.cpp:141
+#: build/src/ui_birthdaylist_contents_config.h:285 po/rc.cpp:147 rc.cpp:147
 msgid "Show column headers:"
 msgstr "Zobraziť hlavičku:"
 
@@ -161,7 +161,7 @@ msgstr "Zobraziť hlavičku:"
 #. i18n: ectx: property (text), widget (QLabel, lblTitleNamedays)
 #: build/src/ui_birthdaylist_contents_config.h:287
 #: build/src/ui_birthdaylist_datasource_config.h:389
-#: build/src/ui_birthdaylist_datasource_config.h:391 po/rc.cpp:116 rc.cpp:116
+#: build/src/ui_birthdaylist_datasource_config.h:391 po/rc.cpp:122 rc.cpp:122
 msgid "Namedays"
 msgstr "Meniny"
 
@@ -169,95 +169,95 @@ msgstr "Meniny"
 #. i18n: ectx: property (text), widget (QLabel, lblTitleAnniversaries)
 #: build/src/ui_birthdaylist_contents_config.h:288
 #: build/src/ui_birthdaylist_datasource_config.h:388
-#: build/src/ui_birthdaylist_datasource_config.h:393 po/rc.cpp:90 rc.cpp:90
+#: build/src/ui_birthdaylist_datasource_config.h:393 po/rc.cpp:96 rc.cpp:96
 msgid "Anniversaries"
 msgstr "Výročia"
 
 #. i18n: file: src/birthdaylist_events_config.ui:175
 #. i18n: ectx: property (text), widget (QLabel, lblShowAnniversaries)
-#: build/src/ui_birthdaylist_contents_config.h:289 po/rc.cpp:99 rc.cpp:99
+#: build/src/ui_birthdaylist_contents_config.h:289 po/rc.cpp:105 rc.cpp:105
 msgid "Show anniversaries:"
 msgstr "Zobrazovať výročia:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:144
 #. i18n: ectx: property (text), widget (QLabel, lblShowNamedays)
-#: build/src/ui_birthdaylist_contents_config.h:291 po/rc.cpp:96 rc.cpp:96
+#: build/src/ui_birthdaylist_contents_config.h:291 po/rc.cpp:102 rc.cpp:102
 msgid "Show namedays:"
 msgstr "Zobrazovať meniny:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:371
 #. i18n: ectx: property (text), widget (QLabel, lblNamedayCalendar)
-#: build/src/ui_birthdaylist_contents_config.h:293 po/rc.cpp:132 rc.cpp:132
+#: build/src/ui_birthdaylist_contents_config.h:293 po/rc.cpp:138 rc.cpp:138
 msgid "Nameday calendar:"
 msgstr "Kalendár menín:"
 
 #. i18n: file: src/birthdaylist_table_config.ui:88
 #. i18n: ectx: property (text), widget (QCheckBox, chckShowColDate)
-#: build/src/ui_birthdaylist_contents_config.h:294 po/rc.cpp:144
-#: src/birthdaylist_applet.cpp:823 rc.cpp:144
+#: build/src/ui_birthdaylist_contents_config.h:294 po/rc.cpp:150
+#: src/birthdaylist_applet.cpp:823 rc.cpp:150
 msgid "Date"
 msgstr "Dátum"
 
 #. i18n: file: src/birthdaylist_table_config.ui:98
 #. i18n: ectx: property (text), widget (QLabel, lblShowColumns)
-#: build/src/ui_birthdaylist_contents_config.h:295 po/rc.cpp:147 rc.cpp:147
+#: build/src/ui_birthdaylist_contents_config.h:295 po/rc.cpp:153 rc.cpp:153
 msgid "Show columns:"
 msgstr "Zobraziť stĺpce:"
 
 #. i18n: file: src/birthdaylist_table_config.ui:108
 #. i18n: ectx: property (text), widget (QCheckBox, chckShowColWhen)
-#: build/src/ui_birthdaylist_contents_config.h:296 po/rc.cpp:150
-#: src/birthdaylist_applet.cpp:823 rc.cpp:150
+#: build/src/ui_birthdaylist_contents_config.h:296 po/rc.cpp:156
+#: src/birthdaylist_applet.cpp:823 rc.cpp:156
 msgid "When"
 msgstr "Kedy"
 
 #. i18n: file: src/birthdaylist_table_config.ui:121
 #. i18n: ectx: property (text), widget (QCheckBox, chckShowColName)
-#: build/src/ui_birthdaylist_contents_config.h:297 po/rc.cpp:153
-#: src/birthdaylist_applet.cpp:823 rc.cpp:153
+#: build/src/ui_birthdaylist_contents_config.h:297 po/rc.cpp:159
+#: src/birthdaylist_applet.cpp:823 rc.cpp:159
 msgid "Name"
 msgstr "Meno"
 
 #. i18n: file: src/birthdaylist_table_config.ui:134
 #. i18n: ectx: property (text), widget (QCheckBox, chckShowColAge)
-#: build/src/ui_birthdaylist_contents_config.h:298 po/rc.cpp:156
-#: src/birthdaylist_applet.cpp:823 rc.cpp:156
+#: build/src/ui_birthdaylist_contents_config.h:298 po/rc.cpp:162
+#: src/birthdaylist_applet.cpp:823 rc.cpp:162
 msgid "Age"
 msgstr "Vek"
 
 #. i18n: file: src/birthdaylist_table_config.ui:150
 #. i18n: ectx: property (text), widget (QLabel, lblTitleNames)
-#: build/src/ui_birthdaylist_contents_config.h:299 po/rc.cpp:159 rc.cpp:159
+#: build/src/ui_birthdaylist_contents_config.h:299 po/rc.cpp:165 rc.cpp:165
 msgid "Names"
 msgstr "Mená"
 
 #. i18n: file: src/birthdaylist_table_config.ui:157
 #. i18n: ectx: property (text), widget (QLabel, lblShowNicknames)
-#: build/src/ui_birthdaylist_contents_config.h:300 po/rc.cpp:162 rc.cpp:162
+#: build/src/ui_birthdaylist_contents_config.h:300 po/rc.cpp:168 rc.cpp:168
 msgid "Show nicknames if available:"
 msgstr "Zobrazovať prezývku ak je k dispozícii:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:220
 #. i18n: ectx: property (text), widget (QLabel, lblNamedayDisplayMode)
-#: build/src/ui_birthdaylist_contents_config.h:302 po/rc.cpp:102 rc.cpp:102
+#: build/src/ui_birthdaylist_contents_config.h:302 po/rc.cpp:108 rc.cpp:108
 msgid "Nameday display mode:"
 msgstr "Spôsob zobrazenia menín:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:336
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowIndEvents)
-#: build/src/ui_birthdaylist_contents_config.h:303 po/rc.cpp:128 rc.cpp:128
+#: build/src/ui_birthdaylist_contents_config.h:303 po/rc.cpp:134 rc.cpp:134
 msgid "Individual events"
 msgstr "Jednotlivé udalosti"
 
 #. i18n: file: src/birthdaylist_events_config.ui:230
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAllFromCal)
-#: build/src/ui_birthdaylist_contents_config.h:304 po/rc.cpp:105 rc.cpp:105
+#: build/src/ui_birthdaylist_contents_config.h:304 po/rc.cpp:111 rc.cpp:111
 msgid "All names from calendar"
 msgstr "Všetky mená v kalendári"
 
 #. i18n: file: src/birthdaylist_events_config.ui:240
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAggrEvents)
-#: build/src/ui_birthdaylist_contents_config.h:305 po/rc.cpp:109 rc.cpp:109
+#: build/src/ui_birthdaylist_contents_config.h:305 po/rc.cpp:115 rc.cpp:115
 msgid "Aggregated events"
 msgstr "Združené udalosti"
 
@@ -270,42 +270,42 @@ msgstr "Zdroj dát:"
 #. i18n: file: src/birthdaylist_events_config.ui:35
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayDateField)
 #: build/src/ui_birthdaylist_datasource_config.h:380
-#: build/src/ui_birthdaylist_datasource_config.h:395 po/rc.cpp:72 rc.cpp:72
+#: build/src/ui_birthdaylist_datasource_config.h:395 po/rc.cpp:78 rc.cpp:78
 msgid "Date field:"
 msgstr "Pole s dátumom:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:63
 #. i18n: ectx: property (text), widget (QLabel, lblNamedayIdentifyBy)
 #: build/src/ui_birthdaylist_datasource_config.h:381
-#: build/src/ui_birthdaylist_datasource_config.h:392 po/rc.cpp:76 rc.cpp:76
+#: build/src/ui_birthdaylist_datasource_config.h:392 po/rc.cpp:82 rc.cpp:82
 msgid "Identify by:"
 msgstr "Identifikovať cez:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:78
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayNameField)
 #: build/src/ui_birthdaylist_datasource_config.h:382
-#: build/src/ui_birthdaylist_datasource_config.h:396 po/rc.cpp:79 rc.cpp:79
+#: build/src/ui_birthdaylist_datasource_config.h:396 po/rc.cpp:85 rc.cpp:85
 msgid "Name field:"
 msgstr "Pole s menom:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:98
 #. i18n: ectx: property (text), item, widget (QComboBox, cmbNamedayNameField)
 #: build/src/ui_birthdaylist_datasource_config.h:385
-#: build/src/ui_birthdaylist_datasource_config.h:399 po/rc.cpp:83 rc.cpp:83
+#: build/src/ui_birthdaylist_datasource_config.h:399 po/rc.cpp:89 rc.cpp:89
 msgid "Given name"
 msgstr "Krstné meno"
 
 #. i18n: file: src/birthdaylist_events_config.ui:131
 #. i18n: ectx: property (text), widget (QLabel, lblAnniversaryField)
 #: build/src/ui_birthdaylist_datasource_config.h:387
-#: build/src/ui_birthdaylist_datasource_config.h:394 po/rc.cpp:93 rc.cpp:93
+#: build/src/ui_birthdaylist_datasource_config.h:394 po/rc.cpp:99 rc.cpp:99
 msgid "Anniversary field:"
 msgstr "Pole pre výročie:"
 
 #. i18n: file: src/birthdaylist_events_config.ui:108
 #. i18n: ectx: property (text), widget (QRadioButton, rbNamedayBothFields)
 #: build/src/ui_birthdaylist_datasource_config.h:390
-#: build/src/ui_birthdaylist_datasource_config.h:403 po/rc.cpp:86 rc.cpp:86
+#: build/src/ui_birthdaylist_datasource_config.h:403 po/rc.cpp:92 rc.cpp:92
 msgid "Both, preferring date field"
 msgstr "Oba spôsoby, uprednostniť dátum"
 
@@ -331,7 +331,7 @@ msgstr "Akonadi kolekcia:"
 #. i18n: ectx: property (text), widget (QLabel, lblComingShowDays_2)
 #. i18n: file: src/birthdaylist_events_config.ui:313
 #. i18n: ectx: property (text), widget (QLabel, lblPastShowDays_2)
-#: po/rc.cpp:12 po/rc.cpp:119 po/rc.cpp:125 rc.cpp:12 rc.cpp:119 rc.cpp:125
+#: po/rc.cpp:12 po/rc.cpp:125 po/rc.cpp:131 rc.cpp:12 rc.cpp:125 rc.cpp:131
 msgctxt "label: show events within x <days>"
 msgid "days"
 msgstr "dní"
@@ -368,18 +368,30 @@ msgctxt "Value to be matched when filtering contacts"
 msgid "Match value:"
 msgstr "Hľadaná hodnota:"
 
+#. i18n: file: src/birthdaylist_contacts_config.ui:232
+#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeCustomFieldName)
+#: po/rc.cpp:69 rc.cpp:69
+msgid "Filter by the custom field:"
+msgstr "Filtrovať pomocou vlastného poľa:"
+
+#. i18n: file: src/birthdaylist_contacts_config.ui:242
+#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeCustomFieldPrefix)
+#: po/rc.cpp:72 rc.cpp:72
+msgid "Filter by multiple custom fields (prefix):"
+msgstr "Filtrovať pomocou viacerých vlastných polí (prefix):"
+
 #. i18n: file: src/birthdaylist_table_config.ui:26
 #. i18n: ectx: property (text), widget (QLabel, lblTitleColumns)
-#: po/rc.cpp:138 rc.cpp:138
+#: po/rc.cpp:144 rc.cpp:144
 msgid "Columns"
 msgstr "Stĺpce"
 
-#: po/rc.cpp:169 rc.cpp:169
+#: po/rc.cpp:175 rc.cpp:175
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Karol Slanina"
 
-#: po/rc.cpp:170 rc.cpp:170
+#: po/rc.cpp:176 rc.cpp:176
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "karol.slanina@gmail.com"
@@ -524,12 +536,6 @@ msgid_plural "in %1 days"
 msgstr[0] "zajtra"
 msgstr[1] "o %1 dni"
 msgstr[2] "o %1 dní"
-
-#~ msgid "Filter by multiple custom fields (prefix):"
-#~ msgstr "Filtrovať pomocou viacerých vlastných polí (prefix):"
-
-#~ msgid "Filter by the custom field:"
-#~ msgstr "Filtrovať pomocou vlastného poľa:"
 
 #~ msgid "Data source"
 #~ msgstr "Zdroj dát"

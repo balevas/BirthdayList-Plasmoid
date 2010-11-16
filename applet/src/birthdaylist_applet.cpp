@@ -110,13 +110,13 @@ m_lastContextMenuEventOnTree (false) {
     // Authors
     m_aboutData->setProgramIconName("bl_cookie");
     m_aboutData->addAuthor(ki18n("Karol Slanina"), ki18n("Plasmoid, data engines, Slovak translation"), "karol.slanina@gmail.com");
-    m_aboutData->addCredit(ki18n("Ondřej Kuda"), ki18n("Czech translation"));
-    m_aboutData->addCredit(ki18n("Andreas Goldbohm"), ki18n("German translation"));
-    m_aboutData->addCredit(ki18n("David Vignoni"), ki18n("Nuvola icons"));
+    m_aboutData->addCredit(ki18n("Ondřej Kuda"), ki18n("Czech translation"), "ondrej.kuda@gmail.com");
+    m_aboutData->addCredit(ki18n("Andreas Goldbohm"), ki18n("German translation"), "vongoldi@o2online.de");
+    m_aboutData->addCredit(ki18n("David Vignoni"), ki18n("Nuvola icons"), "http://www.icon-king.com/projects/nuvola");
     m_aboutData->addCredit(ki18n("All people who report bugs, send feedback and new feature requests"));
     m_aboutData->setTranslator(ki18nc("NAME OF THE TRANSLATORS", "Your names"), ki18nc("EMAIL OF THE TRANSLATORS", "Your emails"));
     
-    resize(350, 200);
+    //resize(350, 200);
 }
 
 BirthdayListApplet::~BirthdayListApplet() {
