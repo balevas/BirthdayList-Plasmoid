@@ -100,7 +100,7 @@ m_lastContextMenuEventOnTree (false) {
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setHasConfigurationInterface(true);
     
-    m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.6.3", ki18n("Birthday List"),
+    m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.7.0", ki18n("Birthday List"),
     KAboutData::License_GPL,
     ki18n("Copyright (C) 2010 Karol Slanina"),
     ki18n("Shows the list of upcoming birthdays, anniversaries and name days"),
@@ -366,71 +366,71 @@ void BirthdayListApplet::dataUpdated(const QString &name, const Plasma::DataEngi
 
 void BirthdayListApplet::configAccepted() {
     QString selectedDataSource;
-    if (m_ui_datasource.cmbDataSource->count() > 0) {
-        selectedDataSource = m_ui_datasource.cmbDataSource->itemText(m_ui_datasource.cmbDataSource->currentIndex());
+    if (m_ui_contacts.cmbDataSource->count() > 0) {
+        selectedDataSource = m_ui_contacts.cmbDataSource->itemText(m_ui_contacts.cmbDataSource->currentIndex());
     }
     if (selectedDataSource == "Akonadi") m_eventDataSource = EDS_Akonadi;
     else if (selectedDataSource == "Thunderbird") m_eventDataSource = EDS_Thunderbird;
     else m_eventDataSource = EDS_KABC;
 
-    if (m_ui_datasource.cmbAkoCollection->isEnabled()) {
-        m_akoCollection = m_ui_datasource.cmbAkoCollection->itemData(m_ui_datasource.cmbAkoCollection->currentIndex()).toString();
+    if (m_ui_contacts.cmbAkoCollection->isEnabled()) {
+        m_akoCollection = m_ui_contacts.cmbAkoCollection->itemData(m_ui_contacts.cmbAkoCollection->currentIndex()).toString();
     }
     else m_akoCollection = "";
 
-    m_namedayDateFieldString = m_ui_datasource.lineEditNamedayDateField->text();
-    m_anniversaryFieldString = m_ui_datasource.lineEditAnniversaryField->text();
-    if (m_ui_datasource.rbNamedayDateField->isChecked()) m_namedayIdentificationMode = NIM_DateField;
-    else if (m_ui_datasource.rbNamedayNameField->isChecked()) m_namedayIdentificationMode = NIM_GivenName;
+    m_namedayDateFieldString = m_ui_events.lineEditNamedayDateField->text();
+    m_anniversaryFieldString = m_ui_events.lineEditAnniversaryField->text();
+    if (m_ui_events.rbNamedayDateField->isChecked()) m_namedayIdentificationMode = NIM_DateField;
+    else if (m_ui_events.rbNamedayNameField->isChecked()) m_namedayIdentificationMode = NIM_GivenName;
     else m_namedayIdentificationMode = NIM_Both;
 
-    m_showColumnHeaders = m_ui_contents.chckShowColumnHeaders->isChecked();
-    m_showColName = m_ui_contents.chckShowColName->isChecked();
-    m_showColAge = m_ui_contents.chckShowColAge->isChecked();
-    m_showColDate = m_ui_contents.chckShowColDate->isChecked();
-    m_showColWhen = m_ui_contents.chckShowColWhen->isChecked();
+    m_showColumnHeaders = m_ui_table.chckShowColumnHeaders->isChecked();
+    m_showColName = m_ui_table.chckShowColName->isChecked();
+    m_showColAge = m_ui_table.chckShowColAge->isChecked();
+    m_showColDate = m_ui_table.chckShowColDate->isChecked();
+    m_showColWhen = m_ui_table.chckShowColWhen->isChecked();
 
-    m_showNicknames = m_ui_contents.chckShowNicknames->isChecked();
+    m_showNicknames = m_ui_table.chckShowNicknames->isChecked();
 
-    m_showNamedays = m_ui_contents.chckShowNamedays->isChecked();
-    m_curNamedayLangCode = m_namedayLangCodes[m_ui_contents.cmbNamedayCalendar->currentIndex()];
-    if (m_ui_contents.rbNamedayShowIndEvents->isChecked()) m_namedayDisplayMode = NDM_IndividualEvents;
-    else if (m_ui_contents.rbNamedayShowAllFromCal->isChecked()) m_namedayDisplayMode = NDM_AllCalendarNames;
+    m_showNamedays = m_ui_events.chckShowNamedays->isChecked();
+    m_curNamedayLangCode = m_namedayLangCodes[m_ui_events.cmbNamedayCalendar->currentIndex()];
+    if (m_ui_events.rbNamedayShowIndEvents->isChecked()) m_namedayDisplayMode = NDM_IndividualEvents;
+    else if (m_ui_events.rbNamedayShowAllFromCal->isChecked()) m_namedayDisplayMode = NDM_AllCalendarNames;
     else m_namedayDisplayMode = NDM_AggregateEvents;
 
-    m_showAnniversaries = m_ui_contents.chckShowAnniversaries->isChecked();
+    m_showAnniversaries = m_ui_events.chckShowAnniversaries->isChecked();
     
-    if (m_ui_filter.rbFilterTypeCategory->isChecked()) m_filterType = FT_Category;
-    else if (m_ui_filter.rbFilterTypeCustomFieldName->isChecked()) m_filterType = FT_CustomField;
-    else if (m_ui_filter.rbFilterTypeCustomFieldPrefix->isChecked()) m_filterType = FT_CustomFieldPrefix;
+    if (m_ui_contacts.rbFilterTypeCategory->isChecked()) m_filterType = FT_Category;
+    else if (m_ui_contacts.rbFilterTypeCustomFieldName->isChecked()) m_filterType = FT_CustomField;
+    else if (m_ui_contacts.rbFilterTypeCustomFieldPrefix->isChecked()) m_filterType = FT_CustomFieldPrefix;
     else m_filterType = FT_Off;
-    m_customFieldName = m_ui_filter.lineEditCustomFieldName->text();
-    m_customFieldPrefix = m_ui_filter.lineEditCustomFieldPrefix->text();
-    m_filterValue = m_ui_filter.lineEditFilterValue->text();
+    m_customFieldName = m_ui_contacts.lineEditCustomFieldName->text();
+    m_customFieldPrefix = m_ui_contacts.lineEditCustomFieldPrefix->text();
+    m_filterValue = m_ui_contacts.lineEditFilterValue->text();
 
-    m_isTodaysForeground = m_ui_appearance.chckTodaysForeground->isChecked();
-    m_brushTodaysForeground.setColor(m_ui_appearance.colorbtnTodaysForeground->color());
-    m_isTodaysBackground = m_ui_appearance.chckTodaysBackground->isChecked();
-    m_brushTodaysBackground.setColor(m_ui_appearance.colorbtnTodaysBackground->color());
-    m_isTodaysHighlightNoEvents = m_ui_appearance.chckTodaysHighlightNoEvent->isChecked();
+    m_isTodaysForeground = m_ui_colors.chckTodaysForeground->isChecked();
+    m_brushTodaysForeground.setColor(m_ui_colors.colorbtnTodaysForeground->color());
+    m_isTodaysBackground = m_ui_colors.chckTodaysBackground->isChecked();
+    m_brushTodaysBackground.setColor(m_ui_colors.colorbtnTodaysBackground->color());
+    m_isTodaysHighlightNoEvents = m_ui_colors.chckTodaysHighlightNoEvent->isChecked();
 
-    m_eventThreshold = m_ui_appearance.spinComingShowDays->value();
-    m_highlightThreshold = m_ui_appearance.spinComingHighlightDays->value();
-    m_isHighlightForeground = m_ui_appearance.chckComingHighlightForeground->isChecked();
-    m_brushHighlightForeground.setColor(m_ui_appearance.colorbtnComingHighlightForeground->color());
-    m_isHighlightBackground = m_ui_appearance.chckComingHighlightBackground->isChecked();
-    m_brushHighlightBackground.setColor(m_ui_appearance.colorbtnComingHighlightBackground->color());
-    m_isComingHighlightNoEvents = m_ui_appearance.chckComingHighlightNoEvent->isChecked();
+    m_eventThreshold = m_ui_events.spinComingShowDays->value();
+    m_highlightThreshold = m_ui_colors.spinComingHighlightDays->value();
+    m_isHighlightForeground = m_ui_colors.chckComingHighlightForeground->isChecked();
+    m_brushHighlightForeground.setColor(m_ui_colors.colorbtnComingHighlightForeground->color());
+    m_isHighlightBackground = m_ui_colors.chckComingHighlightBackground->isChecked();
+    m_brushHighlightBackground.setColor(m_ui_colors.colorbtnComingHighlightBackground->color());
+    m_isComingHighlightNoEvents = m_ui_colors.chckComingHighlightNoEvent->isChecked();
 
-    m_pastThreshold = m_ui_appearance.spinPastShowDays->value();
+    m_pastThreshold = m_ui_events.spinPastShowDays->value();
     AbstractAnnualEventEntry::setPastThreshold(m_pastThreshold);
-    m_isPastForeground = m_ui_appearance.chckPastForeground->isChecked();
-    m_brushPastForeground.setColor(m_ui_appearance.colorbtnPastForeground->color());
-    m_isPastBackground = m_ui_appearance.chckPastBackground->isChecked();
-    m_brushPastBackground.setColor(m_ui_appearance.colorbtnPastBackground->color());
-    m_isPastHighlightNoEvents = m_ui_appearance.chckPastHighlightNoEvent->isChecked();
+    m_isPastForeground = m_ui_colors.chckPastForeground->isChecked();
+    m_brushPastForeground.setColor(m_ui_colors.colorbtnPastForeground->color());
+    m_isPastBackground = m_ui_colors.chckPastBackground->isChecked();
+    m_brushPastBackground.setColor(m_ui_colors.colorbtnPastBackground->color());
+    m_isPastHighlightNoEvents = m_ui_colors.chckPastHighlightNoEvent->isChecked();
 
-    m_selectedDateFormat = m_ui_appearance.cmbDateDisplayFormat->currentIndex();
+    m_selectedDateFormat = m_ui_table.cmbDateDisplayFormat->currentIndex();
 
     QTreeView *qTreeView = m_treeView->nativeWidget();
     m_columnWidthName = qTreeView->columnWidth(0);
@@ -540,131 +540,123 @@ void BirthdayListApplet::plasmaThemeChanged() {
 }
     
 void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) {
-    QWidget *dataSourceWidget = new QWidget;
-    QWidget *contentsWidget = new QWidget;
-    QWidget *filterWidget = new QWidget;
-    QWidget *appearanceWidget = new QWidget;
+    QWidget *contactsWidget = new QWidget;
+    QWidget *eventsWidget = new QWidget;
+    QWidget *tableWidget = new QWidget;
+    QWidget *colorsWidget = new QWidget;
 
-    m_ui_datasource.setupUi(dataSourceWidget);
-    m_ui_contents.setupUi(contentsWidget);
-    m_ui_filter.setupUi(filterWidget);
-    m_ui_appearance.setupUi(appearanceWidget);
+    m_ui_contacts.setupUi(contactsWidget);
+    m_ui_events.setupUi(eventsWidget);
+    m_ui_table.setupUi(tableWidget);
+    m_ui_colors.setupUi(colorsWidget);
 
     parent->setButtons(KDialog::Ok | KDialog::Cancel);
-    parent->addPage(dataSourceWidget, i18n("Data source"), "preferences-contact-list");
-    parent->addPage(contentsWidget, i18n("Contents"), "view-form-table");
-    parent->addPage(filterWidget, i18n("Filter"), "view-filter");
-    parent->addPage(appearanceWidget, i18n("Appearance"), "preferences-desktop-theme");
+    parent->addPage(contactsWidget, i18n("Contacts"), "system-users");
+    parent->addPage(eventsWidget, i18n("Events"), "bl_date");
+    parent->addPage(tableWidget, i18n("Table"), "view-form-table");
+    parent->addPage(colorsWidget, i18n("Colors"), "preferences-desktop-color");
 
-    m_ui_datasource.cmbDataSource->clear();
+    m_ui_contacts.cmbDataSource->clear();
     if (m_dataEngine_kabc->isValid()) {
-        m_ui_datasource.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
-        if (m_eventDataSource == EDS_KABC) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+        m_ui_contacts.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
+        if (m_eventDataSource == EDS_KABC) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
     }
 
     if (m_dataEngine_akonadi->isValid()) {
-        m_ui_datasource.cmbDataSource->addItem(i18n("Akonadi"), QVariant("Akonadi"));
-        if (m_eventDataSource == EDS_Akonadi) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+        m_ui_contacts.cmbDataSource->addItem(i18n("Akonadi"), QVariant("Akonadi"));
+        if (m_eventDataSource == EDS_Akonadi) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
     }
 
     if (m_dataEngine_thunderbird->isValid()) {
-        m_ui_datasource.cmbDataSource->addItem(i18n("Thunderbird"), QVariant("Thunderbird"));
-        if (m_eventDataSource == EDS_Thunderbird) m_ui_datasource.cmbDataSource->setCurrentIndex(m_ui_datasource.cmbDataSource->count()-1);
+        m_ui_contacts.cmbDataSource->addItem(i18n("Thunderbird"), QVariant("Thunderbird"));
+        if (m_eventDataSource == EDS_Thunderbird) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
     }
-    dataSourceChanged(m_ui_datasource.cmbDataSource->currentText());
+    dataSourceChanged(m_ui_contacts.cmbDataSource->currentText());
 
-    m_ui_datasource.cmbAkoCollection->clear();
+    m_ui_contacts.cmbAkoCollection->clear();
     Plasma::DataEngine::Data data_collections = m_dataEngine_akonadi->query("Collections");
     QHashIterator<QString, QVariant> collectionsIt(data_collections);
     while (collectionsIt.hasNext()) {
         collectionsIt.next();
         QVariantHash collectionInfo = collectionsIt.value().toHash();
-        m_ui_datasource.cmbAkoCollection->addItem(collectionInfo["Name"].toString(), collectionInfo["Resource"]);
+        m_ui_contacts.cmbAkoCollection->addItem(collectionInfo["Name"].toString(), collectionInfo["Resource"]);
         if (collectionInfo["Resource"].toString() == m_akoCollection) {
-            m_ui_datasource.cmbAkoCollection->setCurrentIndex(m_ui_datasource.cmbAkoCollection->count()-1);
+            m_ui_contacts.cmbAkoCollection->setCurrentIndex(m_ui_contacts.cmbAkoCollection->count()-1);
         }
     }
-    if (m_ui_datasource.cmbAkoCollection->count() == 0) {
-        m_ui_datasource.cmbAkoCollection->addItem(i18nc("No Akonadi collections", "No collections available"));
-        m_ui_datasource.cmbAkoCollection->setEnabled(false);
+    if (m_ui_contacts.cmbAkoCollection->count() == 0) {
+        m_ui_contacts.cmbAkoCollection->addItem(i18nc("No Akonadi collections", "No collections available"));
+        m_ui_contacts.cmbAkoCollection->setEnabled(false);
     }
-    else m_ui_datasource.cmbAkoCollection->setEnabled(true);
+    else m_ui_contacts.cmbAkoCollection->setEnabled(true);
 
-    m_ui_datasource.rbNamedayDateField->setChecked(m_namedayIdentificationMode == NIM_DateField);
-    m_ui_datasource.lineEditNamedayDateField->setText(m_namedayDateFieldString);
-    m_ui_datasource.rbNamedayNameField->setChecked(m_namedayIdentificationMode == NIM_GivenName);
-    m_ui_datasource.lineEditAnniversaryField->setText(m_anniversaryFieldString);
-    m_ui_datasource.rbNamedayBothFields->setChecked(m_namedayIdentificationMode == NIM_Both);
+    m_ui_events.rbNamedayDateField->setChecked(m_namedayIdentificationMode == NIM_DateField);
+    m_ui_events.lineEditNamedayDateField->setText(m_namedayDateFieldString);
+    m_ui_events.rbNamedayNameField->setChecked(m_namedayIdentificationMode == NIM_GivenName);
+    m_ui_events.lineEditAnniversaryField->setText(m_anniversaryFieldString);
+    m_ui_events.rbNamedayBothFields->setChecked(m_namedayIdentificationMode == NIM_Both);
 
-    m_ui_contents.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
-    m_ui_contents.chckShowColName->setChecked(m_showColName);
-    m_ui_contents.chckShowColAge->setChecked(m_showColAge);
-    m_ui_contents.chckShowColDate->setChecked(m_showColDate);
-    m_ui_contents.chckShowColWhen->setChecked(m_showColWhen);
+    m_ui_table.chckShowColumnHeaders->setChecked(m_showColumnHeaders);
+    m_ui_table.chckShowColName->setChecked(m_showColName);
+    m_ui_table.chckShowColAge->setChecked(m_showColAge);
+    m_ui_table.chckShowColDate->setChecked(m_showColDate);
+    m_ui_table.chckShowColWhen->setChecked(m_showColWhen);
 
-    m_ui_contents.chckShowNicknames->setChecked(m_showNicknames);
+    m_ui_table.chckShowNicknames->setChecked(m_showNicknames);
 
-    m_ui_contents.chckShowNamedays->setChecked(m_showNamedays);
-    m_ui_contents.rbNamedayShowIndEvents->setChecked(m_namedayDisplayMode == NDM_IndividualEvents);
-    m_ui_contents.rbNamedayShowAllFromCal->setChecked(m_namedayDisplayMode == NDM_AllCalendarNames);
-    m_ui_contents.rbNamedayShowAggrEvents->setChecked(m_namedayDisplayMode == NDM_AggregateEvents);
+    m_ui_events.chckShowNamedays->setChecked(m_showNamedays);
+    m_ui_events.rbNamedayShowIndEvents->setChecked(m_namedayDisplayMode == NDM_IndividualEvents);
+    m_ui_events.rbNamedayShowAllFromCal->setChecked(m_namedayDisplayMode == NDM_AllCalendarNames);
+    m_ui_events.rbNamedayShowAggrEvents->setChecked(m_namedayDisplayMode == NDM_AggregateEvents);
 
-    m_ui_contents.cmbNamedayCalendar->clear();
-    m_ui_contents.cmbNamedayCalendar->addItems(m_namedayLangStrings);
+    m_ui_events.cmbNamedayCalendar->clear();
+    m_ui_events.cmbNamedayCalendar->addItems(m_namedayLangStrings);
     if (m_namedayLangCodes.contains(m_curNamedayLangCode)) {
-        m_ui_contents.cmbNamedayCalendar->setCurrentIndex(m_namedayLangCodes.indexOf(m_curNamedayLangCode));
-    } else m_ui_contents.cmbNamedayCalendar->setCurrentIndex(0);
-    m_ui_contents.chckShowAnniversaries->setChecked(m_showAnniversaries);
+        m_ui_events.cmbNamedayCalendar->setCurrentIndex(m_namedayLangCodes.indexOf(m_curNamedayLangCode));
+    } else m_ui_events.cmbNamedayCalendar->setCurrentIndex(0);
+    m_ui_events.chckShowAnniversaries->setChecked(m_showAnniversaries);
     
-    m_ui_filter.rbFilterTypeOff->setChecked(m_filterType == FT_Off);
-    m_ui_filter.rbFilterTypeCategory->setChecked(m_filterType == FT_Category);
-    m_ui_filter.rbFilterTypeCustomFieldName->setChecked(m_filterType == FT_CustomField);
-    m_ui_filter.rbFilterTypeCustomFieldPrefix->setChecked(m_filterType == FT_CustomFieldPrefix);
-    m_ui_filter.lineEditCustomFieldName->setText(m_customFieldName);
-    m_ui_filter.lineEditCustomFieldPrefix->setText(m_customFieldPrefix);
-    m_ui_filter.lineEditFilterValue->setText(m_filterValue);
+    m_ui_contacts.rbFilterTypeOff->setChecked(m_filterType == FT_Off);
+    m_ui_contacts.rbFilterTypeCategory->setChecked(m_filterType == FT_Category);
+    m_ui_contacts.rbFilterTypeCustomFieldName->setChecked(m_filterType == FT_CustomField);
+    m_ui_contacts.rbFilterTypeCustomFieldPrefix->setChecked(m_filterType == FT_CustomFieldPrefix);
+    m_ui_contacts.lineEditCustomFieldName->setText(m_customFieldName);
+    m_ui_contacts.lineEditCustomFieldPrefix->setText(m_customFieldPrefix);
+    m_ui_contacts.lineEditFilterValue->setText(m_filterValue);
 
-    m_ui_appearance.chckTodaysForeground->setChecked(m_isTodaysForeground);
-    m_ui_appearance.colorbtnTodaysForeground->setColor(m_brushTodaysForeground.color());
-    m_ui_appearance.chckTodaysBackground->setChecked(m_isTodaysBackground);
-    m_ui_appearance.colorbtnTodaysBackground->setColor(m_brushTodaysBackground.color());
-    m_ui_appearance.chckTodaysHighlightNoEvent->setChecked(m_isTodaysHighlightNoEvents);
+    m_ui_colors.chckTodaysForeground->setChecked(m_isTodaysForeground);
+    m_ui_colors.colorbtnTodaysForeground->setColor(m_brushTodaysForeground.color());
+    m_ui_colors.chckTodaysBackground->setChecked(m_isTodaysBackground);
+    m_ui_colors.colorbtnTodaysBackground->setColor(m_brushTodaysBackground.color());
+    m_ui_colors.chckTodaysHighlightNoEvent->setChecked(m_isTodaysHighlightNoEvents);
 
-    m_ui_appearance.spinComingShowDays->setValue(m_eventThreshold);
-    m_ui_appearance.spinComingHighlightDays->setValue(m_highlightThreshold);
-    m_ui_appearance.chckComingHighlightForeground->setChecked(m_isHighlightForeground);
-    m_ui_appearance.colorbtnComingHighlightForeground->setColor(m_brushHighlightForeground.color());
-    m_ui_appearance.chckComingHighlightBackground->setChecked(m_isHighlightBackground);
-    m_ui_appearance.colorbtnComingHighlightBackground->setColor(m_brushHighlightBackground.color());
-    m_ui_appearance.chckComingHighlightNoEvent->setChecked(m_isComingHighlightNoEvents);
+    m_ui_events.spinComingShowDays->setValue(m_eventThreshold);
+    m_ui_colors.spinComingHighlightDays->setValue(m_highlightThreshold);
+    m_ui_colors.chckComingHighlightForeground->setChecked(m_isHighlightForeground);
+    m_ui_colors.colorbtnComingHighlightForeground->setColor(m_brushHighlightForeground.color());
+    m_ui_colors.chckComingHighlightBackground->setChecked(m_isHighlightBackground);
+    m_ui_colors.colorbtnComingHighlightBackground->setColor(m_brushHighlightBackground.color());
+    m_ui_colors.chckComingHighlightNoEvent->setChecked(m_isComingHighlightNoEvents);
 
-    m_ui_appearance.spinPastShowDays->setValue(m_pastThreshold);
-    m_ui_appearance.chckPastForeground->setChecked(m_isPastForeground);
-    m_ui_appearance.colorbtnPastForeground->setColor(m_brushPastForeground.color());
-    m_ui_appearance.chckPastBackground->setChecked(m_isPastBackground);
-    m_ui_appearance.colorbtnPastBackground->setColor(m_brushPastBackground.color());
-    m_ui_appearance.chckPastHighlightNoEvent->setChecked(m_isPastHighlightNoEvents);
+    m_ui_events.spinPastShowDays->setValue(m_pastThreshold);
+    m_ui_colors.chckPastForeground->setChecked(m_isPastForeground);
+    m_ui_colors.colorbtnPastForeground->setColor(m_brushPastForeground.color());
+    m_ui_colors.chckPastBackground->setChecked(m_isPastBackground);
+    m_ui_colors.colorbtnPastBackground->setColor(m_brushPastBackground.color());
+    m_ui_colors.chckPastHighlightNoEvent->setChecked(m_isPastHighlightNoEvents);
 
-    m_ui_appearance.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
+    m_ui_table.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
 
 
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lblNamedayIdentifyBy, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.rbNamedayNameField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.cmbNamedayNameField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.rbNamedayDateField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowNamedays, SIGNAL(toggled(bool)), m_ui_datasource.lineEditNamedayDateField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lblAnniversaryField, SLOT(setEnabled(bool)));
-    connect(m_ui_contents.chckShowAnniversaries, SIGNAL(toggled(bool)), m_ui_datasource.lineEditAnniversaryField, SLOT(setEnabled(bool)));
-    connect(m_ui_datasource.cmbDataSource, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataSourceChanged(QString)));
-
+    connect(m_ui_contacts.cmbDataSource, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataSourceChanged(QString)));
     connect(parent, SIGNAL(okClicked()), this, SLOT(configAccepted()));
 
     parent->resize(parent->minimumSizeHint());
 }
 
 void BirthdayListApplet::dataSourceChanged(const QString &name) {
-    m_ui_datasource.lblAkoCollection->setVisible(name == "Akonadi");
-    m_ui_datasource.cmbAkoCollection->setVisible(name == "Akonadi");
+    m_ui_contacts.lblAkoCollection->setVisible(name == "Akonadi");
+    m_ui_contacts.cmbAkoCollection->setVisible(name == "Akonadi");
 }
 
 

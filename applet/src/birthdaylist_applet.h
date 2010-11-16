@@ -19,10 +19,10 @@
  */
 
 
-#include "ui_birthdaylist_datasource_config.h"
-#include "ui_birthdaylist_contents_config.h"
-#include "ui_birthdaylist_filter_config.h"
-#include "ui_birthdaylist_appearance_config.h"
+#include "ui_birthdaylist_contacts_config.h"
+#include "ui_birthdaylist_events_config.h"
+#include "ui_birthdaylist_table_config.h"
+#include "ui_birthdaylist_colors_config.h"
 
 #include <QStandardItemModel>
 
@@ -127,10 +127,10 @@ private:
     QGraphicsWidget *m_graphicsWidget;
     Plasma::TreeView *m_treeView;
 
-    Ui::BirthdayListDataSourceConfig m_ui_datasource;
-    Ui::BirthdayListContentsConfig m_ui_contents;
-    Ui::BirthdayListFilterConfig m_ui_filter;
-    Ui::BirthdayListAppearanceConfig m_ui_appearance;
+    Ui::BirthdayListContactsConfig m_ui_contacts;
+    Ui::BirthdayListEventsConfig m_ui_events;
+    Ui::BirthdayListTableConfig m_ui_table;
+    Ui::BirthdayListColorsConfig m_ui_colors;
 
 
     bool m_showColumnHeaders;

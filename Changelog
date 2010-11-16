@@ -30,7 +30,10 @@
         ============= V 0.6.2 ==================
         - Applet minimum size reduced to 10x10
 
-        ============= V 0.6.3 ==================
-        - Added contact filtering option - by category or custom field(s)
+        ============= V 0.7.0 ==================
+        - Added contact filtering option
+          - by category (easily editable in kaddressbook)
+          - or by custom field(s) - useful for gmail group filtering over Akonadi
         - Multiple plasmoid instances can run in parallel, each with different data source / contact filter
         - Added "Send Email" and "Visit Homepage" context menu items for individual contacts
+        - Reworked configuration dialog

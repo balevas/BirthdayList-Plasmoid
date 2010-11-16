@@ -1,0 +1,16 @@
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules )
+
+# search packages used by KDE
+find_package(KDE4 REQUIRED)
+include (KDE4Defaults)
+include (MacroLibrary)
+include (MacroOptionalAddSubdirectory)
+include (FindKdepimLibs)
+
+add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+include_directories (${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${KDE4_INCLUDES} ${CMAKE_SOURCE_DIR}/libkdepim/)
+
+add_subdirectory(applet)
+add_subdirectory(dataengine-default)
+add_subdirectory(dataengine-akonadi)
+
