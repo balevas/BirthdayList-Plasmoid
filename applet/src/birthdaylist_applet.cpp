@@ -100,9 +100,9 @@ m_lastContextMenuEventOnTree (false) {
     setAspectRatioMode(Plasma::IgnoreAspectRatio);
     setHasConfigurationInterface(true);
     
-    m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.7.0", ki18n("Birthday List"),
+    m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.7.1", ki18n("Birthday List"),
     KAboutData::License_GPL,
-    ki18n("Copyright (C) 2010 Karol Slanina"),
+    ki18n("Copyright (C) 2011 Karol Slanina"),
     ki18n("Shows the list of upcoming birthdays, anniversaries and name days"),
     "http://kde-look.org/content/show.php?content=121134",
     "http://kde-look.org/content/show.php?content=121134");
@@ -279,7 +279,8 @@ QGraphicsWidget *BirthdayListApplet::graphicsWidget() {
 
         updateModels();
         m_treeView->setModel(&m_model);
-        m_treeView->setMinimumSize(10, 10);
+        m_treeView->setMinimumHeight(10);
+        setTreeColumnWidths();
 
         QGraphicsLinearLayout *layout = new QGraphicsLinearLayout(Qt::Vertical);
         layout->setContentsMargins(0, 0, 0, 0);

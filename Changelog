@@ -37,3 +37,7 @@
         - Multiple plasmoid instances can run in parallel, each with different data source / contact filter
         - Added "Send Email" and "Visit Homepage" context menu items for individual contacts
         - Reworked configuration dialog
+
+        ============= V 0.7.1 ==================
+        - Fixed startup rendering bug (occassionally the hidden columns with e-mail and homepage were shown)
+        - Fixed default applet size (scaled to the table contents, not to the minimum size)
