@@ -402,7 +402,7 @@ msgid "Birthday List"
 msgstr ""
 
 #: src/birthdaylist_applet.cpp:105
-msgid "Copyright (C) 2010 Karol Slanina"
+msgid "Copyright (C) 2010-2011 Karol Slanina"
 msgstr ""
 
 #: src/birthdaylist_applet.cpp:106

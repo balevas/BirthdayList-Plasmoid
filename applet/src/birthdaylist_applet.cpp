@@ -102,7 +102,7 @@ m_lastContextMenuEventOnTree (false) {
     
     m_aboutData = new KAboutData("birthdaylist_applet", QByteArray(), ki18n("Birthday List"), "0.7.1", ki18n("Birthday List"),
     KAboutData::License_GPL,
-    ki18n("Copyright (C) 2011 Karol Slanina"),
+    ki18n("Copyright (C) 2010-2011 Karol Slanina"),
     ki18n("Shows the list of upcoming birthdays, anniversaries and name days"),
     "http://kde-look.org/content/show.php?content=121134",
     "http://kde-look.org/content/show.php?content=121134");
@@ -112,6 +112,7 @@ m_lastContextMenuEventOnTree (false) {
     m_aboutData->addAuthor(ki18n("Karol Slanina"), ki18n("Plasmoid, data engines, Slovak translation"), "karol.slanina@gmail.com");
     m_aboutData->addCredit(ki18n("Ondřej Kuda"), ki18n("Czech translation"), "ondrej.kuda@gmail.com");
     m_aboutData->addCredit(ki18n("Andreas Goldbohm"), ki18n("German translation"), "vongoldi@o2online.de");
+    m_aboutData->addCredit(ki18n("Richard Bos"), ki18n("Dutch translation"));
     m_aboutData->addCredit(ki18n("David Vignoni"), ki18n("Nuvola icons"), "http://www.icon-king.com/projects/nuvola");
     m_aboutData->addCredit(ki18n("All people who report bugs, send feedback and new feature requests"));
     m_aboutData->setTranslator(ki18nc("NAME OF THE TRANSLATORS", "Your names"), ki18nc("EMAIL OF THE TRANSLATORS", "Your emails"));
