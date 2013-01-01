@@ -20,57 +20,63 @@
 
 
 #include <Plasma/TreeView>
+#include "birthdaylist_aboutdata.h"
 
-class BirthdayListModel;
+namespace BirthdayList {
+    class Model;
+};
 class QGraphicsWidget;
 
 
-struct BirthdayListViewConfiguration 
+namespace BirthdayList
 {
-    BirthdayListViewConfiguration();
+    struct ViewConfiguration 
+    {
+        ViewConfiguration();
 
-    bool showColumnHeaders;
-    bool showColName;
-    bool showColAge;
-    bool showColDate;
-    bool showColWhen;
-    int columnWidthName;
-    int columnWidthAge;
-    int columnWidthDate;
-    int columnWidthWhen;
-};
+        bool showColumnHeaders;
+        bool showColName;
+        bool showColAge;
+        bool showColDate;
+        bool showColWhen;
+        int columnWidthName;
+        int columnWidthAge;
+        int columnWidthDate;
+        int columnWidthWhen;
+    };
 
 
-class BirthdayListView : public Plasma::TreeView
-{
-    Q_OBJECT
-public:
-    BirthdayListView(BirthdayListModel *model, QGraphicsWidget *parent = 0);
-    ~BirthdayListView();
+    class View : public Plasma::TreeView
+    {
+        Q_OBJECT
+    public:
+        View(Model *model, QGraphicsWidget *parent = 0);
+        ~View();
+        
+        void setConfiguration(ViewConfiguration newConf);
+        ViewConfiguration getConfiguration() const;
+
+        QList<QAction *> contextualActions();
+
+        void setColumnWidths();
+        /** Changes the tree and item colors according to the current Plasma theme. */
+        void usePlasmaThemeColors();
+        
+    private:
+        ViewConfiguration m_conf;
     
-    void setConfiguration(BirthdayListViewConfiguration newConf);
-    BirthdayListViewConfiguration getConfiguration() const;
+        Model *m_model;
 
-    QList<QAction *> contextualActions();
+        QString getSelectedLineItem(int column);
 
-    void setColumnWidths();
-    /** Changes the tree and item colors according to the current Plasma theme. */
-    void usePlasmaThemeColors();
-    
-private:
-    BirthdayListViewConfiguration m_conf;
- 
-    BirthdayListModel *m_model;
-
-    QString getSelectedLineItem(int column);
-
-private slots:
-    /** Receives a notification when the system plasma theme is changed. */
-    void plasmaThemeChanged();
-    void columnsResized(int logicalIndex, int oldSize, int newSize);
-    
-    void sendEmail();
-    void visitHomepage();
+    private slots:
+        /** Receives a notification when the system plasma theme is changed. */
+        void plasmaThemeChanged();
+        void columnsResized(int logicalIndex, int oldSize, int newSize);
+        
+        void sendEmail();
+        void visitHomepage();
+    };
 };
 
 

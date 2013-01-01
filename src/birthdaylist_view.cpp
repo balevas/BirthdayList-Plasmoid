@@ -27,7 +27,7 @@
 #include <QTreeView>
 
 
-BirthdayListViewConfiguration::BirthdayListViewConfiguration() :
+BirthdayList::ViewConfiguration::ViewConfiguration() :
 showColumnHeaders(true),
 showColName(true),
 showColAge(true),
@@ -41,7 +41,7 @@ columnWidthWhen(0)
 }
 
 
-BirthdayListView::BirthdayListView(BirthdayListModel *model, QGraphicsWidget *parent)
+BirthdayList::View::View(Model *model, QGraphicsWidget *parent)
 : Plasma::TreeView(parent),
 m_model(model)
 {
@@ -64,11 +64,11 @@ m_model(model)
     connect(nativeWidget()->header(), SIGNAL(sectionResized(int,int,int)), this, SLOT(columnsResized(int,int,int)));
 }
 
-BirthdayListView::~BirthdayListView()
+BirthdayList::View::~View()
 {
 }
 
-void BirthdayListView::setConfiguration(BirthdayListViewConfiguration newConf) 
+void BirthdayList::View::setConfiguration(ViewConfiguration newConf) 
 {
     m_conf = newConf;
 
@@ -77,12 +77,12 @@ void BirthdayListView::setConfiguration(BirthdayListViewConfiguration newConf)
     usePlasmaThemeColors();
 }
 
-BirthdayListViewConfiguration BirthdayListView::getConfiguration() const 
+BirthdayList::ViewConfiguration BirthdayList::View::getConfiguration() const 
 {
     return m_conf;
 }
 
-QList<QAction *> BirthdayListView::contextualActions()
+QList<QAction *> BirthdayList::View::contextualActions()
 {
     QList<QAction *> currentActions;
 
@@ -115,14 +115,14 @@ QList<QAction *> BirthdayListView::contextualActions()
     return currentActions;
 }
 
-QString BirthdayListView::getSelectedLineItem(int column)
+QString BirthdayList::View::getSelectedLineItem(int column)
 {
     QModelIndex idx = nativeWidget()->currentIndex();
     if (idx.isValid()) return m_model->itemFromIndex((m_model->index(idx.row(), column, idx.parent())))->text();
     else return "";
 }
 
-void BirthdayListView::setColumnWidths() 
+void BirthdayList::View::setColumnWidths() 
 {
     QTreeView *qTreeView = nativeWidget();
 
@@ -147,12 +147,12 @@ void BirthdayListView::setColumnWidths()
     else qTreeView->setColumnWidth(3, m_conf.columnWidthWhen);
 }
 
-void BirthdayListView::plasmaThemeChanged() 
+void BirthdayList::View::plasmaThemeChanged() 
 {
     usePlasmaThemeColors();
 }
     
-void BirthdayListView::usePlasmaThemeColors() 
+void BirthdayList::View::usePlasmaThemeColors() 
 {
     //QFont font = Plasma::Theme::defaultTheme()->font(Plasma::Theme::DefaultFont);
 
@@ -183,7 +183,7 @@ void BirthdayListView::usePlasmaThemeColors()
     }
 }
 
-void BirthdayListView::columnsResized(int logicalIndex, int oldSize, int newSize)
+void BirthdayList::View::columnsResized(int logicalIndex, int oldSize, int newSize)
 {
     Q_UNUSED(oldSize);
     
@@ -203,12 +203,12 @@ void BirthdayListView::columnsResized(int logicalIndex, int oldSize, int newSize
     }
 }
 
-void BirthdayListView::sendEmail() 
+void BirthdayList::View::sendEmail() 
 {
   KToolInvocation::invokeMailer(getSelectedLineItem(4), "");
 }
 
-void BirthdayListView::visitHomepage() 
+void BirthdayList::View::visitHomepage() 
 {
   KToolInvocation::invokeBrowser(getSelectedLineItem(5));
 }

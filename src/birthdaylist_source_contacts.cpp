@@ -20,15 +20,15 @@
 #include <KABC/Addressee>
 
 
-BirthdayListSource_Contacts::BirthdayListSource_Contacts()
+BirthdayList::Source_Contacts::Source_Contacts()
 {
 }
 
-BirthdayListSource_Contacts::~BirthdayListSource_Contacts()
+BirthdayList::Source_Contacts::~Source_Contacts()
 {
 }
 
-void BirthdayListSource_Contacts::fillBirthdayListAddresseeInfo(BirthdayListAddresseeInfo &addresseeInfo, const KABC::Addressee &kabcAddressee)
+void BirthdayList::Source_Contacts::fillAddresseeInfo(BirthdayList::AddresseeInfo &addresseeInfo, const KABC::Addressee &kabcAddressee)
 {
     addresseeInfo.name = kabcAddressee.formattedName();
     if (addresseeInfo.name.isEmpty()) addresseeInfo.name = kabcAddressee.assembledName();

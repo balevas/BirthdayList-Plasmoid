@@ -29,30 +29,33 @@ namespace Akonadi {
 class QModelIndex;
 
 
-class BirthdayListSource_Collections : public QObject
+namespace BirthdayList 
 {
-    Q_OBJECT
-public:
-    BirthdayListSource_Collections();
-    ~BirthdayListSource_Collections();
-    
-    QHash<QString, int> getAkonadiCollections() const;
-    const Akonadi::Collection getAkonadiCollection(Akonadi::Collection::Id collectionId) const;
+    class Source_Collections : public QObject
+    {
+        Q_OBJECT
+    public:
+        Source_Collections();
+        ~Source_Collections();
+        
+        QHash<QString, int> getAkonadiCollections() const;
+        const Akonadi::Collection getAkonadiCollection(Akonadi::Collection::Id collectionId) const;
 
-private:
-    void dumpCollectionChildren(int level, const QModelIndex &parent);
+    private:
+        void dumpCollectionChildren(int level, const QModelIndex &parent);
 
-    Akonadi::Session *m_session;
-    Akonadi::EntityTreeModel *m_collectionsModel;
+        Akonadi::Session *m_session;
+        Akonadi::EntityTreeModel *m_collectionsModel;
 
-    QHash<QString, int> m_collectionIds;
-    QHash<Akonadi::Collection::Id, Akonadi::Collection> m_collections;
-    
-private slots:
-    void updateCollectionsMap();
-    
-signals:
-    void collectionsUpdated();
+        QHash<QString, int> m_collectionIds;
+        QHash<Akonadi::Collection::Id, Akonadi::Collection> m_collections;
+        
+    private slots:
+        void updateCollectionsMap();
+        
+    signals:
+        void collectionsUpdated();
+    };
 };
 
 

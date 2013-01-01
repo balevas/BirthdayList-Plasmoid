@@ -26,7 +26,7 @@
 #include <QModelIndex>
 
 
-BirthdayListSource_Collections::BirthdayListSource_Collections()
+BirthdayList::Source_Collections::Source_Collections()
 {
     m_session = new Akonadi::Session("BirthdayListSource_Collections", this);
 
@@ -43,22 +43,22 @@ BirthdayListSource_Collections::BirthdayListSource_Collections()
     connect(m_collectionsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateCollectionsMap()));
 }
 
-BirthdayListSource_Collections::~BirthdayListSource_Collections()
+BirthdayList::Source_Collections::~Source_Collections()
 {
 }
 
-QHash<QString, int> BirthdayListSource_Collections::getAkonadiCollections() const
+QHash<QString, int> BirthdayList::Source_Collections::getAkonadiCollections() const
 {
     return m_collectionIds;
 }
 
-const Akonadi::Collection BirthdayListSource_Collections::getAkonadiCollection(Akonadi::Collection::Id collectionId) const
+const Akonadi::Collection BirthdayList::Source_Collections::getAkonadiCollection(Akonadi::Collection::Id collectionId) const
 {
     if (m_collections.contains(collectionId)) return m_collections[collectionId];
     else return Akonadi::Collection();
 }
 
-void BirthdayListSource_Collections::updateCollectionsMap()
+void BirthdayList::Source_Collections::updateCollectionsMap()
 {
     kDebug() << "Akonadi collections list updated";
     m_collectionIds.clear();
@@ -68,7 +68,7 @@ void BirthdayListSource_Collections::updateCollectionsMap()
     emit collectionsUpdated();
 }
 
-void BirthdayListSource_Collections::dumpCollectionChildren(int level, const QModelIndex &parent)
+void BirthdayList::Source_Collections::dumpCollectionChildren(int level, const QModelIndex &parent)
 {
     for (int i=0; i<m_collectionsModel->rowCount(parent); ++i) {
         QModelIndex index = m_collectionsModel->index(i,0,parent);

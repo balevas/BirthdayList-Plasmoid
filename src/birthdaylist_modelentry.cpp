@@ -21,14 +21,14 @@
 #include <QStandardItemModel>
 
 
-int AbstractAnnualEventEntry::m_pastThreshold = 7;
-KIcon BirthdayEntry::m_icon("bl_cookie.png");
-KIcon NamedayEntry::m_icon("bl_date.png");
-KIcon AggregatedNamedayEntry::m_icon("bl_date.png");
-KIcon AnniversaryEntry::m_icon("bl_rings.png");
+int BirthdayList::AbstractAnnualEventEntry::m_pastThreshold = 7;
+KIcon BirthdayList::BirthdayEntry::m_icon("bl_cookie.png");
+KIcon BirthdayList::NamedayEntry::m_icon("bl_date.png");
+KIcon BirthdayList::AggregatedNamedayEntry::m_icon("bl_date.png");
+KIcon BirthdayList::AnniversaryEntry::m_icon("bl_rings.png");
 
 
-AbstractAnnualEventEntry::AbstractAnnualEventEntry(const QString &name, const QDate &date, QString email, QString url)
+BirthdayList::AbstractAnnualEventEntry::AbstractAnnualEventEntry(const QString &name, const QDate &date, QString email, QString url)
 : m_name(name), m_date(date), m_email(email), m_url(url) 
 {
     QDate today = QDate::currentDate();
@@ -45,18 +45,18 @@ AbstractAnnualEventEntry::AbstractAnnualEventEntry(const QString &name, const QD
     m_age = currentAnniversary.year() - m_date.year();
 }
 
-AbstractAnnualEventEntry::~AbstractAnnualEventEntry() 
+BirthdayList::AbstractAnnualEventEntry::~AbstractAnnualEventEntry() 
 {
 }
 
-bool AbstractAnnualEventEntry::lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b) 
+bool BirthdayList::AbstractAnnualEventEntry::lessThan(const AbstractAnnualEventEntry *a, const AbstractAnnualEventEntry *b) 
 {
     if (a->m_remainingDays != b->m_remainingDays) return a->m_remainingDays < b->m_remainingDays;
     else if (a->m_age != b->m_age) return a->m_age < b->m_age;
     else return a->m_name < b->m_name;
 }
 
-QString AbstractAnnualEventEntry::remainingDaysString(const int remainingDays) 
+QString BirthdayList::AbstractAnnualEventEntry::remainingDaysString(const int remainingDays) 
 {
     QString msg;
     if (remainingDays < -2) {
@@ -78,14 +78,14 @@ QString AbstractAnnualEventEntry::remainingDaysString(const int remainingDays)
 }
 
 
-BirthdayEntry::BirthdayEntry(const QString &name, const QDate &date, QString email, QString url)
+BirthdayList::BirthdayEntry::BirthdayEntry(const QString &name, const QDate &date, QString email, QString url)
 : AbstractAnnualEventEntry(name, date, email, url) {
 }
 
-BirthdayEntry::~BirthdayEntry() {
+BirthdayList::BirthdayEntry::~BirthdayEntry() {
 }
 
-void BirthdayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
+void BirthdayList::BirthdayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
 {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(BirthdayEntry::m_icon);
@@ -96,21 +96,21 @@ void BirthdayEntry::createModelItems(QList<QStandardItem*> &items, QString dateF
     items.append(new QStandardItem(m_url));
 }
 
-bool BirthdayEntry::hasEvent() const 
+bool BirthdayList::BirthdayEntry::hasEvent() const 
 {
     return true;
 }
 
 
-NamedayEntry::NamedayEntry(const QString &name, const QDate &date, QString email, QString url)
+BirthdayList::NamedayEntry::NamedayEntry(const QString &name, const QDate &date, QString email, QString url)
 : AbstractAnnualEventEntry(name, date, email, url), m_aggregated(false) {
 }
 
-NamedayEntry::~NamedayEntry() 
+BirthdayList::NamedayEntry::~NamedayEntry() 
 {
 }
 
-void NamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
+void BirthdayList::NamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
 {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(NamedayEntry::m_icon);
@@ -121,18 +121,18 @@ void NamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFo
     items.append(new QStandardItem(m_url));
 }
 
-bool NamedayEntry::hasEvent() const 
+bool BirthdayList::NamedayEntry::hasEvent() const 
 {
     return true;
 }
 
 
-AggregatedNamedayEntry::AggregatedNamedayEntry(const QString &name, const QDate &date)
+BirthdayList::AggregatedNamedayEntry::AggregatedNamedayEntry(const QString &name, const QDate &date)
 : AbstractAnnualEventEntry(name, date, "", "") 
 {
 }
 
-AggregatedNamedayEntry::~AggregatedNamedayEntry() 
+BirthdayList::AggregatedNamedayEntry::~AggregatedNamedayEntry() 
 {
 
     foreach(NamedayEntry *storedEntry, m_storedEntries) {
@@ -141,13 +141,13 @@ AggregatedNamedayEntry::~AggregatedNamedayEntry()
     m_storedEntries.clear();
 }
 
-void AggregatedNamedayEntry::addNamedayEntry(NamedayEntry *namedayEntry) 
+void BirthdayList::AggregatedNamedayEntry::addNamedayEntry(NamedayEntry *namedayEntry) 
 {
     namedayEntry->setAggregated(true);
     m_storedEntries.append(namedayEntry);
 }
 
-void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
+void BirthdayList::AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
 {
     if (m_storedEntries.empty()) items.append(new QStandardItem(m_name));
     else items.append(new QStandardItem(QString("%1 (%2)").arg(m_name).arg(m_storedEntries.size())));
@@ -165,22 +165,22 @@ void AggregatedNamedayEntry::createModelItems(QList<QStandardItem*> &items, QStr
     }
 }
 
-bool AggregatedNamedayEntry::hasEvent() const 
+bool BirthdayList::AggregatedNamedayEntry::hasEvent() const 
 {
     return !m_storedEntries.empty();
 }
 
 
-AnniversaryEntry::AnniversaryEntry(const QString &name, const QDate &date, QString email, QString url)
+BirthdayList::AnniversaryEntry::AnniversaryEntry(const QString &name, const QDate &date, QString email, QString url)
 : AbstractAnnualEventEntry(name, date, email, url) 
 {
 }
 
-AnniversaryEntry::~AnniversaryEntry() 
+BirthdayList::AnniversaryEntry::~AnniversaryEntry() 
 {
 }
 
-void AnniversaryEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
+void BirthdayList::AnniversaryEntry::createModelItems(QList<QStandardItem*> &items, QString dateFormat) const 
 {
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(AnniversaryEntry::m_icon);
@@ -191,7 +191,7 @@ void AnniversaryEntry::createModelItems(QList<QStandardItem*> &items, QString da
     items.append(new QStandardItem(m_url));
 }
 
-bool AnniversaryEntry::hasEvent() const 
+bool BirthdayList::AnniversaryEntry::hasEvent() const 
 {
     return true;
 }

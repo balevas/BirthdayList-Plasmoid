@@ -21,23 +21,23 @@
 #include <KABC/StdAddressBook>
 
 
-BirthdayListSource_KABC::BirthdayListSource_KABC()
+BirthdayList::Source_KABC::Source_KABC()
 {
     updateContacts();
     connect(KABC::StdAddressBook::self(), SIGNAL(addressBookChanged(AddressBook*)), this, SLOT(updateContacts()));
 }
 
-BirthdayListSource_KABC::~BirthdayListSource_KABC()
+BirthdayList::Source_KABC::~Source_KABC()
 {
     disconnect(KABC::StdAddressBook::self(), SIGNAL(addressBookChanged(AddressBook*)), this, SLOT(updateContacts()));
 }
 
-const QList<BirthdayListAddresseeInfo>& BirthdayListSource_KABC::getAllContacts()
+const QList<BirthdayList::AddresseeInfo>& BirthdayList::Source_KABC::getAllContacts()
 {
     return m_contacts;
 }
 
-void BirthdayListSource_KABC::updateContacts() 
+void BirthdayList::Source_KABC::updateContacts() 
 {
     m_contacts.clear();
     
@@ -47,9 +47,9 @@ void BirthdayListSource_KABC::updateContacts()
 
     for (KABC::AddressBook::Iterator it = kabcAddressBook->begin(); it != kabcAddressBook->end(); ++it) {
         KABC::Addressee kabcAddressee = *it;
-        BirthdayListAddresseeInfo addresseeInfo;
+        AddresseeInfo addresseeInfo;
         
-        fillBirthdayListAddresseeInfo(addresseeInfo, kabcAddressee);
+        fillAddresseeInfo(addresseeInfo, kabcAddressee);
         
         m_contacts.append(addresseeInfo);
         ++readEntries;

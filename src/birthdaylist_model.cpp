@@ -27,7 +27,7 @@
 #include <QFile>
 
 
-BirthdayListModelConfiguration::BirthdayListModelConfiguration() :
+BirthdayList::ModelConfiguration::ModelConfiguration() :
 eventDataSource(EDS_Akonadi),
 akonadiCollectionId(-1),
 eventThreshold(30),
@@ -51,9 +51,9 @@ pastColorSettings(false, QColor(0, 0, 0), true, QColor(160, 0, 0), true)
 }
 
 
-BirthdayListModel::BirthdayListModel() 
+BirthdayList::Model::Model() 
 : QStandardItemModel(0, 5),
-m_source_collections(new BirthdayListSource_Collections()),
+m_source_collections(new Source_Collections()),
 m_source_contacts(0)
 {
     QStringList headerTitles;
@@ -73,7 +73,7 @@ m_source_contacts(0)
     updateModel();
 }
 
-BirthdayListModel::~BirthdayListModel() 
+BirthdayList::Model::~Model() 
 {
     disconnect(&m_midnightTimer, SIGNAL(timeout()), this, SLOT(midnightUpdate()));
     
@@ -81,12 +81,12 @@ BirthdayListModel::~BirthdayListModel()
     delete m_source_collections;
 }
 
-void BirthdayListModel::setConfiguration(BirthdayListModelConfiguration newConf) 
+void BirthdayList::Model::setConfiguration(ModelConfiguration newConf) 
 {
     kDebug() << "Applying BirthdayList model configuration";
     // remember the current nameday file and data source so that we don't do unnecessary updates if not necessary
     QString oldNamedayFile = m_conf.curNamedayFile;
-    BirthdayListModelConfiguration::EventDataSource oldEventDataSource = m_conf.eventDataSource;
+    ModelConfiguration::EventDataSource oldEventDataSource = m_conf.eventDataSource;
     int oldAkonadiCollectionId = m_conf.akonadiCollectionId;
     
     m_conf = newConf;
@@ -120,7 +120,7 @@ void BirthdayListModel::setConfiguration(BirthdayListModelConfiguration newConf)
     }
 
     // update contact source
-    if (newConf.eventDataSource == BirthdayListModelConfiguration::EDS_Akonadi) {
+    if (newConf.eventDataSource == ModelConfiguration::EDS_Akonadi) {
         // don't re-register to the same collection if it has not been changed
         if (oldEventDataSource != newConf.eventDataSource || oldAkonadiCollectionId != newConf.akonadiCollectionId) {
             kDebug() << "Going to read contact event data from Akonadi collection Id" << newConf.akonadiCollectionId;
@@ -130,7 +130,7 @@ void BirthdayListModel::setConfiguration(BirthdayListModelConfiguration newConf)
                 delete m_source_contacts;
             }
 
-            BirthdayListSource_Akonadi *source_contacts_akonadi = new BirthdayListSource_Akonadi(*m_source_collections);
+            Source_Akonadi *source_contacts_akonadi = new Source_Akonadi(*m_source_collections);
             source_contacts_akonadi->setCurrentCollection(newConf.akonadiCollectionId);
 
             m_source_contacts = source_contacts_akonadi;
@@ -145,24 +145,24 @@ void BirthdayListModel::setConfiguration(BirthdayListModelConfiguration newConf)
             delete m_source_contacts;
         }
 
-        m_source_contacts = new BirthdayListSource_KABC;
+        m_source_contacts = new Source_KABC;
         connect(m_source_contacts, SIGNAL(contactsUpdated()), this, SLOT(contactCollectionUpdated()));
     }
     
     refreshContactEvents();
 }
     
-BirthdayListModelConfiguration BirthdayListModel::getConfiguration() const 
+BirthdayList::ModelConfiguration BirthdayList::Model::getConfiguration() const 
 {
     return m_conf;
 }
 
-QHash<QString, int> BirthdayListModel::getAkonadiCollections()
+QHash<QString, int> BirthdayList::Model::getAkonadiCollections()
 {
     return m_source_collections->getAkonadiCollections();
 }
 
-void BirthdayListModel::refreshContactEvents() 
+void BirthdayList::Model::refreshContactEvents() 
 {
     // since we are going to re-create all entries again, delete currently existing ones
     kDebug() << "Reading contact sources to create a new BirthdayList Model";
@@ -177,21 +177,21 @@ void BirthdayListModel::refreshContactEvents()
 
     // iterate over the contacts from the contacts source and create appropriate list entries
     if (m_source_contacts != 0) {
-        const QList<BirthdayListAddresseeInfo> contacts = m_source_contacts->getAllContacts();
+        const QList<AddresseeInfo> contacts = m_source_contacts->getAllContacts();
         kDebug() << "Source contains" << contacts.size() << "contacts";
-        QListIterator<BirthdayListAddresseeInfo> contactIt(contacts);
+        QListIterator<AddresseeInfo> contactIt(contacts);
         while (contactIt.hasNext()) {
-            BirthdayListAddresseeInfo contactInfo = contactIt.next();
+            AddresseeInfo contactInfo = contactIt.next();
 
             QString contactName = contactInfo.name;
             QString contactNickname = contactInfo.nickName;
             if (m_conf.showNicknames && !contactNickname.isEmpty()) contactName = contactNickname;
             QDate contactBirthday = contactInfo.birthday;
             QDate contactNameday;
-            if (m_conf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_DateField) {
+            if (m_conf.namedayIdentificationMode == ModelConfiguration::NIM_DateField) {
                 contactNameday = getContactDateField(contactInfo, m_conf.namedayDateFieldString);
             }
-            else if (m_conf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_GivenName) {
+            else if (m_conf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName) {
                 contactNameday = getNamedayByGivenName(contactInfo.givenName);
             }
             else {
@@ -203,13 +203,13 @@ void BirthdayListModel::refreshContactEvents()
             QString contactEmail = contactInfo.email;
             QString contactUrl = contactInfo.homepage;
             
-            if (m_conf.filterType == BirthdayListModelConfiguration::FT_Off) {
+            if (m_conf.filterType == ModelConfiguration::FT_Off) {
                 // do nothing; this check comes first as it is the most likely selected option
-            } else if (m_conf.filterType == BirthdayListModelConfiguration::FT_Category) {
+            } else if (m_conf.filterType == ModelConfiguration::FT_Category) {
                 if (!contactInfo.categories.contains(m_conf.filterValue)) continue;
-            } else if (m_conf.filterType == BirthdayListModelConfiguration::FT_CustomField) {
+            } else if (m_conf.filterType == ModelConfiguration::FT_CustomField) {
                 if (contactInfo.customFields[QString("Custom_%1").arg(m_conf.customFieldName)] != m_conf.filterValue) continue;
-            } else if (m_conf.filterType == BirthdayListModelConfiguration::FT_CustomFieldPrefix) {
+            } else if (m_conf.filterType == ModelConfiguration::FT_CustomFieldPrefix) {
                 bool filterValueFound = false;
                 QString customFieldNamePattern = QString("Custom_%1").arg(m_conf.customFieldPrefix);
                 
@@ -241,14 +241,14 @@ void BirthdayListModel::refreshContactEvents()
         }
 
         // if desired, join together nameday entries from the same day
-        if (m_conf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AggregateEvents || 
-            m_conf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AllCalendarNames) {
+        if (m_conf.namedayDisplayMode == ModelConfiguration::NDM_AggregateEvents || 
+            m_conf.namedayDisplayMode == ModelConfiguration::NDM_AllCalendarNames) {
             qSort(namedayEntries.begin(), namedayEntries.end(), AbstractAnnualEventEntry::lessThan);
             int curYear = QDate::currentDate().year();
             QMap<QDate, AggregatedNamedayEntry*> aggregatedEntries;
 
             // if all calendar names are to be shown, prepare entries for the visualised period
-            if (m_conf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AllCalendarNames) {
+            if (m_conf.namedayDisplayMode == ModelConfiguration::NDM_AllCalendarNames) {
                 QDate initialDate = QDate::currentDate().addDays(-m_conf.pastThreshold);
                 QDate finalDate = initialDate.addYears(1);
 
@@ -274,7 +274,7 @@ void BirthdayListModel::refreshContactEvents()
             foreach(AggregatedNamedayEntry *entry, aggregatedEntries) {
                 m_listEntries.append(entry);
             }
-        } else if (m_conf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_IndividualEvents) {
+        } else if (m_conf.namedayDisplayMode == ModelConfiguration::NDM_IndividualEvents) {
 
             foreach(NamedayEntry *entry, namedayEntries) {
                 m_listEntries.append(entry);
@@ -291,7 +291,7 @@ void BirthdayListModel::refreshContactEvents()
 }
 
 
-void BirthdayListModel::updateModel() 
+void BirthdayList::Model::updateModel() 
 {
     kDebug() << "Creating new BirthdayList model";
 
@@ -315,7 +315,7 @@ void BirthdayListModel::updateModel()
     kDebug() << "New BirthdayList model contains" << rowCount() << "items";
 }
 
-QDate BirthdayListModel::getNamedayByGivenName(QString givenName) 
+QDate BirthdayList::Model::getNamedayByGivenName(QString givenName) 
 {
     if (givenName.isEmpty()) return QDate();
 
@@ -333,14 +333,14 @@ QDate BirthdayListModel::getNamedayByGivenName(QString givenName)
     return QDate();
 }
 
-QString BirthdayListModel::getNamedayString(QDate date) 
+QString BirthdayList::Model::getNamedayString(QDate date) 
 {
     QString namedayStringEntry = m_curLangNamedayList[date.toString("MM-dd")];
     if (!namedayStringEntry.isEmpty()) return namedayStringEntry;
     else return date.toString(m_conf.dateFormat);
 }
 
-QDate BirthdayListModel::getContactDateField(const BirthdayListAddresseeInfo &contactInfo, QString fieldName) 
+QDate BirthdayList::Model::getContactDateField(const AddresseeInfo &contactInfo, QString fieldName) 
 {
     if (contactInfo.customFields.contains(fieldName)) return contactInfo.customFields[fieldName].toDate();
 
@@ -354,7 +354,7 @@ QDate BirthdayListModel::getContactDateField(const BirthdayListAddresseeInfo &co
     return QDate();
 }
 
-void BirthdayListModel::setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum) 
+void BirthdayList::Model::setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum) 
 {
     item->setEditable(false);
 
@@ -386,14 +386,14 @@ void BirthdayListModel::setModelItemColors(const AbstractAnnualEventEntry *entry
     }
 }
 
-void BirthdayListModel::contactCollectionUpdated()
+void BirthdayList::Model::contactCollectionUpdated()
 {
     kDebug() << "Selected contact collection updated, triggering BirthdayList model refresh";
     refreshContactEvents();
 }
 
 
-void BirthdayListModel::midnightUpdate()
+void BirthdayList::Model::midnightUpdate()
 {
     kDebug() << "Performing midnight update";
     refreshContactEvents();

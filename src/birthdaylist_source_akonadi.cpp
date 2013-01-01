@@ -26,9 +26,9 @@
 #include <KABC/Addressee>
 
 
-BirthdayListSource_Akonadi::BirthdayListSource_Akonadi(const BirthdayListSource_Collections &sourceCollections)
+BirthdayList::Source_Akonadi::Source_Akonadi(const BirthdayList::Source_Collections &sourceCollections)
 : m_sourceCollections(sourceCollections),
-m_session(new Akonadi::Session("BirthdayListSource_Akonadi", this)),
+m_session(new Akonadi::Session("BirthdayList_Source_Akonadi", this)),
 m_currentCollectionId(-1),
 m_monitorAddressBook(0),
 m_contactsModel(0)
@@ -37,14 +37,14 @@ m_contactsModel(0)
     connect(&m_sourceCollections, SIGNAL(collectionsUpdated()), this, SLOT(collectionsUpdated()));
 }
 
-BirthdayListSource_Akonadi::~BirthdayListSource_Akonadi()
+BirthdayList::Source_Akonadi::~Source_Akonadi()
 {
     disconnect(&m_sourceCollections, SIGNAL(collectionsUpdated()), this, SLOT(collectionsUpdated()));
     unregisterFromCurrentCollection();
     delete m_session;
 }
 
-void BirthdayListSource_Akonadi::setCurrentCollection(Akonadi::Collection::Id collectionId) 
+void BirthdayList::Source_Akonadi::setCurrentCollection(Akonadi::Collection::Id collectionId) 
 {
     // make sure that we're not currently registering in the 'old' collection
     // (this could be done on startup when the collections are being loaded in the background)
@@ -63,12 +63,12 @@ void BirthdayListSource_Akonadi::setCurrentCollection(Akonadi::Collection::Id co
 }
 
 
-const QList<BirthdayListAddresseeInfo>& BirthdayListSource_Akonadi::getAllContacts()
+const QList<BirthdayList::AddresseeInfo>& BirthdayList::Source_Akonadi::getAllContacts()
 {
     return m_contacts;
 }
 
-void BirthdayListSource_Akonadi::tryRegisteringInCurrentCollection() 
+void BirthdayList::Source_Akonadi::tryRegisteringInCurrentCollection() 
 {
     const Akonadi::Collection newCollection = m_sourceCollections.getAkonadiCollection(m_currentCollectionId);
     if (newCollection.isValid()) {
@@ -80,7 +80,7 @@ void BirthdayListSource_Akonadi::tryRegisteringInCurrentCollection()
     }
 }
 
-void BirthdayListSource_Akonadi::registerInCollection(const Akonadi::Collection &akonadiCollection) 
+void BirthdayList::Source_Akonadi::registerInCollection(const Akonadi::Collection &akonadiCollection) 
 {
     m_monitorAddressBook = new Akonadi::ChangeRecorder(this);
     m_monitorAddressBook->setSession(m_session);
@@ -97,7 +97,7 @@ void BirthdayListSource_Akonadi::registerInCollection(const Akonadi::Collection 
     connect(m_contactsModel, SIGNAL(rowsRemoved (QModelIndex, int, int )), this, SLOT(updateContacts()) );
 }
 
-void BirthdayListSource_Akonadi::unregisterFromCurrentCollection() 
+void BirthdayList::Source_Akonadi::unregisterFromCurrentCollection() 
 {
     if (m_contactsModel != 0) {
         kDebug() << "Disconnecting from collection" << m_currentCollectionId;
@@ -113,7 +113,7 @@ void BirthdayListSource_Akonadi::unregisterFromCurrentCollection()
     }
 }
 
-void BirthdayListSource_Akonadi::collectionsUpdated()
+void BirthdayList::Source_Akonadi::collectionsUpdated()
 {
     // synchronize this call with collection update (at startup or when changing the collection using config UI)
     m_collectionRegistrationMutex.lock();
@@ -124,7 +124,7 @@ void BirthdayListSource_Akonadi::collectionsUpdated()
     m_collectionRegistrationMutex.unlock();
 }
 
-void BirthdayListSource_Akonadi::updateContacts() 
+void BirthdayList::Source_Akonadi::updateContacts() 
 {
     kDebug() << "Update of the contact model triggered";
     
@@ -136,7 +136,7 @@ void BirthdayListSource_Akonadi::updateContacts()
     emit contactsUpdated();
 }
 
-void BirthdayListSource_Akonadi::dumpContactChildren(int level, const QModelIndex &parent) 
+void BirthdayList::Source_Akonadi::dumpContactChildren(int level, const QModelIndex &parent) 
 {
     for (int i=0; i<m_contactsModel->rowCount(parent); ++i) {
         
@@ -146,9 +146,9 @@ void BirthdayListSource_Akonadi::dumpContactChildren(int level, const QModelInde
         if (item.hasPayload<KABC::Addressee>()) {
             KABC::Addressee kabcAddressee = item.payload<KABC::Addressee>();
             //kDebug() << "Name" << kabcAddressee.name() << ", Birthday " << kabcAddressee.birthday() << ", parent col" << item.parentCollection().id();
-            BirthdayListAddresseeInfo addresseeInfo;
+            AddresseeInfo addresseeInfo;
 
-            fillBirthdayListAddresseeInfo(addresseeInfo, kabcAddressee);
+            fillAddresseeInfo(addresseeInfo, kabcAddressee);
             
             m_contacts.append(addresseeInfo);
         }

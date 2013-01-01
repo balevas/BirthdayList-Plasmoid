@@ -23,7 +23,9 @@
 #include <Akonadi/Collection>
 #include <QMutex>
 
-class BirthdayListSource_Collections;
+namespace BirthdayList {
+    class Source_Collections;
+};
 namespace Akonadi {
     class ChangeRecorder;
     class EntityTreeModel;
@@ -32,37 +34,40 @@ namespace Akonadi {
 class QModelIndex;
 
 
-class BirthdayListSource_Akonadi : public BirthdayListSource_Contacts
+namespace BirthdayList 
 {
-    Q_OBJECT
-public:
-    BirthdayListSource_Akonadi(const BirthdayListSource_Collections &sourceCollections);
-    ~BirthdayListSource_Akonadi();
-    
-    void setCurrentCollection(Akonadi::Collection::Id collectionId);
-    
-    virtual const QList<BirthdayListAddresseeInfo>& getAllContacts();
+    class Source_Akonadi : public Source_Contacts
+    {
+        Q_OBJECT
+    public:
+        Source_Akonadi(const Source_Collections &sourceCollections);
+        ~Source_Akonadi();
+        
+        void setCurrentCollection(Akonadi::Collection::Id collectionId);
+        
+        virtual const QList<AddresseeInfo>& getAllContacts();
 
-private:
-    void tryRegisteringInCurrentCollection();
-    void registerInCollection(const Akonadi::Collection &akonadiCollection);
-    void unregisterFromCurrentCollection();
+    private:
+        void tryRegisteringInCurrentCollection();
+        void registerInCollection(const Akonadi::Collection &akonadiCollection);
+        void unregisterFromCurrentCollection();
 
-    void dumpContactChildren(int level, const QModelIndex &parent);
+        void dumpContactChildren(int level, const QModelIndex &parent);
 
-    const BirthdayListSource_Collections &m_sourceCollections;
-    Akonadi::Session *m_session;
-    QMutex m_collectionRegistrationMutex;
-    
-    Akonadi::Collection::Id m_currentCollectionId;
-    Akonadi::ChangeRecorder *m_monitorAddressBook;
-    Akonadi::EntityTreeModel *m_contactsModel;
+        const Source_Collections &m_sourceCollections;
+        Akonadi::Session *m_session;
+        QMutex m_collectionRegistrationMutex;
+        
+        Akonadi::Collection::Id m_currentCollectionId;
+        Akonadi::ChangeRecorder *m_monitorAddressBook;
+        Akonadi::EntityTreeModel *m_contactsModel;
 
-    QList<BirthdayListAddresseeInfo> m_contacts;
-    
-private slots:
-    void collectionsUpdated();
-    void updateContacts();
+        QList<AddresseeInfo> m_contacts;
+        
+    private slots:
+        void collectionsUpdated();
+        void updateContacts();
+    };
 };
 
 

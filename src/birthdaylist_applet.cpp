@@ -28,15 +28,15 @@
 
 
 // linking this class to the desktop file so plasma can load it
-K_EXPORT_PLASMA_APPLET(birthdaylist, BirthdayListApplet)
+K_EXPORT_PLASMA_APPLET(birthdaylist, BirthdayList::Applet)
 
 
-BirthdayListApplet::BirthdayListApplet(QObject *parent, const QVariantList &args)
+BirthdayList::Applet::Applet(QObject *parent, const QVariantList &args)
 : Plasma::PopupApplet(parent, args),
-m_aboutData(new BirthdayListAboutData()),
-m_configHelper(new BirthdayListConfigHelper()),
-m_model(new BirthdayListModel()),
-m_view(new BirthdayListView(m_model, 0)),
+m_aboutData(new BirthdayList::AboutData()),
+m_configHelper(new BirthdayList::ConfigHelper()),
+m_model(new BirthdayList::Model()),
+m_view(new BirthdayList::View(m_model, 0)),
 m_graphicsWidget(0)
 {
     kDebug() << "Creating BirthdayList plasmoid";
@@ -47,7 +47,7 @@ m_graphicsWidget(0)
     //resize(350, 200);
 }
 
-BirthdayListApplet::~BirthdayListApplet() 
+BirthdayList::Applet::~Applet() 
 {
     delete m_graphicsWidget;
     // m_view should be deleted automatically
@@ -56,13 +56,13 @@ BirthdayListApplet::~BirthdayListApplet()
     delete m_aboutData;
 }
 
-void BirthdayListApplet::init() 
+void BirthdayList::Applet::init() 
 {
     setPopupIcon(KIcon("bl_cookie", NULL));
 
     // configure the model and view from the persisted plasmoid configuration
-    BirthdayListModelConfiguration modelConf;
-    BirthdayListViewConfiguration viewConf;
+    ModelConfiguration modelConf;
+    ViewConfiguration viewConf;
     
     KConfigGroup configGroup = config();
     m_configHelper->loadConfiguration(configGroup, modelConf, viewConf);
@@ -70,7 +70,7 @@ void BirthdayListApplet::init()
     m_view->setConfiguration(viewConf);
 }
 
-QGraphicsWidget *BirthdayListApplet::graphicsWidget() 
+QGraphicsWidget *BirthdayList::Applet::graphicsWidget() 
 {
     if (!m_graphicsWidget) {
         m_graphicsWidget = new QGraphicsWidget(this);
@@ -87,7 +87,7 @@ QGraphicsWidget *BirthdayListApplet::graphicsWidget()
     return m_graphicsWidget;
 }
 
-QList<QAction *> BirthdayListApplet::contextualActions()
+QList<QAction *> BirthdayList::Applet::contextualActions()
 {
     // start with context menu actions based on the current location in the tree
     QList<QAction *> currentActions = m_view->contextualActions();
@@ -108,10 +108,10 @@ QList<QAction *> BirthdayListApplet::contextualActions()
     return currentActions;
 }
 
-void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent) 
+void BirthdayList::Applet::createConfigurationInterface(KConfigDialog *parent) 
 {
-    BirthdayListModelConfiguration modelConf = m_model->getConfiguration();
-    BirthdayListViewConfiguration viewConf = m_view->getConfiguration();
+    ModelConfiguration modelConf = m_model->getConfiguration();
+    ViewConfiguration viewConf = m_view->getConfiguration();
     
     m_configHelper->createConfigurationUI(parent, m_model, modelConf, viewConf);
 
@@ -119,11 +119,11 @@ void BirthdayListApplet::createConfigurationInterface(KConfigDialog *parent)
     parent->resize(parent->minimumSizeHint());
 }
 
-void BirthdayListApplet::configAccepted() 
+void BirthdayList::Applet::configAccepted() 
 {
-    BirthdayListModelConfiguration modelConf;
+    ModelConfiguration modelConf;
     // get the view configuration from the view since it contains some items that are updated directly by the view (such as column widths)
-    BirthdayListViewConfiguration viewConf = m_view->getConfiguration();
+    ViewConfiguration viewConf = m_view->getConfiguration();
 
     m_configHelper->updateConfigurationFromUI(modelConf, viewConf);
     
@@ -136,7 +136,7 @@ void BirthdayListApplet::configAccepted()
     emit configNeedsSaving();
 }
 
-void BirthdayListApplet::about() 
+void BirthdayList::Applet::about() 
 {
   KAboutApplicationDialog *aboutDialog = new KAboutApplicationDialog(m_aboutData);
   connect(aboutDialog, SIGNAL(finished()), aboutDialog, SLOT(deleteLater()));

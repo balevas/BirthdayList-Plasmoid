@@ -22,20 +22,23 @@
 #include "birthdaylist_source_contacts.h"
 
 
-class BirthdayListSource_KABC : public BirthdayListSource_Contacts
+namespace BirthdayList 
 {
-    Q_OBJECT
-public:
-    BirthdayListSource_KABC();
-    ~BirthdayListSource_KABC();
-    
-    virtual const QList<BirthdayListAddresseeInfo>& getAllContacts();
+    class Source_KABC : public Source_Contacts
+    {
+        Q_OBJECT
+    public:
+        Source_KABC();
+        ~Source_KABC();
+        
+        virtual const QList<AddresseeInfo>& getAllContacts();
 
-private:
-    QList<BirthdayListAddresseeInfo> m_contacts;
-    
-private slots:
-    void updateContacts();
+    private:
+        QList<AddresseeInfo> m_contacts;
+        
+    private slots:
+        void updateContacts();
+    };
 };
 
 

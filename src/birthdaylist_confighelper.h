@@ -1,20 +1,6 @@
 #ifndef BIRTHDAYLIST_CONFIGHELPER_H
 #define BIRTHDAYLIST_CONFIGHELPER_H
 
-
-#include "ui_birthdaylist_config_contacts.h"
-#include "ui_birthdaylist_config_events.h"
-#include "ui_birthdaylist_config_table.h"
-#include "ui_birthdaylist_config_colors.h"
-#include <QStringList>
-
-class BirthdayListModel;
-class BirthdayListModelConfiguration;
-class BirthdayListViewConfiguration;
-class KConfigDialog;
-class KConfigGroup;
-
-
 /**
  * @file    birthdaylist_confighelper.h
  * @author  Karol Slanina
@@ -33,36 +19,55 @@ class KConfigGroup;
  */
 
 
-class BirthdayListConfigHelper : public QObject
-{
-    Q_OBJECT
-public:
-    BirthdayListConfigHelper();
-    ~BirthdayListConfigHelper();
-    
-    void loadConfiguration(const KConfigGroup &configGroup, BirthdayListModelConfiguration &modelConf, BirthdayListViewConfiguration &viewConf);
-    void storeConfiguration(KConfigGroup &configGroup, const BirthdayListModelConfiguration &modelConf, const BirthdayListViewConfiguration &viewConf);
-    
-    void createConfigurationUI(KConfigDialog *parent, BirthdayListModel *model, const BirthdayListModelConfiguration &modelConf, const BirthdayListViewConfiguration &viewConf);
-    void updateConfigurationFromUI(BirthdayListModelConfiguration &modelConf, BirthdayListViewConfiguration &viewConf);
-    
-private:
-    void readAvailableNamedayLists();
-    
-    Ui::BirthdayListContactsConfig m_ui_contacts;
-    Ui::BirthdayListEventsConfig m_ui_events;
-    Ui::BirthdayListTableConfig m_ui_table;
-    Ui::BirthdayListColorsConfig m_ui_colors;
+#include "ui_birthdaylist_config_contacts.h"
+#include "ui_birthdaylist_config_events.h"
+#include "ui_birthdaylist_config_table.h"
+#include "ui_birthdaylist_config_colors.h"
+#include "birthdaylist_aboutdata.h"
+#include <QStringList>
 
-    QStringList m_possibleDateFormats;
-    int m_selectedDateFormat;
-    
-    QList<QString> m_namedayFiles;
-    QList<QString> m_namedayLangStrings;
-    
-private slots:
-    /** Enables/disables some widgets in the configuration UI based on the current datasource selection */
-    void dataSourceChanged(const QString &name);
+namespace BirthdayList {
+    class Model;
+    class ModelConfiguration;
+    class ViewConfiguration;
+};
+class KConfigDialog;
+class KConfigGroup;
+
+
+namespace BirthdayList
+{
+    class ConfigHelper : public QObject
+    {
+        Q_OBJECT
+    public:
+        ConfigHelper();
+        ~ConfigHelper();
+        
+        void loadConfiguration(const KConfigGroup &configGroup, ModelConfiguration &modelConf, ViewConfiguration &viewConf);
+        void storeConfiguration(KConfigGroup &configGroup, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf);
+        
+        void createConfigurationUI(KConfigDialog *parent, Model *model, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf);
+        void updateConfigurationFromUI(ModelConfiguration &modelConf, ViewConfiguration &viewConf);
+        
+    private:
+        void readAvailableNamedayLists();
+        
+        Ui::BirthdayListContactsConfig m_ui_contacts;
+        Ui::BirthdayListEventsConfig m_ui_events;
+        Ui::BirthdayListTableConfig m_ui_table;
+        Ui::BirthdayListColorsConfig m_ui_colors;
+
+        QStringList m_possibleDateFormats;
+        int m_selectedDateFormat;
+        
+        QList<QString> m_namedayFiles;
+        QList<QString> m_namedayLangStrings;
+        
+    private slots:
+        /** Enables/disables some widgets in the configuration UI based on the current datasource selection */
+        void dataSourceChanged(const QString &name);
+    };
 };
 
 

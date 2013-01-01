@@ -21,14 +21,16 @@
 
 #include <KAboutData>
 
-
-class BirthdayListAboutData : public KAboutData
+namespace BirthdayList
 {
-public:
-    static const QByteArray version;
-    
-    BirthdayListAboutData();
-    ~BirthdayListAboutData();
+    class AboutData : public KAboutData
+    {
+    public:
+        static const QByteArray version;
+        
+        AboutData();
+        ~AboutData();
+    };
 };
 
 

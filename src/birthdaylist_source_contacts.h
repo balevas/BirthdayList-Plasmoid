@@ -29,33 +29,36 @@ namespace KABC {
 }
 
 
-struct BirthdayListAddresseeInfo 
+namespace BirthdayList 
 {
-    QString name;
-    QString nickName;
-    QString givenName;
-    QString email;
-    QString homepage;
-    QDate birthday;
-    QStringList categories;
-    QHash<QString, QVariant> customFields;
-};
+    struct AddresseeInfo 
+    {
+        QString name;
+        QString nickName;
+        QString givenName;
+        QString email;
+        QString homepage;
+        QDate birthday;
+        QStringList categories;
+        QHash<QString, QVariant> customFields;
+    };
 
 
-class BirthdayListSource_Contacts : public QObject
-{
-    Q_OBJECT
-public:
-    BirthdayListSource_Contacts();
-    virtual ~BirthdayListSource_Contacts();
+    class Source_Contacts : public QObject
+    {
+        Q_OBJECT
+    public:
+        Source_Contacts();
+        virtual ~Source_Contacts();
 
-    virtual const QList<BirthdayListAddresseeInfo>& getAllContacts() = 0;
-    
-protected:
-    void fillBirthdayListAddresseeInfo(BirthdayListAddresseeInfo &addresseeInfo, const KABC::Addressee &kabcAddressee);
-    
-signals:
-    void contactsUpdated();
+        virtual const QList<AddresseeInfo>& getAllContacts() = 0;
+        
+    protected:
+        void fillAddresseeInfo(AddresseeInfo &addresseeInfo, const KABC::Addressee &kabcAddressee);
+        
+    signals:
+        void contactsUpdated();
+    };
 };
 
 

@@ -19,17 +19,17 @@
 #include "birthdaylist_aboutdata.h"
 #include <QByteArray>
 
+    
+const QByteArray BirthdayList::AboutData::version("1.0rc1");
 
-const QByteArray BirthdayListAboutData::version("1.0rc1");
-
-BirthdayListAboutData::BirthdayListAboutData()
+BirthdayList::AboutData::AboutData()
 : KAboutData("birthdaylist_applet", 
              QByteArray(), 
              ki18n("Birthday List"), 
              version, 
              ki18n("Birthday List"), 
              KAboutData::License_GPL,
-             ki18n("Copyright (C) 2010-2012 Karol Slanina"),
+             ki18n("Copyright (C) 2010-2013 Karol Slanina"),
              ki18n("Shows the list of upcoming birthdays, anniversaries and name days"),
              "http://kde-look.org/content/show.php?content=121134",
              "http://kde-look.org/content/show.php?content=121134")
@@ -47,6 +47,6 @@ BirthdayListAboutData::BirthdayListAboutData()
     setTranslator(ki18nc("NAME OF THE TRANSLATORS", "Your names"), ki18nc("EMAIL OF THE TRANSLATORS", "Your emails"));
 }
 
-BirthdayListAboutData::~BirthdayListAboutData()
+BirthdayList::AboutData::~AboutData()
 {
 }

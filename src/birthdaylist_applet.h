@@ -21,50 +21,55 @@
 
 #include <Plasma/PopupApplet>
 
-class BirthdayListConfigHelper;
-class BirthdayListModel;
-class BirthdayListView;
-class BirthdayListViewConfiguration;
+namespace BirthdayList {
+    class ConfigHelper;
+    class Model;
+    class View;
+    class ViewConfiguration;
+};
 class KAboutData;
 
 
-class BirthdayListApplet : public Plasma::PopupApplet 
+namespace BirthdayList
 {
-    Q_OBJECT
-public:
-    BirthdayListApplet(QObject *parent, const QVariantList &args);
-    ~BirthdayListApplet();
+    class Applet : public Plasma::PopupApplet 
+    {
+        Q_OBJECT
+    public:
+        Applet(QObject *parent, const QVariantList &args);
+        ~Applet();
 
-    /** Initializes the applet (called by Plasma automatically). */
-    void init();
+        /** Initializes the applet (called by Plasma automatically). */
+        void init();
 
-    /** Creates the widget that will be shown in the Plasma applet. */
-    QGraphicsWidget *graphicsWidget();
-    virtual QList<QAction *> contextualActions();
-    
-private slots:
-    /** Receives a notification when the user accepts the configuration change. */
-    void configAccepted();
-    void about();
+        /** Creates the widget that will be shown in the Plasma applet. */
+        QGraphicsWidget *graphicsWidget();
+        virtual QList<QAction *> contextualActions();
+        
+    private slots:
+        /** Receives a notification when the user accepts the configuration change. */
+        void configAccepted();
+        void about();
 
-private:
-    /** Creates the configuration dialog and fills it with current settings. */
-    void createConfigurationInterface(KConfigDialog *parent);
+    private:
+        /** Creates the configuration dialog and fills it with current settings. */
+        void createConfigurationInterface(KConfigDialog *parent);
 
-    /** BirthdayList specific contents of the about dialog */
-    KAboutData *m_aboutData;
+        /** BirthdayList specific contents of the about dialog */
+        KAboutData *m_aboutData;
 
-    /** Helper object to read/write the model and view configuration from/to the persistent storage and configuration UI */
-    BirthdayListConfigHelper *m_configHelper;
+        /** Helper object to read/write the model and view configuration from/to the persistent storage and configuration UI */
+        ConfigHelper *m_configHelper;
 
-    /** Internal data model (table contents) */
-    BirthdayListModel *m_model;
-    
-    /** View of the data model (table) */
-    BirthdayListView *m_view;
+        /** Internal data model (table contents) */
+        Model *m_model;
+        
+        /** View of the data model (table) */
+        View *m_view;
 
-    /** Widget containing the BirthdayList view and shown in the Plasma applet */
-    QGraphicsWidget *m_graphicsWidget;
+        /** Widget containing the BirthdayList view and shown in the Plasma applet */
+        QGraphicsWidget *m_graphicsWidget;
+    };
 };
 
 

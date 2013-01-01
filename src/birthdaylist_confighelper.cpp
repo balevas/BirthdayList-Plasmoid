@@ -25,7 +25,7 @@
 #include <KStandardDirs>
 
 
-BirthdayListConfigHelper::BirthdayListConfigHelper() :
+BirthdayList::ConfigHelper::ConfigHelper() :
 m_selectedDateFormat(0)
 {
     m_possibleDateFormats << "d. M." << "dd. MM."
@@ -35,33 +35,33 @@ m_selectedDateFormat(0)
     readAvailableNamedayLists();
 }
 
-BirthdayListConfigHelper::~BirthdayListConfigHelper()
+BirthdayList::ConfigHelper::~ConfigHelper()
 {
 }
 
-void BirthdayListConfigHelper::loadConfiguration(const KConfigGroup &configGroup, BirthdayListModelConfiguration &modelConf, BirthdayListViewConfiguration &viewConf)
+void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGroup, ModelConfiguration &modelConf, ViewConfiguration &viewConf)
 {
     QString eventDataSource = configGroup.readEntry("Event Data Source", "");
-    if (eventDataSource == "Akonadi") modelConf.eventDataSource = BirthdayListModelConfiguration::EDS_Akonadi;
-    else modelConf.eventDataSource = BirthdayListModelConfiguration::EDS_KABC;
+    if (eventDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
+    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;
 
     modelConf.akonadiCollectionId = configGroup.readEntry("Akonadi Collection", -1);
     modelConf.namedayDateFieldString = configGroup.readEntry("Nameday String", "Nameday");
     modelConf.anniversaryFieldString = configGroup.readEntry("Anniversary String", "Anniversary");
     QString nimString = configGroup.readEntry("Nameday Identification Mode", "");
-    if (nimString == "Date Field") modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_DateField;
-    else if (nimString == "Given Name") modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_GivenName;
-    else modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_Both;
+    if (nimString == "Date Field") modelConf.namedayIdentificationMode = ModelConfiguration::NIM_DateField;
+    else if (nimString == "Given Name") modelConf.namedayIdentificationMode = ModelConfiguration::NIM_GivenName;
+    else modelConf.namedayIdentificationMode = ModelConfiguration::NIM_Both;
 
     modelConf.curNamedayFile = configGroup.readEntry("Nameday Calendar File", "");
     
     modelConf.showNicknames = configGroup.readEntry("Show Nicknames", true);
     
     QString filterType = configGroup.readEntry("Filter Type", "");
-    if (filterType == "Category") modelConf.filterType = BirthdayListModelConfiguration::FT_Category;
-    else if (filterType == "Custom Field") modelConf.filterType = BirthdayListModelConfiguration::FT_CustomField;
-    else if (filterType == "Custom Field Prefix") modelConf.filterType = BirthdayListModelConfiguration::FT_CustomFieldPrefix;
-    else modelConf.filterType = BirthdayListModelConfiguration::FT_Off;
+    if (filterType == "Category") modelConf.filterType = ModelConfiguration::FT_Category;
+    else if (filterType == "Custom Field") modelConf.filterType = ModelConfiguration::FT_CustomField;
+    else if (filterType == "Custom Field Prefix") modelConf.filterType = ModelConfiguration::FT_CustomFieldPrefix;
+    else modelConf.filterType = ModelConfiguration::FT_Off;
     
     modelConf.customFieldName = configGroup.readEntry("Custom Field", "");
     modelConf.customFieldPrefix = configGroup.readEntry("Custom Field Prefix", "");
@@ -76,9 +76,9 @@ void BirthdayListConfigHelper::loadConfiguration(const KConfigGroup &configGroup
 
     modelConf.showNamedays = configGroup.readEntry("Show Namedays", true);
     QString namedayDisplayMode = configGroup.readEntry("Nameday Display Mode", "");
-    if (namedayDisplayMode == "IndividualEvents") modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_IndividualEvents;
-    else if (namedayDisplayMode == "AllCalendarNames") modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_AllCalendarNames;
-    else modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_AggregateEvents;
+    if (namedayDisplayMode == "IndividualEvents") modelConf.namedayDisplayMode = ModelConfiguration::NDM_IndividualEvents;
+    else if (namedayDisplayMode == "AllCalendarNames") modelConf.namedayDisplayMode = ModelConfiguration::NDM_AllCalendarNames;
+    else modelConf.namedayDisplayMode = ModelConfiguration::NDM_AggregateEvents;
 
     modelConf.showAnniversaries = configGroup.readEntry("Show Anniversaries", true);
     
@@ -119,16 +119,16 @@ void BirthdayListConfigHelper::loadConfiguration(const KConfigGroup &configGroup
     viewConf.columnWidthWhen = configGroup.readEntry("When Column Width", 0);
 }
 
-void BirthdayListConfigHelper::storeConfiguration(KConfigGroup &configGroup, const BirthdayListModelConfiguration &modelConf, const BirthdayListViewConfiguration &viewConf)
+void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf)
 {
-    if (modelConf.eventDataSource == BirthdayListModelConfiguration::EDS_KABC) configGroup.writeEntry("Event Data Source", "KABC");
+    if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) configGroup.writeEntry("Event Data Source", "KABC");
     else configGroup.writeEntry("Event Data Source", "Akonadi");
 
     if (modelConf.akonadiCollectionId >= 0) configGroup.writeEntry("Akonadi Collection", modelConf.akonadiCollectionId);
     configGroup.writeEntry("Nameday String", modelConf.namedayDateFieldString);
     configGroup.writeEntry("Anniversary String", modelConf.anniversaryFieldString);
-    if (modelConf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_DateField) configGroup.writeEntry("Nameday Identification Mode", "Date Field");
-    else if (modelConf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_GivenName) configGroup.writeEntry("Nameday Identification Mode", "Given Name");
+    if (modelConf.namedayIdentificationMode == ModelConfiguration::NIM_DateField) configGroup.writeEntry("Nameday Identification Mode", "Date Field");
+    else if (modelConf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName) configGroup.writeEntry("Nameday Identification Mode", "Given Name");
     else configGroup.writeEntry("Nameday Identification Mode", "Both");
 
     configGroup.writeEntry("Show Column Headers", viewConf.showColumnHeaders);
@@ -141,15 +141,15 @@ void BirthdayListConfigHelper::storeConfiguration(KConfigGroup &configGroup, con
 
     configGroup.writeEntry("Show Namedays", modelConf.showNamedays);
     configGroup.writeEntry("Nameday Calendar File", modelConf.curNamedayFile);
-    if (modelConf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_IndividualEvents) configGroup.writeEntry("Nameday Display Mode", "IndividualEvents");
-    else if (modelConf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AllCalendarNames) configGroup.writeEntry("Nameday Display Mode", "AllCalendarNames");
+    if (modelConf.namedayDisplayMode == ModelConfiguration::NDM_IndividualEvents) configGroup.writeEntry("Nameday Display Mode", "IndividualEvents");
+    else if (modelConf.namedayDisplayMode == ModelConfiguration::NDM_AllCalendarNames) configGroup.writeEntry("Nameday Display Mode", "AllCalendarNames");
     else configGroup.writeEntry("Nameday Display Mode", "AggregateEvents");
 
     configGroup.writeEntry("Show Anniversaries", modelConf.showAnniversaries);
 
-    if (modelConf.filterType == BirthdayListModelConfiguration::FT_Category) configGroup.writeEntry("Filter Type", "Category");
-    else if (modelConf.filterType == BirthdayListModelConfiguration::FT_CustomField) configGroup.writeEntry("Filter Type", "Custom Field");
-    else if (modelConf.filterType == BirthdayListModelConfiguration::FT_CustomFieldPrefix) configGroup.writeEntry("Filter Type", "Custom Field Prefix");
+    if (modelConf.filterType == ModelConfiguration::FT_Category) configGroup.writeEntry("Filter Type", "Category");
+    else if (modelConf.filterType == ModelConfiguration::FT_CustomField) configGroup.writeEntry("Filter Type", "Custom Field");
+    else if (modelConf.filterType == ModelConfiguration::FT_CustomFieldPrefix) configGroup.writeEntry("Filter Type", "Custom Field Prefix");
     else configGroup.writeEntry("Filter Type", "Off");
 
     configGroup.writeEntry("Custom Field", modelConf.customFieldName);
@@ -185,7 +185,7 @@ void BirthdayListConfigHelper::storeConfiguration(KConfigGroup &configGroup, con
     configGroup.writeEntry("When Column Width", viewConf.columnWidthWhen);
 }
 
-void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, BirthdayListModel *model, const BirthdayListModelConfiguration &modelConf, const BirthdayListViewConfiguration &viewConf)
+void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Model *model, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf)
 {
     QWidget *contactsWidget = new QWidget;
     QWidget *eventsWidget = new QWidget;
@@ -205,10 +205,10 @@ void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, Birt
 
     m_ui_contacts.cmbDataSource->clear();
     m_ui_contacts.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
-    if (modelConf.eventDataSource == BirthdayListModelConfiguration::EDS_KABC) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
+    if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
 
     m_ui_contacts.cmbDataSource->addItem(i18n("Akonadi"), QVariant("Akonadi"));
-    if (modelConf.eventDataSource == BirthdayListModelConfiguration::EDS_Akonadi) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
+    if (modelConf.eventDataSource == ModelConfiguration::EDS_Akonadi) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
 
     dataSourceChanged(m_ui_contacts.cmbDataSource->currentText());
 
@@ -230,11 +230,11 @@ void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, Birt
     }
     else m_ui_contacts.cmbAkoCollection->setEnabled(true);
 
-    m_ui_events.rbNamedayDateField->setChecked(modelConf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_DateField);
+    m_ui_events.rbNamedayDateField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_DateField);
     m_ui_events.lineEditNamedayDateField->setText(modelConf.namedayDateFieldString);
-    m_ui_events.rbNamedayNameField->setChecked(modelConf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_GivenName);
+    m_ui_events.rbNamedayNameField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName);
     m_ui_events.lineEditAnniversaryField->setText(modelConf.anniversaryFieldString);
-    m_ui_events.rbNamedayBothFields->setChecked(modelConf.namedayIdentificationMode == BirthdayListModelConfiguration::NIM_Both);
+    m_ui_events.rbNamedayBothFields->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_Both);
 
     m_ui_table.chckShowColumnHeaders->setChecked(viewConf.showColumnHeaders);
     m_ui_table.chckShowColName->setChecked(viewConf.showColName);
@@ -245,9 +245,9 @@ void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, Birt
     m_ui_table.chckShowNicknames->setChecked(modelConf.showNicknames);
 
     m_ui_events.chckShowNamedays->setChecked(modelConf.showNamedays);
-    m_ui_events.rbNamedayShowIndEvents->setChecked(modelConf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_IndividualEvents);
-    m_ui_events.rbNamedayShowAllFromCal->setChecked(modelConf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AllCalendarNames);
-    m_ui_events.rbNamedayShowAggrEvents->setChecked(modelConf.namedayDisplayMode == BirthdayListModelConfiguration::NDM_AggregateEvents);
+    m_ui_events.rbNamedayShowIndEvents->setChecked(modelConf.namedayDisplayMode == ModelConfiguration::NDM_IndividualEvents);
+    m_ui_events.rbNamedayShowAllFromCal->setChecked(modelConf.namedayDisplayMode == ModelConfiguration::NDM_AllCalendarNames);
+    m_ui_events.rbNamedayShowAggrEvents->setChecked(modelConf.namedayDisplayMode == ModelConfiguration::NDM_AggregateEvents);
 
     m_ui_events.cmbNamedayCalendar->clear();
     m_ui_events.cmbNamedayCalendar->addItems(m_namedayLangStrings);
@@ -256,10 +256,10 @@ void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, Birt
     } else m_ui_events.cmbNamedayCalendar->setCurrentIndex(0);
     m_ui_events.chckShowAnniversaries->setChecked(modelConf.showAnniversaries);
     
-    m_ui_contacts.rbFilterTypeOff->setChecked(modelConf.filterType == BirthdayListModelConfiguration::FT_Off);
-    m_ui_contacts.rbFilterTypeCategory->setChecked(modelConf.filterType == BirthdayListModelConfiguration::FT_Category);
-    m_ui_contacts.rbFilterTypeCustomFieldName->setChecked(modelConf.filterType == BirthdayListModelConfiguration::FT_CustomField);
-    m_ui_contacts.rbFilterTypeCustomFieldPrefix->setChecked(modelConf.filterType == BirthdayListModelConfiguration::FT_CustomFieldPrefix);
+    m_ui_contacts.rbFilterTypeOff->setChecked(modelConf.filterType == ModelConfiguration::FT_Off);
+    m_ui_contacts.rbFilterTypeCategory->setChecked(modelConf.filterType == ModelConfiguration::FT_Category);
+    m_ui_contacts.rbFilterTypeCustomFieldName->setChecked(modelConf.filterType == ModelConfiguration::FT_CustomField);
+    m_ui_contacts.rbFilterTypeCustomFieldPrefix->setChecked(modelConf.filterType == ModelConfiguration::FT_CustomFieldPrefix);
     m_ui_contacts.lineEditCustomFieldName->setText(modelConf.customFieldName);
     m_ui_contacts.lineEditCustomFieldPrefix->setText(modelConf.customFieldPrefix);
     m_ui_contacts.lineEditFilterValue->setText(modelConf.filterValue);
@@ -290,14 +290,14 @@ void BirthdayListConfigHelper::createConfigurationUI(KConfigDialog *parent, Birt
     connect(m_ui_contacts.cmbDataSource, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataSourceChanged(QString)));
 }
 
-void BirthdayListConfigHelper::updateConfigurationFromUI(BirthdayListModelConfiguration &modelConf, BirthdayListViewConfiguration &viewConf)
+void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &modelConf, ViewConfiguration &viewConf)
 {
     QString selectedDataSource;
     if (m_ui_contacts.cmbDataSource->count() > 0) {
         selectedDataSource = m_ui_contacts.cmbDataSource->itemText(m_ui_contacts.cmbDataSource->currentIndex());
     }
-    if (selectedDataSource == "Akonadi") modelConf.eventDataSource = BirthdayListModelConfiguration::EDS_Akonadi;
-    else modelConf.eventDataSource = BirthdayListModelConfiguration::EDS_KABC;
+    if (selectedDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
+    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;
 
     if (m_ui_contacts.cmbAkoCollection->isEnabled()) {
         modelConf.akonadiCollectionId = m_ui_contacts.cmbAkoCollection->itemData(m_ui_contacts.cmbAkoCollection->currentIndex()).toInt();
@@ -306,30 +306,30 @@ void BirthdayListConfigHelper::updateConfigurationFromUI(BirthdayListModelConfig
 
     modelConf.namedayDateFieldString = m_ui_events.lineEditNamedayDateField->text();
     modelConf.anniversaryFieldString = m_ui_events.lineEditAnniversaryField->text();
-    if (m_ui_events.rbNamedayDateField->isChecked()) modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_DateField;
-    else if (m_ui_events.rbNamedayNameField->isChecked()) modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_GivenName;
-    else modelConf.namedayIdentificationMode = BirthdayListModelConfiguration::NIM_Both;
+    if (m_ui_events.rbNamedayDateField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_DateField;
+    else if (m_ui_events.rbNamedayNameField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_GivenName;
+    else modelConf.namedayIdentificationMode = ModelConfiguration::NIM_Both;
 
     viewConf.showColumnHeaders = m_ui_table.chckShowColumnHeaders->isChecked();
     viewConf.showColName = m_ui_table.chckShowColName->isChecked();
     viewConf.showColAge = m_ui_table.chckShowColAge->isChecked();
     viewConf.showColDate = m_ui_table.chckShowColDate->isChecked();
-    viewConf.showColName = m_ui_table.chckShowColWhen->isChecked();
+    viewConf.showColWhen = m_ui_table.chckShowColWhen->isChecked();
 
     modelConf.showNicknames = m_ui_table.chckShowNicknames->isChecked();
 
     modelConf.showNamedays = m_ui_events.chckShowNamedays->isChecked();
     modelConf.curNamedayFile = m_namedayFiles[m_ui_events.cmbNamedayCalendar->currentIndex()];
-    if (m_ui_events.rbNamedayShowIndEvents->isChecked()) modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_IndividualEvents;
-    else if (m_ui_events.rbNamedayShowAllFromCal->isChecked()) modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_AllCalendarNames;
-    else modelConf.namedayDisplayMode = BirthdayListModelConfiguration::NDM_AggregateEvents;
+    if (m_ui_events.rbNamedayShowIndEvents->isChecked()) modelConf.namedayDisplayMode = ModelConfiguration::NDM_IndividualEvents;
+    else if (m_ui_events.rbNamedayShowAllFromCal->isChecked()) modelConf.namedayDisplayMode = ModelConfiguration::NDM_AllCalendarNames;
+    else modelConf.namedayDisplayMode = ModelConfiguration::NDM_AggregateEvents;
 
     modelConf.showAnniversaries = m_ui_events.chckShowAnniversaries->isChecked();
     
-    if (m_ui_contacts.rbFilterTypeCategory->isChecked()) modelConf.filterType = BirthdayListModelConfiguration::FT_Category;
-    else if (m_ui_contacts.rbFilterTypeCustomFieldName->isChecked()) modelConf.filterType = BirthdayListModelConfiguration::FT_CustomField;
-    else if (m_ui_contacts.rbFilterTypeCustomFieldPrefix->isChecked()) modelConf.filterType = BirthdayListModelConfiguration::FT_CustomFieldPrefix;
-    else modelConf.filterType = BirthdayListModelConfiguration::FT_Off;
+    if (m_ui_contacts.rbFilterTypeCategory->isChecked()) modelConf.filterType = ModelConfiguration::FT_Category;
+    else if (m_ui_contacts.rbFilterTypeCustomFieldName->isChecked()) modelConf.filterType = ModelConfiguration::FT_CustomField;
+    else if (m_ui_contacts.rbFilterTypeCustomFieldPrefix->isChecked()) modelConf.filterType = ModelConfiguration::FT_CustomFieldPrefix;
+    else modelConf.filterType = ModelConfiguration::FT_Off;
     modelConf.customFieldName = m_ui_contacts.lineEditCustomFieldName->text();
     modelConf.customFieldPrefix = m_ui_contacts.lineEditCustomFieldPrefix->text();
     modelConf.filterValue = m_ui_contacts.lineEditFilterValue->text();
@@ -360,13 +360,13 @@ void BirthdayListConfigHelper::updateConfigurationFromUI(BirthdayListModelConfig
     modelConf.dateFormat = m_possibleDateFormats[m_selectedDateFormat];
 }
 
-void BirthdayListConfigHelper::dataSourceChanged(const QString &name) 
+void BirthdayList::ConfigHelper::dataSourceChanged(const QString &name) 
 {
     m_ui_contacts.lblAkoCollection->setVisible(name == "Akonadi");
     m_ui_contacts.cmbAkoCollection->setVisible(name == "Akonadi");
 }
 
-void BirthdayListConfigHelper::readAvailableNamedayLists() 
+void BirthdayList::ConfigHelper::readAvailableNamedayLists() 
 {
     QStringList fileNames = KGlobal::dirs()->findAllResources("data", "birthdaylist/namedaydefs/namedays_*.txt");
     if (fileNames.isEmpty()) {
