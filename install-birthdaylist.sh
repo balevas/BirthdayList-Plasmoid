@@ -6,17 +6,8 @@ fail() {
 }
 
 
-( mkdir -p applet/build ) || fail ", cannot create the applet build directory.";
-cd applet/build
-( cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` .. ) ||
-    fail ".";
-( make ) || fail ".";
-( sudo make install ) || fail ".";
-
-cd ../..
-
-( mkdir -p dataengine-default/build ) || fail ", cannot create the dataengine build directory.";
-cd dataengine-default/build
+( mkdir -p build ) || fail ", cannot create the build directory.";
+cd build
 ( cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` .. ) ||
     fail ".";
 ( make ) || fail ".";
