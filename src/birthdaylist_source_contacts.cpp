@@ -20,6 +20,24 @@
 #include <KABC/Addressee>
 
 
+bool BirthdayList::AddresseeInfo::operator==(const BirthdayList::AddresseeInfo& other) const
+{
+    return
+        name == other.name &&
+        nickName == other.nickName &&
+        givenName == other.givenName &&
+        email == other.email &&
+        homepage == other.homepage &&
+        birthday == other.birthday &&
+        categories == other.categories &&
+        customFields == other.customFields;
+}
+
+bool BirthdayList::AddresseeInfo::operator!=(const BirthdayList::AddresseeInfo& other) const
+{
+    return !(*this == other);
+}
+
 BirthdayList::Source_Contacts::Source_Contacts()
 {
 }

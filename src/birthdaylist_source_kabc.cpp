@@ -32,7 +32,7 @@ BirthdayList::Source_KABC::~Source_KABC()
     disconnect(KABC::StdAddressBook::self(), SIGNAL(addressBookChanged(AddressBook*)), this, SLOT(updateContacts()));
 }
 
-const QList<BirthdayList::AddresseeInfo>& BirthdayList::Source_KABC::getAllContacts()
+const QHash<QString, BirthdayList::AddresseeInfo>& BirthdayList::Source_KABC::getAllContacts()
 {
     return m_contacts;
 }
@@ -51,7 +51,7 @@ void BirthdayList::Source_KABC::updateContacts()
         
         fillAddresseeInfo(addresseeInfo, kabcAddressee);
         
-        m_contacts.append(addresseeInfo);
+        m_contacts.insert(kabcAddressee.uid(), addresseeInfo);
         ++readEntries;
     }
 

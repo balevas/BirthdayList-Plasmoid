@@ -91,7 +91,6 @@ void BirthdayList::Model::setConfiguration(ModelConfiguration newConf)
     
     m_conf = newConf;
 
-    kDebug() << "NAMEDAY FILES:" << oldNamedayFile << ", " << newConf.curNamedayFile;
     if (oldNamedayFile != newConf.curNamedayFile) {
         // read the nameday definitions from the currently selected file
         m_curLangNamedayList.clear();
@@ -177,11 +176,11 @@ void BirthdayList::Model::refreshContactEvents()
 
     // iterate over the contacts from the contacts source and create appropriate list entries
     if (m_source_contacts != 0) {
-        const QList<AddresseeInfo> contacts = m_source_contacts->getAllContacts();
+        const QHash<QString, AddresseeInfo> contacts = m_source_contacts->getAllContacts();
         kDebug() << "Source contains" << contacts.size() << "contacts";
-        QListIterator<AddresseeInfo> contactIt(contacts);
+        QHashIterator<QString, AddresseeInfo> contactIt(contacts);
         while (contactIt.hasNext()) {
-            AddresseeInfo contactInfo = contactIt.next();
+            AddresseeInfo contactInfo = contactIt.next().value();
 
             QString contactName = contactInfo.name;
             QString contactNickname = contactInfo.nickName;

@@ -31,10 +31,10 @@ namespace BirthdayList
         Source_KABC();
         ~Source_KABC();
         
-        virtual const QList<AddresseeInfo>& getAllContacts();
+        virtual const QHash<QString, AddresseeInfo>& getAllContacts();
 
     private:
-        QList<AddresseeInfo> m_contacts;
+        QHash<QString, AddresseeInfo> m_contacts;
         
     private slots:
         void updateContacts();

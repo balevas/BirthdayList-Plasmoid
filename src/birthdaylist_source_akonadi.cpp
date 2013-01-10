@@ -61,7 +61,7 @@ void BirthdayList::Source_Akonadi::setCurrentCollection(Akonadi::Collection::Id 
 }
 
 
-const QList<BirthdayList::AddresseeInfo>& BirthdayList::Source_Akonadi::getAllContacts()
+const QHash<QString, BirthdayList::AddresseeInfo>& BirthdayList::Source_Akonadi::getAllContacts()
 {
     return m_contacts;
 }
@@ -132,8 +132,13 @@ void BirthdayList::Source_Akonadi::collectionsUpdated()
 
 void BirthdayList::Source_Akonadi::dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
 {
-    kDebug() << "Akonadi EntityTreeModel data changed between" << topLeft.row() << "and" << bottomRight.row();
-    updateContacts();
+    if (isChangeDetected(topLeft, bottomRight)) {
+        kDebug() << "Akonadi EntityTreeModel data changed between" << topLeft.row() << "and" << bottomRight.row() << ", some contacts changed";
+        updateContacts();
+    }
+    else {
+        kDebug() << "Akonadi EntityTreeModel data changed between" << topLeft.row() << "and" << bottomRight.row() << ", no change in contacts detected";
+    }
 }
 
 void BirthdayList::Source_Akonadi::rowsInserted(const QModelIndex& parent, int start, int end)
@@ -163,7 +168,6 @@ void BirthdayList::Source_Akonadi::updateContacts()
 void BirthdayList::Source_Akonadi::dumpContactChildren(int level, const QModelIndex &parent) 
 {
     for (int i=0; i<m_contactsModel->rowCount(parent); ++i) {
-        
         QModelIndex index = m_contactsModel->index(i,0,parent);
         Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
         
@@ -174,9 +178,36 @@ void BirthdayList::Source_Akonadi::dumpContactChildren(int level, const QModelIn
 
             fillAddresseeInfo(addresseeInfo, kabcAddressee);
             
-            m_contacts.append(addresseeInfo);
+            m_contacts.insert(kabcAddressee.uid(), addresseeInfo);
         }
         
         if (m_contactsModel->hasChildren(index)) dumpContactChildren(level+1, index);
     }
+}
+
+bool BirthdayList::Source_Akonadi::isChangeDetected(const QModelIndex& topLeft, const QModelIndex& bottomRight)
+{
+    // if the indices do not have the same parent, the result of the signal is undefined and so better refresh the model
+    if (topLeft.parent() != bottomRight.parent()) return true;
+    
+    for (int row=topLeft.row(); row<=bottomRight.row(); ++row) {
+        QModelIndex index = topLeft.sibling(row, topLeft.column());
+        Akonadi::Item item = index.data(Akonadi::EntityTreeModel::ItemRole).value<Akonadi::Item>();
+        
+        if (item.hasPayload<KABC::Addressee>()) {
+            KABC::Addressee kabcAddresseeNew = item.payload<KABC::Addressee>();
+            // if the current contact isn't in the existing cache, report change
+            if (!m_contacts.contains(kabcAddresseeNew.uid())) {
+                return true;
+            }
+            
+            AddresseeInfo addresseeInfoOld = m_contacts.value(kabcAddresseeNew.uid());
+            AddresseeInfo addresseeInfoNew;
+            fillAddresseeInfo(addresseeInfoNew, kabcAddresseeNew);
+            
+            if (addresseeInfoNew != addresseeInfoOld) return true;
+        }
+    }
+    
+    return false;
 }

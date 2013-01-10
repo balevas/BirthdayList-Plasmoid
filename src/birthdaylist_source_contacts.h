@@ -41,6 +41,9 @@ namespace BirthdayList
         QDate birthday;
         QStringList categories;
         QHash<QString, QVariant> customFields;
+        
+        bool operator==(const AddresseeInfo &other) const;
+        bool operator!=(const AddresseeInfo &other) const;
     };
 
 
@@ -51,7 +54,7 @@ namespace BirthdayList
         Source_Contacts();
         virtual ~Source_Contacts();
 
-        virtual const QList<AddresseeInfo>& getAllContacts() = 0;
+        virtual const QHash<QString, AddresseeInfo>& getAllContacts() = 0;
         
     protected:
         void fillAddresseeInfo(AddresseeInfo &addresseeInfo, const KABC::Addressee &kabcAddressee);

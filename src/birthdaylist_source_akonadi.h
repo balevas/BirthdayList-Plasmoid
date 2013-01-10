@@ -45,7 +45,7 @@ namespace BirthdayList
         
         void setCurrentCollection(Akonadi::Collection::Id collectionId);
         
-        virtual const QList<AddresseeInfo>& getAllContacts();
+        virtual const QHash<QString, AddresseeInfo>& getAllContacts();
 
     private:
         void tryRegisteringInCurrentCollection();
@@ -53,6 +53,7 @@ namespace BirthdayList
         void unregisterFromCurrentCollection();
 
         void dumpContactChildren(int level, const QModelIndex &parent);
+        bool isChangeDetected(const QModelIndex& topLeft, const QModelIndex& bottomRight);
 
         const Source_Collections &m_sourceCollections;
         Akonadi::Session *m_session;
@@ -63,7 +64,7 @@ namespace BirthdayList
         Akonadi::ChangeRecorder *m_monitorAddressBook;
         Akonadi::EntityTreeModel *m_contactsModel;
 
-        QList<AddresseeInfo> m_contacts;
+        QHash<QString, AddresseeInfo> m_contacts;
         
     private slots:
         void collectionsUpdated();
