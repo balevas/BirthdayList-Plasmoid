@@ -59,6 +59,7 @@ namespace BirthdayList
         QMutex m_collectionRegistrationMutex;
         
         Akonadi::Collection::Id m_currentCollectionId;
+        Akonadi::Collection::Id m_registeredCollectionId;
         Akonadi::ChangeRecorder *m_monitorAddressBook;
         Akonadi::EntityTreeModel *m_contactsModel;
 
@@ -66,6 +67,9 @@ namespace BirthdayList
         
     private slots:
         void collectionsUpdated();
+        void dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight);
+        void rowsInserted(const QModelIndex& parent, int start, int end);
+        void rowsRemoved(const QModelIndex& parent, int start, int end);
         void updateContacts();
     };
 };

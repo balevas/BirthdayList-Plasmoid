@@ -30,6 +30,7 @@ BirthdayList::Source_Akonadi::Source_Akonadi(const BirthdayList::Source_Collecti
 : m_sourceCollections(sourceCollections),
 m_session(new Akonadi::Session("BirthdayList_Source_Akonadi", this)),
 m_currentCollectionId(-1),
+m_registeredCollectionId(-1),
 m_monitorAddressBook(0),
 m_contactsModel(0)
 {
@@ -50,14 +51,11 @@ void BirthdayList::Source_Akonadi::setCurrentCollection(Akonadi::Collection::Id 
     // (this could be done on startup when the collections are being loaded in the background)
     m_collectionRegistrationMutex.lock();
 
-    if (collectionId == m_currentCollectionId) {
-        return;
+    if (collectionId != m_currentCollectionId) {
+        unregisterFromCurrentCollection();
+        m_currentCollectionId = collectionId;
+        tryRegisteringInCurrentCollection();
     }
-
-    unregisterFromCurrentCollection();
-    m_currentCollectionId = collectionId;
-    
-    tryRegisteringInCurrentCollection();
 
     m_collectionRegistrationMutex.unlock();
 }
@@ -70,13 +68,19 @@ const QList<BirthdayList::AddresseeInfo>& BirthdayList::Source_Akonadi::getAllCo
 
 void BirthdayList::Source_Akonadi::tryRegisteringInCurrentCollection() 
 {
-    const Akonadi::Collection newCollection = m_sourceCollections.getAkonadiCollection(m_currentCollectionId);
-    if (newCollection.isValid()) {
-        kDebug() << "Connecting to collection" << newCollection.id() << newCollection.resource() << newCollection.name();
-        registerInCollection(newCollection);
+    if (m_currentCollectionId != m_registeredCollectionId) {
+        const Akonadi::Collection newCollection = m_sourceCollections.getAkonadiCollection(m_currentCollectionId);
+        if (newCollection.isValid()) {
+            kDebug() << "Connecting to Akonadi collection" << newCollection.id() << newCollection.resource() << newCollection.name();
+            registerInCollection(newCollection);
+            m_registeredCollectionId = m_currentCollectionId;
+        }
+        else {
+            kDebug() << "Can't connect to Akonadi collection" << m_currentCollectionId << ", the collection model is not valid yet";
+        }
     }
     else {
-        kDebug() << "Can't connect to collection" << m_currentCollectionId << ", the collection model is not valid yet";
+        kDebug() << "Already connected to Akonadi collection" << m_currentCollectionId;
     }
 }
 
@@ -92,22 +96,24 @@ void BirthdayList::Source_Akonadi::registerInCollection(const Akonadi::Collectio
     m_monitorAddressBook->setItemFetchScope(scopeAddressBook);
 
     m_contactsModel = new Akonadi::EntityTreeModel(m_monitorAddressBook, this);
-    connect(m_contactsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateContacts()) );
-    connect(m_contactsModel, SIGNAL(rowsInserted (QModelIndex, int, int )), this, SLOT(updateContacts()) );
-    connect(m_contactsModel, SIGNAL(rowsRemoved (QModelIndex, int, int )), this, SLOT(updateContacts()) );
+    connect(m_contactsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+    connect(m_contactsModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInserted(QModelIndex, int, int)));
+    connect(m_contactsModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(rowsRemoved(QModelIndex, int, int)));
 }
 
 void BirthdayList::Source_Akonadi::unregisterFromCurrentCollection() 
 {
     if (m_contactsModel != 0) {
-        kDebug() << "Disconnecting from collection" << m_currentCollectionId;
+        kDebug() << "Disconnecting from Akonadi collection" << m_currentCollectionId;
+        m_registeredCollectionId = -1;
         
-        disconnect(m_contactsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateContacts()) );
-        disconnect(m_contactsModel, SIGNAL(rowsInserted (QModelIndex, int, int )), this, SLOT(updateContacts()) );
-        disconnect(m_contactsModel, SIGNAL(rowsRemoved (QModelIndex, int, int )), this, SLOT(updateContacts()) );
+        disconnect(m_contactsModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
+        disconnect(m_contactsModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInserted(QModelIndex, int, int)));
+        disconnect(m_contactsModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(rowsRemoved(QModelIndex, int, int)));
 
         delete m_contactsModel;
         delete m_monitorAddressBook;
+        
         m_contactsModel = 0;
         m_monitorAddressBook = 0;
     }
@@ -122,6 +128,24 @@ void BirthdayList::Source_Akonadi::collectionsUpdated()
     tryRegisteringInCurrentCollection();
     
     m_collectionRegistrationMutex.unlock();
+}
+
+void BirthdayList::Source_Akonadi::dataChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight)
+{
+    kDebug() << "Akonadi EntityTreeModel data changed between" << topLeft.row() << "and" << bottomRight.row();
+    updateContacts();
+}
+
+void BirthdayList::Source_Akonadi::rowsInserted(const QModelIndex& parent, int start, int end)
+{
+    kDebug() << "Akonadi EntityTreeModel rows inserted between" << start << "and" << end << " under parent" << parent.internalId();
+    updateContacts();
+}
+
+void BirthdayList::Source_Akonadi::rowsRemoved(const QModelIndex& parent, int start, int end)
+{
+    kDebug() << "Akonadi EntityTreeModel rows removed between" << start << "and" << end << " under parent" << parent.internalId();
+    updateContacts();
 }
 
 void BirthdayList::Source_Akonadi::updateContacts() 
