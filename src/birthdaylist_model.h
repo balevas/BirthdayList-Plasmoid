@@ -38,7 +38,7 @@ namespace BirthdayList
         ModelConfiguration();
         
         // TODO make KABC source deprecated
-        enum EventDataSource { EDS_Akonadi, EDS_KABC };
+        enum EventDataSource { EDS_Akonadi /*,EDS_KABC*/ };
         EventDataSource eventDataSource;
         /** Id of the Akonadi collection to be used */
         int akonadiCollectionId;

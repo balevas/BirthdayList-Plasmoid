@@ -136,7 +136,7 @@ void BirthdayList::Model::setConfiguration(ModelConfiguration newConf)
             connect(m_source_contacts, SIGNAL(contactsUpdated()), this, SLOT(contactCollectionUpdated()));
         }
     }
-    else {
+/*    else {
         kDebug() << "Going to read contact event data from the standard KDE Address Book";
 
         if (m_source_contacts) {
@@ -146,7 +146,7 @@ void BirthdayList::Model::setConfiguration(ModelConfiguration newConf)
 
         m_source_contacts = new Source_KABC;
         connect(m_source_contacts, SIGNAL(contactsUpdated()), this, SLOT(contactCollectionUpdated()));
-    }
+    }*/
     
     refreshContactEvents();
 }

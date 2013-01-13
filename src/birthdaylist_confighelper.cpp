@@ -42,8 +42,9 @@ BirthdayList::ConfigHelper::~ConfigHelper()
 void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGroup, ModelConfiguration &modelConf, ViewConfiguration &viewConf)
 {
     QString eventDataSource = configGroup.readEntry("Event Data Source", "");
-    if (eventDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
-    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;
+    /*if (eventDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
+    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;*/
+    modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
 
     modelConf.akonadiCollectionId = configGroup.readEntry("Akonadi Collection", -1);
     modelConf.namedayDateFieldString = configGroup.readEntry("Nameday String", "Nameday");
@@ -121,8 +122,9 @@ void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGro
 
 void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf)
 {
-    if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) configGroup.writeEntry("Event Data Source", "KABC");
-    else configGroup.writeEntry("Event Data Source", "Akonadi");
+    /*if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) configGroup.writeEntry("Event Data Source", "KABC");
+    else configGroup.writeEntry("Event Data Source", "Akonadi");*/
+    configGroup.writeEntry("Event Data Source", "Akonadi");
 
     if (modelConf.akonadiCollectionId >= 0) configGroup.writeEntry("Akonadi Collection", modelConf.akonadiCollectionId);
     configGroup.writeEntry("Nameday String", modelConf.namedayDateFieldString);
@@ -204,8 +206,8 @@ void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Mo
     parent->addPage(colorsWidget, i18n("Colors"), "preferences-desktop-color");
 
     m_ui_contacts.cmbDataSource->clear();
-    m_ui_contacts.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
-    if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
+    /*m_ui_contacts.cmbDataSource->addItem(i18n("KDE Address Book"), QVariant("KABC"));
+    if (modelConf.eventDataSource == ModelConfiguration::EDS_KABC) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);*/
 
     m_ui_contacts.cmbDataSource->addItem(i18n("Akonadi"), QVariant("Akonadi"));
     if (modelConf.eventDataSource == ModelConfiguration::EDS_Akonadi) m_ui_contacts.cmbDataSource->setCurrentIndex(m_ui_contacts.cmbDataSource->count()-1);
@@ -296,8 +298,9 @@ void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &m
     if (m_ui_contacts.cmbDataSource->count() > 0) {
         selectedDataSource = m_ui_contacts.cmbDataSource->itemText(m_ui_contacts.cmbDataSource->currentIndex());
     }
-    if (selectedDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
-    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;
+    /*if (selectedDataSource == "Akonadi") modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
+    else modelConf.eventDataSource = ModelConfiguration::EDS_KABC;*/
+    modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
 
     if (m_ui_contacts.cmbAkoCollection->isEnabled()) {
         modelConf.akonadiCollectionId = m_ui_contacts.cmbAkoCollection->itemData(m_ui_contacts.cmbAkoCollection->currentIndex()).toInt();

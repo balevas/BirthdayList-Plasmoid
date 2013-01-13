@@ -1,4 +1,4 @@
-- Additional data sources (Thunderbird address book, ...)
+- Additional data sources (CSV, Thunderbird address book, ...)
+    - waiting for Thunderbird to migrate from the Mork format to a better documented one
 - Additional translations, nameday calendars (please contribute!)
 - Wedding anniversary aggregation (if both wife and husband have their own entry)
-

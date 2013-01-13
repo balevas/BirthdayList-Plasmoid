@@ -11,7 +11,7 @@ set(BirthdayListApplet_SRC
         birthdaylist_source_akonadi.cpp
         birthdaylist_source_collections.cpp
         birthdaylist_source_contacts.cpp
-        birthdaylist_source_kabc.cpp
+#        birthdaylist_source_kabc.cpp
         birthdaylist_view.cpp 
 )
 

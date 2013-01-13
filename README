@@ -22,14 +22,16 @@ These events are shown in a table-like view, so you can easily select or reorder
 columns you want to see.
 
 2.2 Contact data source
-Contact information is taken from the KDE Address Book or a selected Akonadi collection 
-(e.g. Personal Contacts on the local computer, Gmail contacts - requires Akonadi googledata 
-resource, etc.). In the future I also plan to add support for Mozilla Thunderbird Address Book.
+Contact information is taken from the selected Akonadi collection (e.g. Personal Contacts 
+on the local computer, Gmail contacts, DAV groupware resource, etc.). 
+Direct interface to KDE Address Book has been removed because the interface has been deprecated
+in recent KDE releases and so its support may be removed anytime in the future.
+Support for new data sources may be added in the future (CSV, Thunderbird, etc.) if demanded.
 
 2.3 Contact filtering
 Plasmoid allows to limit the set of contacts, for which the events are shown. Filtering options
 (as well as data source itself) can be set individually for several instances of the plasmoid
-(e.g. one plasmoid showing the family contacts, other plasmoid showing business contacts, etc.)
+(e.g. one plasmoid showing the family contacts, other plasmoid showing business contacts, etc.).
 
 2.3.1 No filtering
 By default, all contacts from the selected collection are taken into account (given that their
@@ -88,47 +90,30 @@ uninstall-birthdaylist.sh
 To build the plasmoid, you will need development packages for KDE PIM, KDE4, Qt4 and cmake.
 Exact package names are distribution-specific.
 
-Akonadi support can be added by executing
-./install-support-akonadi.sh
-after having already installed the basic plasmoid package. In order to start using Akonadi inputs
-in the already running plasmoid, please relogin or restart Plasma from the command line.
-
-Akonadi support can be removed by executing
-./uninstall-support-akonadi.sh
-
 
 4. Troubleshooting
 ----------------------------------
 4.1 Adding a custom nameday calendar
 If you want to add a custom nameday calendar, create a new text file under the data engine
-installation directory, e.g. /usr/share/apps/plasma_engine_birthdaylist/namedaydefs/
+installation directory, e.g. /usr/share/apps/birthdaylist/namedaydefs/
 with the name "namedays_<langcode>.txt, where <langcode> is replaced by your language.
 The first line in this file contains a human-readable name for the language, remaining lines
 contain name entries. Use already existing files to see the format. After the restart of plasma
 you should see the new calendar.
 
 4.2 KAddressBook
-KAddressBook was significantly changed in KDE 4.4. Older address books located under
-~/.kde4/share/apps/kabc/std.vcf should, however, be working fine.
-In case that you don't use the KDE address book yet and want to create it new on KDE 4.4,
-open kaddressbook and follow the steps below:
-- Select File - New - Add Address Book
-- Choose KDE Address Book (traditional)
-- In the wizard, press Next, select File, press Next,
-  accept default option with std.vcf, press Finish.
-- the contacts you will be adding to this address book should appear in the plasmoid.
-To see custom fields in KAddressBook, you need to upgrade to version 4.4.7.
+Since KDE 4.4 the preferred way to access to the old KDE Address Book is over the dedicated 
+Akonadi resource. The plasmoid no longer supports the old interface since version 1.0. 
+Please use Akonadi to read the KDE Address Book contacts.
 
 4.3 Gmail contacts over Akonadi
-Please have in mind that Akonadi support is experimental. Akonadi has only been fully enabled
-in the KDE Address Book with the 4.4 release. To see your Gmail contacts, you need to install
-an additional package (Akonadi googledata resource), the name may vary between distributions.
-This resource currently provides the names, birthdays and email addresses for your contacts.
+To see your Gmail contacts, you need to install an additional package (Akonadi Google resource),
+the name may vary between distributions.
+This resource currently provides the names, birthdays and anniversaries for your contacts.
+(custom date fields such as name days are not supported).
 Assignment of contacts into groups is also provided, but instead of a human-readable group name
-(e.g. "My contacts"), just a group Id is available
+(e.g. "Family"), just a group Id is available
 (e.g. "http://www.google.com/m8/feeds/groups/name.surname%40gmail.com/base/6").
-I have also experienced that the group assignments are not completely available: some contacts
-do not have the group assignments in kaddressbook, although they have them in the web interface.
 
 
 5. Contributions

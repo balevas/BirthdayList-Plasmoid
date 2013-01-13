@@ -42,3 +42,8 @@
         - Fixed startup rendering bug (occassionally the hidden columns with e-mail and homepage were shown)
         - Fixed default applet size (scaled to the table contents, not to the minimum size)
         - Dutch translation
+
+        ============= V 1.0 ====================
+        - Fixed freezing issues (especially when using Akonadi DAV groupware resource)
+        - Removed KDE Addressbook support over the old deprecated interface (use Akonadi instead)
+        - Internal refactoring (removed dataengine layer, changed interface to Akonadi - EntityTreeModel)
