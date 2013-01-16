@@ -41,6 +41,7 @@ BirthdayList::AboutData::AboutData()
     addCredit(ki18n("Ondřej Kuda"), ki18n("Czech translation"), "ondrej.kuda@gmail.com");
     addCredit(ki18n("Andreas Goldbohm"), ki18n("German translation"), "vongoldi@o2online.de");
     addCredit(ki18n("Richard Bos"), ki18n("Dutch translation"));
+    addCredit(ki18n("André Marcelo Alvarenga"), ki18n("Brazilian Portuguese translation"));
     addCredit(ki18n("David Vignoni"), ki18n("Nuvola icons"), "http://www.icon-king.com/projects/nuvola");
     addCredit(ki18n("All people who report bugs, send feedback and new feature requests"));
     

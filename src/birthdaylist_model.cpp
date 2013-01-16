@@ -38,8 +38,10 @@ showNamedays(true),
 namedayDisplayMode(NDM_AggregateEvents),
 showAnniversaries(true),
 namedayIdentificationMode(NIM_Both),
-namedayDateFieldString("Nameday"),
-anniversaryFieldString("Anniversary"),
+namedayByAnniversaryDateField(false),
+namedayCustomDateFieldName(""),
+anniversaryByAnniversaryDateField(true),
+anniversaryCustomDateFieldName(""),
 filterType(FT_Off),
 customFieldName(""),
 customFieldPrefix(""),
@@ -188,17 +190,17 @@ void BirthdayList::Model::refreshContactEvents()
             QDate contactBirthday = contactInfo.birthday;
             QDate contactNameday;
             if (m_conf.namedayIdentificationMode == ModelConfiguration::NIM_DateField) {
-                contactNameday = getContactDateField(contactInfo, m_conf.namedayDateFieldString);
+                contactNameday = getContactDateField(contactInfo, (m_conf.namedayByAnniversaryDateField ? "Anniversary" : m_conf.namedayCustomDateFieldName));
             }
             else if (m_conf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName) {
                 contactNameday = getNamedayByGivenName(contactInfo.givenName);
             }
             else {
-                contactNameday = getContactDateField(contactInfo, m_conf.namedayDateFieldString);
+                contactNameday = getContactDateField(contactInfo, (m_conf.namedayByAnniversaryDateField ? "Anniversary" : m_conf.namedayCustomDateFieldName));
                 if (!contactNameday.isValid()) contactNameday = getNamedayByGivenName(contactInfo.givenName);
             }
 
-            QDate contactAnniversary = getContactDateField(contactInfo, m_conf.anniversaryFieldString);
+            QDate contactAnniversary = getContactDateField(contactInfo, (m_conf.anniversaryByAnniversaryDateField ? "Anniversary" : m_conf.anniversaryCustomDateFieldName));
             QString contactEmail = contactInfo.email;
             QString contactUrl = contactInfo.homepage;
             

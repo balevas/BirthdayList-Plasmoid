@@ -6,56 +6,224 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>453</height>
+    <width>511</width>
+    <height>549</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="28" column="1">
-    <spacer name="spacerScreenBottom">
+   <item row="21" column="4">
+    <spacer name="spacerScreenRight">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>40</width>
+       <height>20</height>
       </size>
      </property>
     </spacer>
    </item>
-   <item row="17" column="1" colspan="2">
-    <layout class="QHBoxLayout" name="hlNamedayDateField">
-     <item>
-      <widget class="QRadioButton" name="rbNamedayDateField">
-       <property name="text">
-        <string>Date field:</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string>bgNamedayIdentifyBy</string>
-       </attribute>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEditNamedayDateField">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   <item row="17" column="1">
+    <widget class="QCheckBox" name="chckNamedayDateField">
+     <property name="text">
+      <string>Date field:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="2" colspan="2">
+    <widget class="QLabel" name="lblComingShowDays_2">
+     <property name="text">
+      <string comment="label: show events within x &lt;days&gt;">days</string>
+     </property>
+    </widget>
+   </item>
+   <item row="21" column="3">
+    <widget class="QLineEdit" name="lineEditNamedayCustomDateField">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="29" column="1">
+    <widget class="QCheckBox" name="chckShowAnniversaries">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <property name="showAnniversaries" stdset="0">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="27" column="1">
+    <spacer name="spacerNamedaysBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="24" column="0">
+    <widget class="QLabel" name="lblNamedayDisplayMode">
+     <property name="text">
+      <string>Nameday display mode:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="26" column="1" colspan="3">
+    <widget class="QRadioButton" name="rbNamedayShowAllFromCal">
+     <property name="text">
+      <string>All names from calendar</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">bgNamedayDisplayMode</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="24" column="1" colspan="3">
+    <widget class="QRadioButton" name="rbNamedayShowAggrEvents">
+     <property name="text">
+      <string>Aggregated events</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">bgNamedayDisplayMode</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QLabel" name="lblTitleNamedays">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Namedays</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QSpinBox" name="spinComingShowDays">
+     <property name="maximum">
+      <number>335</number>
+     </property>
+     <property name="value">
+      <number>30</number>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QLabel" name="lblPastShowDays">
+     <property name="text">
+      <string>Show events within last:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="1">
+    <widget class="QSpinBox" name="spinPastShowDays">
+     <property name="maximum">
+      <number>30</number>
+     </property>
+     <property name="value">
+      <number>2</number>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="1">
+    <spacer name="spacerNamedaysBottom_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="25" column="1" colspan="3">
+    <widget class="QRadioButton" name="rbNamedayShowIndEvents">
+     <property name="text">
+      <string>Individual events</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">bgNamedayDisplayMode</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="16" column="0">
+    <widget class="QLabel" name="lblNamedayCalendar">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="text">
+      <string>Nameday calendar:</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="1">
+    <widget class="QComboBox" name="cmbNamedayCalendar"/>
    </item>
    <item row="17" column="0">
     <widget class="QLabel" name="lblNamedayIdentifyBy">
@@ -67,52 +235,27 @@
      </property>
     </widget>
    </item>
-   <item row="18" column="1" colspan="2">
-    <layout class="QHBoxLayout" name="hlNamedayNameField">
-     <item>
-      <widget class="QRadioButton" name="rbNamedayNameField">
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
-       </property>
-       <property name="text">
-        <string>Name field:</string>
-       </property>
-       <attribute name="buttonGroup">
-        <string>bgNamedayIdentifyBy</string>
-       </attribute>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="cmbNamedayNameField">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <item>
-        <property name="text">
-         <string>Given name</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="19" column="1" colspan="2">
-    <widget class="QRadioButton" name="rbNamedayBothFields">
+   <item row="21" column="2">
+    <widget class="QRadioButton" name="rbNamedayDateFieldCustom">
      <property name="text">
-      <string>Both, preferring date field</string>
+      <string>Custom:</string>
      </property>
      <attribute name="buttonGroup">
-      <string>bgNamedayIdentifyBy</string>
+      <string notr="true">bgNamedayDateFieldTypes</string>
      </attribute>
     </widget>
    </item>
-   <item row="25" column="0">
+   <item row="11" column="0">
+    <widget class="QLabel" name="lblComingShowDays">
+     <property name="text">
+      <string>Show events within next:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="28" column="0">
     <widget class="QLabel" name="lblTitleAnniversaries">
      <property name="font">
       <font>
@@ -125,18 +268,18 @@
      </property>
     </widget>
    </item>
-   <item row="27" column="0">
-    <widget class="QLabel" name="lblAnniversaryField">
-     <property name="text">
-      <string>Anniversary field:</string>
+   <item row="35" column="1">
+    <spacer name="spacerScreenBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
      </property>
-    </widget>
-   </item>
-   <item row="27" column="1" colspan="2">
-    <widget class="QLineEdit" name="lineEditAnniversaryField"/>
+    </spacer>
    </item>
    <item row="15" column="0">
     <widget class="QLabel" name="lblShowNamedays">
@@ -169,7 +312,7 @@
      </property>
     </widget>
    </item>
-   <item row="26" column="0">
+   <item row="29" column="0">
     <widget class="QLabel" name="lblShowAnniversaries">
      <property name="text">
       <string>Show anniversaries:</string>
@@ -179,238 +322,117 @@
      </property>
     </widget>
    </item>
-   <item row="26" column="1">
-    <widget class="QCheckBox" name="chckShowAnniversaries">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
+   <item row="23" column="1">
+    <widget class="QCheckBox" name="chckNamedayNameField">
      <property name="text">
-      <string/>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="showAnniversaries" stdset="0">
-      <bool>true</bool>
+      <string>Name field:</string>
      </property>
     </widget>
    </item>
-   <item row="24" column="1">
-    <spacer name="spacerNamedaysBottom">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>10</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="21" column="0">
-    <widget class="QLabel" name="lblNamedayDisplayMode">
+   <item row="32" column="1">
+    <widget class="QRadioButton" name="rbAnniversaryDateFieldAnniversary">
      <property name="text">
-      <string>Nameday display mode:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="23" column="1" colspan="2">
-    <widget class="QRadioButton" name="rbNamedayShowAllFromCal">
-     <property name="text">
-      <string>All names from calendar</string>
+      <string>Anniversary</string>
      </property>
      <attribute name="buttonGroup">
-      <string>bgNamedayDisplayMode</string>
+      <string notr="true">bgAnniversaryDateFieldTypes</string>
      </attribute>
     </widget>
    </item>
-   <item row="21" column="1" colspan="2">
-    <widget class="QRadioButton" name="rbNamedayShowAggrEvents">
+   <item row="32" column="0">
+    <widget class="QLabel" name="lblAnniversaryField">
      <property name="text">
-      <string>Aggregated events</string>
+      <string>Date field:</string>
      </property>
-     <property name="checked">
-      <bool>true</bool>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="34" column="1">
+    <widget class="QRadioButton" name="rbAnniversaryDateFieldCustom">
+     <property name="text">
+      <string>Custom:</string>
      </property>
      <attribute name="buttonGroup">
-      <string>bgNamedayDisplayMode</string>
+      <string notr="true">bgAnniversaryDateFieldTypes</string>
      </attribute>
     </widget>
    </item>
-   <item row="11" column="0">
-    <widget class="QLabel" name="lblComingShowDays">
-     <property name="text">
-      <string>Show events within next:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
+   <item row="34" column="2" colspan="2">
+    <widget class="QLineEdit" name="lineEditAnniversaryCustomDateField"/>
    </item>
-   <item row="14" column="0">
-    <widget class="QLabel" name="lblTitleNamedays">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Namedays</string>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="1">
-    <widget class="QSpinBox" name="spinComingShowDays">
-     <property name="maximum">
-      <number>335</number>
-     </property>
-     <property name="value">
-      <number>30</number>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="2">
-    <widget class="QLabel" name="lblComingShowDays_2">
-     <property name="text">
-      <string comment="label: show events within x &lt;days&gt;">days</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0">
-    <widget class="QLabel" name="lblPastShowDays">
-     <property name="text">
-      <string>Show events within last:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="1">
-    <widget class="QSpinBox" name="spinPastShowDays">
-     <property name="maximum">
-      <number>30</number>
-     </property>
-     <property name="value">
-      <number>2</number>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="2">
+   <item row="12" column="2" colspan="2">
     <widget class="QLabel" name="lblPastShowDays_2">
      <property name="text">
       <string comment="label: show events within x &lt;days&gt;">days</string>
      </property>
     </widget>
    </item>
-   <item row="13" column="1">
-    <spacer name="spacerNamedaysBottom_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>10</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="22" column="1" colspan="2">
-    <widget class="QRadioButton" name="rbNamedayShowIndEvents">
+   <item row="17" column="2" colspan="2">
+    <widget class="QRadioButton" name="rbNamedayDateFieldAnniversary">
      <property name="text">
-      <string>Individual events</string>
+      <string>Anniversary</string>
      </property>
      <attribute name="buttonGroup">
-      <string>bgNamedayDisplayMode</string>
+      <string notr="true">bgNamedayDateFieldTypes</string>
      </attribute>
     </widget>
    </item>
-   <item row="18" column="3">
-    <spacer name="spacerScreenRight">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="16" column="0">
-    <widget class="QLabel" name="lblNamedayCalendar">
+   <item row="23" column="2" colspan="2">
+    <widget class="QComboBox" name="cmbNamedayNameField">
      <property name="enabled">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="text">
-      <string>Nameday calendar:</string>
-     </property>
-     <property name="scaledContents">
-      <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
+     <item>
+      <property name="text">
+       <string>Given name</string>
+      </property>
+     </item>
     </widget>
-   </item>
-   <item row="16" column="1">
-    <widget class="QComboBox" name="cmbNamedayCalendar"/>
    </item>
   </layout>
  </widget>
  <tabstops>
+  <tabstop>spinComingShowDays</tabstop>
+  <tabstop>spinPastShowDays</tabstop>
   <tabstop>chckShowNamedays</tabstop>
-  <tabstop>rbNamedayDateField</tabstop>
-  <tabstop>lineEditNamedayDateField</tabstop>
-  <tabstop>rbNamedayNameField</tabstop>
+  <tabstop>cmbNamedayCalendar</tabstop>
+  <tabstop>chckNamedayDateField</tabstop>
+  <tabstop>rbNamedayDateFieldAnniversary</tabstop>
+  <tabstop>rbNamedayDateFieldCustom</tabstop>
+  <tabstop>lineEditNamedayCustomDateField</tabstop>
+  <tabstop>chckNamedayNameField</tabstop>
   <tabstop>cmbNamedayNameField</tabstop>
-  <tabstop>rbNamedayBothFields</tabstop>
   <tabstop>rbNamedayShowAggrEvents</tabstop>
   <tabstop>rbNamedayShowIndEvents</tabstop>
   <tabstop>rbNamedayShowAllFromCal</tabstop>
   <tabstop>chckShowAnniversaries</tabstop>
-  <tabstop>lineEditAnniversaryField</tabstop>
+  <tabstop>rbAnniversaryDateFieldAnniversary</tabstop>
+  <tabstop>rbAnniversaryDateFieldCustom</tabstop>
+  <tabstop>lineEditAnniversaryCustomDateField</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
    <sender>chckShowAnniversaries</sender>
    <signal>toggled(bool)</signal>
-   <receiver>lineEditAnniversaryField</receiver>
+   <receiver>lineEditAnniversaryCustomDateField</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>281</y>
+     <x>251</x>
+     <y>358</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>305</y>
+     <x>462</x>
+     <y>410</y>
     </hint>
    </hints>
   </connection>
@@ -421,12 +443,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>281</y>
+     <x>251</x>
+     <y>358</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>305</y>
+     <x>78</x>
+     <y>383</y>
     </hint>
    </hints>
   </connection>
@@ -437,60 +459,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>59</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chckShowNamedays</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>rbNamedayDateField</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>186</x>
-     <y>59</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chckShowNamedays</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineEditNamedayDateField</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>59</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chckShowNamedays</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>rbNamedayNameField</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>193</x>
-     <y>89</y>
+     <x>78</x>
+     <y>167</y>
     </hint>
    </hints>
   </connection>
@@ -501,28 +475,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>298</x>
-     <y>89</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chckShowNamedays</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>rbNamedayBothFields</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>248</x>
-     <y>117</y>
+     <x>462</x>
+     <y>223</y>
     </hint>
    </hints>
   </connection>
@@ -533,12 +491,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>144</y>
+     <x>78</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -549,12 +507,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>144</y>
+     <x>251</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -565,12 +523,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>171</y>
+     <x>78</x>
+     <y>248</y>
     </hint>
    </hints>
   </connection>
@@ -581,12 +539,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>171</y>
+     <x>406</x>
+     <y>248</y>
     </hint>
    </hints>
   </connection>
@@ -597,12 +555,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>196</y>
+     <x>406</x>
+     <y>273</y>
     </hint>
    </hints>
   </connection>
@@ -613,50 +571,115 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>34</y>
+     <x>251</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>248</x>
-     <y>221</y>
+     <x>406</x>
+     <y>298</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>rbNamedayDateField</sender>
+   <sender>chckNamedayDateField</sender>
    <signal>toggled(bool)</signal>
-   <receiver>lineEditNamedayDateField</receiver>
+   <receiver>rbNamedayDateFieldAnniversary</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>186</x>
-     <y>59</y>
+     <x>204</x>
+     <y>158</y>
     </hint>
     <hint type="destinationlabel">
-     <x>291</x>
-     <y>59</y>
+     <x>360</x>
+     <y>158</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>rbNamedayNameField</sender>
+   <sender>chckNamedayDateField</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>rbNamedayDateFieldCustom</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chckNamedayNameField</sender>
    <signal>toggled(bool)</signal>
    <receiver>cmbNamedayNameField</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>89</y>
+     <x>204</x>
+     <y>212</y>
     </hint>
     <hint type="destinationlabel">
-     <x>298</x>
-     <y>89</y>
+     <x>360</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chckShowNamedays</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chckNamedayDateField</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chckShowNamedays</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>chckNamedayNameField</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbAnniversaryDateFieldCustom</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditAnniversaryCustomDateField</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>204</x>
+     <y>400</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <buttongroups>
+  <buttongroup name="bgNamedayDateFieldTypes"/>
   <buttongroup name="bgNamedayDisplayMode"/>
-  <buttongroup name="bgNamedayIdentifyBy"/>
+  <buttongroup name="bgAnniversaryDateFieldTypes"/>
  </buttongroups>
 </ui>

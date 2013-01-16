@@ -47,8 +47,10 @@ void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGro
     modelConf.eventDataSource = ModelConfiguration::EDS_Akonadi;
 
     modelConf.akonadiCollectionId = configGroup.readEntry("Akonadi Collection", -1);
-    modelConf.namedayDateFieldString = configGroup.readEntry("Nameday String", "Nameday");
-    modelConf.anniversaryFieldString = configGroup.readEntry("Anniversary String", "Anniversary");
+    modelConf.namedayByAnniversaryDateField = configGroup.readEntry("Nameday By Anniversary Field", false);
+    modelConf.namedayCustomDateFieldName = configGroup.readEntry("Nameday Custom Field", "");
+    modelConf.anniversaryByAnniversaryDateField = configGroup.readEntry("Anniversary By Anniversary Field", true);
+    modelConf.anniversaryCustomDateFieldName = configGroup.readEntry("Anniversary Custom Field", "");
     QString nimString = configGroup.readEntry("Nameday Identification Mode", "");
     if (nimString == "Date Field") modelConf.namedayIdentificationMode = ModelConfiguration::NIM_DateField;
     else if (nimString == "Given Name") modelConf.namedayIdentificationMode = ModelConfiguration::NIM_GivenName;
@@ -127,8 +129,10 @@ void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, c
     configGroup.writeEntry("Event Data Source", "Akonadi");
 
     if (modelConf.akonadiCollectionId >= 0) configGroup.writeEntry("Akonadi Collection", modelConf.akonadiCollectionId);
-    configGroup.writeEntry("Nameday String", modelConf.namedayDateFieldString);
-    configGroup.writeEntry("Anniversary String", modelConf.anniversaryFieldString);
+    configGroup.writeEntry("Nameday By Anniversary Field", modelConf.namedayByAnniversaryDateField);
+    configGroup.writeEntry("Nameday Custom Field", modelConf.namedayCustomDateFieldName);
+    configGroup.writeEntry("Anniversary By Anniversary Field", modelConf.anniversaryByAnniversaryDateField);
+    configGroup.writeEntry("Anniversary Custom Field", modelConf.anniversaryCustomDateFieldName);
     if (modelConf.namedayIdentificationMode == ModelConfiguration::NIM_DateField) configGroup.writeEntry("Nameday Identification Mode", "Date Field");
     else if (modelConf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName) configGroup.writeEntry("Nameday Identification Mode", "Given Name");
     else configGroup.writeEntry("Nameday Identification Mode", "Both");
@@ -232,11 +236,15 @@ void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Mo
     }
     else m_ui_contacts.cmbAkoCollection->setEnabled(true);
 
-    m_ui_events.rbNamedayDateField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_DateField);
-    m_ui_events.lineEditNamedayDateField->setText(modelConf.namedayDateFieldString);
-    m_ui_events.rbNamedayNameField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName);
-    m_ui_events.lineEditAnniversaryField->setText(modelConf.anniversaryFieldString);
-    m_ui_events.rbNamedayBothFields->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_Both);
+    m_ui_events.chckNamedayDateField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_DateField || modelConf.namedayIdentificationMode == ModelConfiguration::NIM_Both);
+    m_ui_events.rbNamedayDateFieldAnniversary->setChecked(modelConf.namedayByAnniversaryDateField);
+    m_ui_events.rbNamedayDateFieldCustom->setChecked(!modelConf.namedayByAnniversaryDateField);
+    m_ui_events.lineEditNamedayCustomDateField->setText(modelConf.namedayCustomDateFieldName);
+    m_ui_events.chckNamedayNameField->setChecked(modelConf.namedayIdentificationMode == ModelConfiguration::NIM_GivenName || modelConf.namedayIdentificationMode == ModelConfiguration::NIM_Both);
+
+    m_ui_events.rbAnniversaryDateFieldAnniversary->setChecked(modelConf.anniversaryByAnniversaryDateField);
+    m_ui_events.rbAnniversaryDateFieldCustom->setChecked(!modelConf.anniversaryByAnniversaryDateField);
+    m_ui_events.lineEditAnniversaryCustomDateField->setText(modelConf.anniversaryCustomDateFieldName);
 
     m_ui_table.chckShowColumnHeaders->setChecked(viewConf.showColumnHeaders);
     m_ui_table.chckShowColName->setChecked(viewConf.showColName);
@@ -288,8 +296,15 @@ void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Mo
     m_ui_colors.chckPastHighlightNoEvent->setChecked(modelConf.pastColorSettings.highlightNoEvents);
 
     m_ui_table.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
+    
+    // enable only relevant widgets
+    namedayIdentificationChanged();
 
     connect(m_ui_contacts.cmbDataSource, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataSourceChanged(QString)));
+    connect(m_ui_events.chckShowNamedays, SIGNAL(toggled(bool)), this, SLOT(namedayIdentificationChanged()));
+    connect(m_ui_events.chckNamedayDateField, SIGNAL(toggled(bool)), this, SLOT(namedayIdentificationChanged()));
+    connect(m_ui_events.chckNamedayNameField, SIGNAL(toggled(bool)), this, SLOT(namedayIdentificationChanged()));
+    connect(m_ui_events.rbNamedayDateFieldCustom, SIGNAL(toggled(bool)), this, SLOT(namedayIdentificationChanged()));
 }
 
 void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &modelConf, ViewConfiguration &viewConf)
@@ -307,11 +322,13 @@ void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &m
     }
     else modelConf.akonadiCollectionId = -1;
 
-    modelConf.namedayDateFieldString = m_ui_events.lineEditNamedayDateField->text();
-    modelConf.anniversaryFieldString = m_ui_events.lineEditAnniversaryField->text();
-    if (m_ui_events.rbNamedayDateField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_DateField;
-    else if (m_ui_events.rbNamedayNameField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_GivenName;
-    else modelConf.namedayIdentificationMode = ModelConfiguration::NIM_Both;
+    modelConf.namedayByAnniversaryDateField = m_ui_events.rbNamedayDateFieldAnniversary->isChecked();
+    modelConf.namedayCustomDateFieldName = m_ui_events.lineEditNamedayCustomDateField->text();
+    modelConf.anniversaryByAnniversaryDateField = m_ui_events.rbAnniversaryDateFieldAnniversary->isChecked();
+    modelConf.anniversaryCustomDateFieldName = m_ui_events.lineEditAnniversaryCustomDateField->text();
+    if (m_ui_events.chckNamedayDateField->isChecked() && m_ui_events.chckNamedayNameField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_Both;
+    else if (m_ui_events.chckNamedayDateField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_DateField;
+    else if (m_ui_events.chckNamedayNameField->isChecked()) modelConf.namedayIdentificationMode = ModelConfiguration::NIM_GivenName;
 
     viewConf.showColumnHeaders = m_ui_table.chckShowColumnHeaders->isChecked();
     viewConf.showColName = m_ui_table.chckShowColName->isChecked();
@@ -367,6 +384,20 @@ void BirthdayList::ConfigHelper::dataSourceChanged(const QString &name)
 {
     m_ui_contacts.lblAkoCollection->setVisible(name == "Akonadi");
     m_ui_contacts.cmbAkoCollection->setVisible(name == "Akonadi");
+}
+
+void BirthdayList::ConfigHelper::namedayIdentificationChanged()
+{
+    bool namedaysEnabled = m_ui_events.chckShowNamedays->isChecked();
+    bool namedaysByDateEnabled = m_ui_events.chckNamedayDateField->isChecked();
+    bool namedaysByNameEnabled = m_ui_events.chckNamedayNameField->isChecked();
+    bool namedayCustomDateField = m_ui_events.rbNamedayDateFieldCustom->isChecked();
+    
+    m_ui_events.rbNamedayDateFieldAnniversary->setEnabled(namedaysEnabled && namedaysByDateEnabled);
+    m_ui_events.rbNamedayDateFieldCustom->setEnabled(namedaysEnabled && namedaysByDateEnabled);
+    m_ui_events.lineEditNamedayCustomDateField->setEnabled(namedaysEnabled && namedaysByDateEnabled && namedayCustomDateField);
+    
+    m_ui_events.cmbNamedayNameField->setEnabled(namedaysEnabled && namedaysByNameEnabled);
 }
 
 void BirthdayList::ConfigHelper::readAvailableNamedayLists() 

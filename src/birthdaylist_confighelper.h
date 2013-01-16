@@ -67,6 +67,7 @@ namespace BirthdayList
     private slots:
         /** Enables/disables some widgets in the configuration UI based on the current datasource selection */
         void dataSourceChanged(const QString &name);
+        void namedayIdentificationChanged();
     };
 };
 

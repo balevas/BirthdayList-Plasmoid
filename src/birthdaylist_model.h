@@ -56,13 +56,15 @@ namespace BirthdayList
         /** Mode to identify namedays for Akonadi contacts */
         enum NamedayIdentificationMode { NIM_DateField, NIM_GivenName, NIM_Both };
         NamedayIdentificationMode namedayIdentificationMode;
-        /** Name of the Akonadi collection field where namedays can be found */
-        QString namedayDateFieldString;
+        bool namedayByAnniversaryDateField;
+        /** Name of the Akonadi collection custom field where namedays can be found (used if the anniversary field is not used)*/
+        QString namedayCustomDateFieldName;
         /** Language code of the currently used nameday calendar */
         QString curNamedayFile;
 
-        /** Name of the Akonadi collection field where anniversaries can be found */
-        QString anniversaryFieldString;
+        bool anniversaryByAnniversaryDateField;
+        /** Name of the Akonadi collection field where anniversaries can be found (used if the anniversary field is not used)*/
+        QString anniversaryCustomDateFieldName;
 
         enum FilterType { FT_Off, FT_Category, FT_CustomField, FT_CustomFieldPrefix };
         FilterType filterType;
