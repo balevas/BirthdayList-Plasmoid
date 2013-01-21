@@ -47,3 +47,8 @@
         - Fixed freezing issues (especially when using Akonadi DAV groupware resource)
         - Removed KDE Addressbook support over the old deprecated interface (use Akonadi instead)
         - Internal refactoring (removed dataengine layer, changed interface to Akonadi - EntityTreeModel)
+
+        ============= V 1.0.1 ==================
+        - Brazilian Portuguese translation
+        - Fixed minor translation bugs
+        - Redesigned configuration of the nameday identification

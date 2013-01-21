@@ -20,7 +20,7 @@
 #include <QByteArray>
 
     
-const QByteArray BirthdayList::AboutData::version("1.0");
+const QByteArray BirthdayList::AboutData::version("1.0.1");
 
 BirthdayList::AboutData::AboutData()
 : KAboutData("birthdaylist_applet", 

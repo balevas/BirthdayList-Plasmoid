@@ -18,6 +18,7 @@
 
 #include "birthdaylist_source_contacts.h"
 #include <KABC/Addressee>
+#include <KDebug>
 
 
 bool BirthdayList::AddresseeInfo::operator==(const BirthdayList::AddresseeInfo& other) const
@@ -64,7 +65,9 @@ void BirthdayList::Source_Contacts::fillAddresseeInfo(BirthdayList::AddresseeInf
 
     addresseeInfo.categories = kabcAddressee.categories();
 
+//    kDebug() << "Custom fields for" << addresseeInfo.name << ":";
     for (int i=0; i<kabcAddressee.customs().size(); ++i) {
+//        kDebug() << "- " << kabcAddressee.customs()[i];
         int separatorPos = kabcAddressee.customs()[i].indexOf(":");
         QString fieldName = kabcAddressee.customs()[i].left(separatorPos);
         QString fieldValue = kabcAddressee.customs()[i].mid(separatorPos + 1);

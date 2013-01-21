@@ -95,7 +95,7 @@ QList<QAction *> BirthdayList::View::contextualActions()
        QString selectedEntryEmail = getSelectedLineItem(4);
         if (!selectedEntryEmail.isEmpty()) {
             KIcon mailerIcon("internet-mail");
-            QAction *actionSendEmail = new QAction(mailerIcon, QString(i18n("Send Email to %1")).arg(name), this);
+            QAction *actionSendEmail = new QAction(mailerIcon, i18n("Send Email to %1", name), this);
             connect(actionSendEmail, SIGNAL(triggered()), this, SLOT(sendEmail()));
             currentActions.append(actionSendEmail);
         }
@@ -106,7 +106,7 @@ QList<QAction *> BirthdayList::View::contextualActions()
 
         QString selectedEntryUrl = getSelectedLineItem(5);
         if (!selectedEntryUrl.isEmpty()) {
-            QAction *actionVisitHomepage = new QAction(browserIcon, QString(i18n("Visit %1's Homepage")).arg(name), this);
+            QAction *actionVisitHomepage = new QAction(browserIcon, i18n("Visit %1's Homepage", name), this);
             connect(actionVisitHomepage, SIGNAL(triggered()), this, SLOT(visitHomepage()));
             currentActions.append(actionVisitHomepage);
         }

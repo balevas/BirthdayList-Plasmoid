@@ -68,6 +68,8 @@ namespace BirthdayList
         /** Enables/disables some widgets in the configuration UI based on the current datasource selection */
         void dataSourceChanged(const QString &name);
         void namedayIdentificationChanged();
+        void namedayAnniversaryFieldSelected(bool checked);
+        void namedayCustomFieldSelected(bool checked);
     };
 };
 

@@ -1,8 +1,14 @@
 [Desktop Entry]
 Name=Birthday List
+Name[cz]=Seznam narozenin
+Name[nl]=Lijst met verjaardagen
+Name[pt_BR]=Lista de aniversários
 Name[sk]=Zoznam sviatkov
-Comment=List of upcoming birthdays, anniversaries and namedays
-Comment[sk]=Zoznam nadchádzajúcich narodenín, menín a výročí
+Comment=Shows the list of upcoming birthdays, anniversaries and name days
+Comment[cz]=Zobrazuje seznam nadcházejících narozenin, svátků a výročí
+Comment[nl]=Weergeven van de verjaardagen, feestelijkheden en naamdagen
+Comment[pt_BR]=Mostra uma lista com os próximos aniversários, datas especiais e dias dos nomes
+Comment[sk]=Zobrazenie zoznamu nadchádzajúcich narodenín, menín a výročí
 Icon=bl_cookie
 Type=Service
 X-KDE-ServiceTypes=Plasma/Applet
@@ -11,7 +17,7 @@ X-KDE-Library=plasma_applet_birthdaylist
 X-KDE-PluginInfo-Author=Karol Slanina
 X-KDE-PluginInfo-Email=karol.slanina@gmail.com
 X-KDE-PluginInfo-Name=plasma_applet_birthdaylist
-X-KDE-PluginInfo-Version=1.0
+X-KDE-PluginInfo-Version=1.0.1
 X-KDE-PluginInfo-Website=http://kde-look.org/content/show.php?content=121134
 X-KDE-PluginInfo-Category=Date and Time
 X-KDE-PluginInfo-Depends=
