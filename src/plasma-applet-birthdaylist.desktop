@@ -1,13 +1,15 @@
 [Desktop Entry]
 Name=Birthday List
 Name[cz]=Seznam narozenin
+Name[de]=Geburtstagsliste
 Name[nl]=Lijst met verjaardagen
 Name[pt_BR]=Lista de aniversários
 Name[sk]=Zoznam sviatkov
 Comment=Shows the list of upcoming birthdays, anniversaries and name days
 Comment[cz]=Zobrazuje seznam nadcházejících narozenin, svátků a výročí
+Comment[de]=Zeigt die Liste der bevorstehenden Geburtstage, Jubiläen und Namenstag
 Comment[nl]=Weergeven van de verjaardagen, feestelijkheden en naamdagen
-Comment[pt_BR]=Mostra uma lista com os próximos aniversários, datas especiais e dias dos nomes
+Comment[pt_BR]=Mostra os próximos aniversários, aniversários de casamento e dias dos nomes
 Comment[sk]=Zobrazenie zoznamu nadchádzajúcich narodenín, menín a výročí
 Icon=bl_cookie
 Type=Service

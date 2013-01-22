@@ -95,7 +95,8 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Key of the custom field storing name days. Note that the field key can be different from the field name.</string>
+      <string>Key of the custom field storing name days. 
+Note that the field key can be different from the field name.</string>
      </property>
     </widget>
    </item>
@@ -276,7 +277,9 @@
    <item row="23" column="1">
     <widget class="QCheckBox" name="chckNamedayNameField">
      <property name="toolTip">
-      <string>Name days shall be determined out of given names. However if the particular contact's name day is stored in the selected date field, the date field takes precedence.</string>
+      <string>Name days shall be determined out of given names. 
+However if the particular contact's name day is stored 
+in the selected date field, the date field takes precedence.</string>
      </property>
      <property name="text">
       <string/>
