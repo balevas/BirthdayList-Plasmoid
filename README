@@ -54,6 +54,9 @@ Instead of the group name seen in the web interface (e.g. "My contacts"), the re
 only reports the group Id, e.g. "http://www.google.com/m8/feeds/groups/name.surname%40gmail.com/base/6".
 Type such id into the "Match value" field (you can see the values in kaddressbook under custom fields)
 and find out which Id you need to use for the group you want to select.
+Another Akonadi Google resource (libkgapi) combines all groups in a single custom field 
+GCALENDAR-groupMembershipInfo. BirthdayList so far does not support filtering of contacts 
+based on one particular group Id in this case.
 
 2.4 Nameday options
 2.4.1 Determining contact namedays
@@ -107,13 +110,10 @@ Akonadi resource. The plasmoid no longer supports the old interface since versio
 Please use Akonadi to read the KDE Address Book contacts.
 
 4.3 Gmail contacts over Akonadi
-To see your Gmail contacts, you need to install an additional package (Akonadi Google resource),
-the name may vary between distributions.
-This resource currently provides the names, birthdays and anniversaries for your contacts.
-(custom date fields such as name days are not supported).
-Assignment of contacts into groups is also provided, but instead of a human-readable group name
-(e.g. "Family"), just a group Id is available
-(e.g. "http://www.google.com/m8/feeds/groups/name.surname%40gmail.com/base/6").
+To see your Gmail contacts, you need to install an additional package (e.g. libkgapi or akonadi-googledata).
+These resources currently provide the names, birthdays and anniversaries for your contacts.
+(custom date fields such as name days are not supported as of libkgapi v0.4.4).
+
 
 
 5. Contributions
