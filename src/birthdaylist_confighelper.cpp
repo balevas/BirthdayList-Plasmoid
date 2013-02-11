@@ -23,6 +23,7 @@
 #include <KConfigDialog>
 #include <KConfigGroup>
 #include <KStandardDirs>
+#include <QFile> // needed for backward compatibility
 
 
 BirthdayList::ConfigHelper::ConfigHelper() :

@@ -52,3 +52,4 @@
         - Brazilian Portuguese translation
         - Fixed minor translation bugs
         - Redesigned configuration of the nameday identification
+        - build 2: included patch from Thomas Leineweber for backward compatibility with older KDE versions
