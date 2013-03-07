@@ -68,6 +68,8 @@ void BirthdayList::Applet::init()
     m_configHelper->loadConfiguration(configGroup, modelConf, viewConf);
     m_model->setConfiguration(modelConf);
     m_view->setConfiguration(viewConf);
+    
+    connect(m_view, SIGNAL(settingsChanged()), this, SLOT(viewSettingChanged()));
 }
 
 QGraphicsWidget *BirthdayList::Applet::graphicsWidget() 
@@ -136,11 +138,19 @@ void BirthdayList::Applet::configAccepted()
     emit configNeedsSaving();
 }
 
+void BirthdayList::Applet::viewSettingChanged()
+{
+    KConfigGroup configGroup = config();
+    m_configHelper->storeConfiguration(configGroup, m_model->getConfiguration(), m_view->getConfiguration());
+
+    emit configNeedsSaving();
+}
+
 void BirthdayList::Applet::about() 
 {
-  KAboutApplicationDialog *aboutDialog = new KAboutApplicationDialog(m_aboutData);
-  connect(aboutDialog, SIGNAL(finished()), aboutDialog, SLOT(deleteLater()));
-  aboutDialog->show();
+    KAboutApplicationDialog *aboutDialog = new KAboutApplicationDialog(m_aboutData);
+    connect(aboutDialog, SIGNAL(finished()), aboutDialog, SLOT(deleteLater()));
+    aboutDialog->show();
 }
 
 

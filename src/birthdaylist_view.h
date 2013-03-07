@@ -43,6 +43,10 @@ namespace BirthdayList
         int columnWidthAge;
         int columnWidthDate;
         int columnWidthWhen;
+        int visualIndexName;
+        int visualIndexAge;
+        int visualIndexDate;
+        int visualIndexWhen;
     };
 
 
@@ -58,9 +62,12 @@ namespace BirthdayList
 
         QList<QAction *> contextualActions();
 
-        void setColumnWidths();
+        void setColumnSettings();
         /** Changes the tree and item colors according to the current Plasma theme. */
         void usePlasmaThemeColors();
+
+    signals:
+        void settingsChanged();
         
     private:
         ViewConfiguration m_conf;
@@ -73,6 +80,7 @@ namespace BirthdayList
         /** Receives a notification when the system plasma theme is changed. */
         void plasmaThemeChanged();
         void columnsResized(int logicalIndex, int oldSize, int newSize);
+        void columnsMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
         
         void sendEmail();
         void visitHomepage();
