@@ -49,6 +49,7 @@ namespace BirthdayList
     private slots:
         /** Receives a notification when the user accepts the configuration change. */
         void configAccepted();
+        void viewSettingChanged();
         void about();
 
     private:

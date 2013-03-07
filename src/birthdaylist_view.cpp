@@ -36,7 +36,11 @@ showColWhen(true),
 columnWidthName(0),
 columnWidthAge(0),
 columnWidthDate(0),
-columnWidthWhen(0)
+columnWidthWhen(0),
+visualIndexName(-1),
+visualIndexAge(-1),
+visualIndexDate(-1),
+visualIndexWhen(-1)
 {
 }
 
@@ -62,6 +66,7 @@ m_model(model)
     
     connect(Plasma::Theme::defaultTheme(), SIGNAL(themeChanged()), this, SLOT(plasmaThemeChanged()));
     connect(nativeWidget()->header(), SIGNAL(sectionResized(int,int,int)), this, SLOT(columnsResized(int,int,int)));
+    connect(nativeWidget()->header(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnsMoved(int,int,int)));
 }
 
 BirthdayList::View::~View()
@@ -73,7 +78,7 @@ void BirthdayList::View::setConfiguration(ViewConfiguration newConf)
     m_conf = newConf;
 
     // update view
-    setColumnWidths();
+    setColumnSettings();
     usePlasmaThemeColors();
 }
 
@@ -122,9 +127,12 @@ QString BirthdayList::View::getSelectedLineItem(int column)
     else return "";
 }
 
-void BirthdayList::View::setColumnWidths() 
+void BirthdayList::View::setColumnSettings() 
 {
     QTreeView *qTreeView = nativeWidget();
+
+    disconnect(nativeWidget()->header(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnsMoved(int,int,int)));
+    disconnect(nativeWidget()->header(), SIGNAL(sectionResized(int,int,int)), this, SLOT(columnsResized(int,int,int)));
 
     qTreeView->setHeaderHidden(!m_conf.showColumnHeaders);
     qTreeView->setColumnHidden(0, !m_conf.showColName);
@@ -134,10 +142,16 @@ void BirthdayList::View::setColumnWidths()
     qTreeView->setColumnHidden(4, true);
     qTreeView->setColumnHidden(5, true);
 
+    QHeaderView *header = qTreeView->header();
+    if (m_conf.visualIndexName >= 0) header->moveSection(header->visualIndex(0), m_conf.visualIndexName);
+    if (m_conf.visualIndexAge  >= 0) header->moveSection(header->visualIndex(1), m_conf.visualIndexAge);
+    if (m_conf.visualIndexDate >= 0) header->moveSection(header->visualIndex(2), m_conf.visualIndexDate);
+    if (m_conf.visualIndexWhen >= 0) header->moveSection(header->visualIndex(3), m_conf.visualIndexWhen);
+    
     if (m_conf.columnWidthName < 10) qTreeView->resizeColumnToContents(0);
     else qTreeView->setColumnWidth(0, m_conf.columnWidthName);
 
-    if (m_conf.columnWidthAge < 10) qTreeView->resizeColumnToContents(1);
+    if (m_conf.columnWidthAge  < 10) qTreeView->resizeColumnToContents(1);
     else qTreeView->setColumnWidth(1, m_conf.columnWidthAge);
 
     if (m_conf.columnWidthDate < 10) qTreeView->resizeColumnToContents(2);
@@ -145,6 +159,9 @@ void BirthdayList::View::setColumnWidths()
 
     if (m_conf.columnWidthWhen < 10) qTreeView->resizeColumnToContents(3);
     else qTreeView->setColumnWidth(3, m_conf.columnWidthWhen);
+    
+    connect(nativeWidget()->header(), SIGNAL(sectionResized(int,int,int)), this, SLOT(columnsResized(int,int,int)));
+    connect(nativeWidget()->header(), SIGNAL(sectionMoved(int,int,int)), this, SLOT(columnsMoved(int,int,int)));
 }
 
 void BirthdayList::View::plasmaThemeChanged() 
@@ -201,6 +218,23 @@ void BirthdayList::View::columnsResized(int logicalIndex, int oldSize, int newSi
             m_conf.columnWidthWhen = newSize;
             break;
     }
+    
+    emit settingsChanged();
+}
+
+void BirthdayList::View::columnsMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
+{
+    Q_UNUSED(logicalIndex);
+    Q_UNUSED(oldVisualIndex);
+    Q_UNUSED(newVisualIndex);
+    
+    QHeaderView *header = nativeWidget()->header();
+    m_conf.visualIndexName = header->visualIndex(0);
+    m_conf.visualIndexAge = header->visualIndex(1);
+    m_conf.visualIndexDate = header->visualIndex(2);
+    m_conf.visualIndexWhen = header->visualIndex(3);
+
+    emit settingsChanged();
 }
 
 void BirthdayList::View::sendEmail() 

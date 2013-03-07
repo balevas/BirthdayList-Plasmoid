@@ -117,6 +117,11 @@ void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGro
     viewConf.columnWidthAge = configGroup.readEntry("Age Column Width", 0);
     viewConf.columnWidthDate = configGroup.readEntry("Date Column Width", 0);
     viewConf.columnWidthWhen = configGroup.readEntry("When Column Width", 0);
+
+    viewConf.visualIndexName = configGroup.readEntry("Name Visual Index", -1);
+    viewConf.visualIndexAge = configGroup.readEntry("Age Visual Index", -1);
+    viewConf.visualIndexDate = configGroup.readEntry("Date Visual Index", -1);
+    viewConf.visualIndexWhen = configGroup.readEntry("When Visual Index", -1);
 }
 
 void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf)
@@ -183,6 +188,11 @@ void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, c
     configGroup.writeEntry("Age Column Width", viewConf.columnWidthAge);
     configGroup.writeEntry("Date Column Width", viewConf.columnWidthDate);
     configGroup.writeEntry("When Column Width", viewConf.columnWidthWhen);
+
+    configGroup.writeEntry("Name Visual Index", viewConf.visualIndexName);
+    configGroup.writeEntry("Age Visual Index", viewConf.visualIndexAge);
+    configGroup.writeEntry("Date Visual Index", viewConf.visualIndexDate);
+    configGroup.writeEntry("When Visual Index", viewConf.visualIndexWhen);  
 }
 
 void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Model *model, const ModelConfiguration &modelConf, const ViewConfiguration &viewConf)
