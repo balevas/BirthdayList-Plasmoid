@@ -7,13 +7,29 @@
     <x>0</x>
     <y>0</y>
     <width>389</width>
-    <height>262</height>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="18" column="0">
+    <spacer name="spacerDateFormatBottom">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="lblTitleColumns">
      <property name="font">
@@ -27,7 +43,7 @@
      </property>
     </widget>
    </item>
-   <item row="17" column="0">
+   <item row="21" column="0">
     <spacer name="spacerScreenBottom">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -200,6 +216,33 @@
      </property>
     </spacer>
    </item>
+   <item row="17" column="1" colspan="2">
+    <widget class="QLineEdit" name="leDateDisplayFormat">
+     <property name="toolTip">
+      <string>Enter the desired format using the following expressions:
+d 	the day as number without a leading zero (1 to 31)
+dd 	the day as number with a leading zero (01 to 31)
+ddd 	the abbreviated day name ('Mon' to 'Sun')
+dddd 	the long day name ('Monday' to 'Sunday')
+M 	the month as number without a leading zero (1 to 12)
+MM 	the month as number with a leading zero (01 to 12)
+MMM 	the abbreviated month name ('Jan' to 'Dec')
+MMMM 	the long month name ('January' to 'December')
+
+Example: &quot;ddd M/d&quot; results in &quot;Sun 2/19&quot;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="0">
+    <widget class="QLabel" name="lblDateDisplayFormat">
+     <property name="text">
+      <string>Date display format:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
    <item row="15" column="0">
     <widget class="QLabel" name="lblTitleDateFormat">
      <property name="font">
@@ -213,68 +256,50 @@
      </property>
     </widget>
    </item>
-   <item row="16" column="0">
-    <widget class="QLabel" name="lblDateDisplayFormat">
+   <item row="19" column="0">
+    <widget class="QLabel" name="lblTitleAlignment">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>Date display format:</string>
+      <string>Alignment</string>
+     </property>
+    </widget>
+   </item>
+   <item row="20" column="0">
+    <widget class="QLabel" name="lblDateTextAlignment">
+     <property name="text">
+      <string>Text alignment:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>
-   <item row="16" column="1" colspan="2">
-    <widget class="QComboBox" name="cmbDateDisplayFormat">
-     <item>
-      <property name="text">
-       <string notr="true">31. 1.</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">31. 01.</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">31-1</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">31-01</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">1-31</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">01-31</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">31/1</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">31/01</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">1/31</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string notr="true">01/31</string>
-      </property>
-     </item>
+   <item row="20" column="1">
+    <widget class="QRadioButton" name="rbTextAlignmentLeft">
+     <property name="text">
+      <string>Left</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup</string>
+     </attribute>
+    </widget>
+   </item>
+   <item row="20" column="2">
+    <widget class="QRadioButton" name="rbTextAlignmentRight">
+     <property name="text">
+      <string>Right</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup</string>
+     </attribute>
     </widget>
    </item>
   </layout>
@@ -289,4 +314,7 @@
  </tabstops>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

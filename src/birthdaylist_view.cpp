@@ -142,12 +142,21 @@ void BirthdayList::View::setColumnSettings()
     qTreeView->setColumnHidden(4, true);
     qTreeView->setColumnHidden(5, true);
 
+    if (m_model->getConfiguration().textAlignmentLeft) {
+        for (int i=1; i<4; ++i)
+            qTreeView->header()->model()->setHeaderData(i, Qt::Horizontal, Qt::AlignLeft, Qt::TextAlignmentRole);
+    }
+    else {
+        for (int i=1; i<4; ++i)
+            qTreeView->header()->model()->setHeaderData(i, Qt::Horizontal, Qt::AlignRight, Qt::TextAlignmentRole);
+    }
+
     QHeaderView *header = qTreeView->header();
     if (m_conf.visualIndexName >= 0) header->moveSection(header->visualIndex(0), m_conf.visualIndexName);
     if (m_conf.visualIndexAge  >= 0) header->moveSection(header->visualIndex(1), m_conf.visualIndexAge);
     if (m_conf.visualIndexDate >= 0) header->moveSection(header->visualIndex(2), m_conf.visualIndexDate);
     if (m_conf.visualIndexWhen >= 0) header->moveSection(header->visualIndex(3), m_conf.visualIndexWhen);
-    
+
     if (m_conf.columnWidthName < 10) qTreeView->resizeColumnToContents(0);
     else qTreeView->setColumnWidth(0, m_conf.columnWidthName);
 

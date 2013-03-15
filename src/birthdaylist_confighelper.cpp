@@ -26,10 +26,9 @@
 #include <QFile> // needed for backward compatibility
 
 
-BirthdayList::ConfigHelper::ConfigHelper() :
-m_selectedDateFormat(0)
+BirthdayList::ConfigHelper::ConfigHelper()
 {
-    m_possibleDateFormats << "d. M." << "dd. MM."
+    m_obsoleteSelectableDateFormats << "d. M." << "dd. MM."
         << "d-M" << "dd-MM" << "M-d" << "MM-dd"
         << "d/M" << "dd/MM" << "M/d" << "MM/dd";
         
@@ -56,6 +55,15 @@ void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGro
     modelConf.curNamedayFile = configGroup.readEntry("Nameday Calendar File", "");
     
     modelConf.showNicknames = configGroup.readEntry("Show Nicknames", true);
+
+    modelConf.dateFormat = configGroup.readEntry("Custom Date Format", "");
+    if (modelConf.dateFormat.isEmpty()) {
+        int obsoleteDateFormatIndex = configGroup.readEntry("Date Format", 0);
+        modelConf.dateFormat = m_obsoleteSelectableDateFormats[obsoleteDateFormatIndex];
+    }
+    
+    QString textAlignmentString = configGroup.readEntry("Text Alignment", "Left");
+    modelConf.textAlignmentLeft = (textAlignmentString == "Left");
     
     QString filterType = configGroup.readEntry("Filter Type", "");
     if (filterType == "Category") modelConf.filterType = ModelConfiguration::FT_Category;
@@ -110,9 +118,6 @@ void BirthdayList::ConfigHelper::loadConfiguration(const KConfigGroup &configGro
     modelConf.pastColorSettings.brushBackground = QBrush(pastBackground);
     modelConf.pastColorSettings.highlightNoEvents = configGroup.readEntry("Past Highlight No Events", true);
 
-    m_selectedDateFormat = configGroup.readEntry("Date Format", 0);
-    modelConf.dateFormat = m_possibleDateFormats[m_selectedDateFormat];
-
     viewConf.columnWidthName = configGroup.readEntry("Name Column Width", 0);
     viewConf.columnWidthAge = configGroup.readEntry("Age Column Width", 0);
     viewConf.columnWidthDate = configGroup.readEntry("Date Column Width", 0);
@@ -143,6 +148,8 @@ void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, c
     configGroup.writeEntry("Show When Column", viewConf.showColWhen);
 
     configGroup.writeEntry("Show Nicknames", modelConf.showNicknames);
+    configGroup.writeEntry("Custom Date Format", modelConf.dateFormat);
+    configGroup.writeEntry("Text Alignment", (modelConf.textAlignmentLeft ? "Left" : "Right"));
 
     configGroup.writeEntry("Show Namedays", modelConf.showNamedays);
     configGroup.writeEntry("Nameday Calendar File", modelConf.curNamedayFile);
@@ -181,8 +188,6 @@ void BirthdayList::ConfigHelper::storeConfiguration(KConfigGroup &configGroup, c
     configGroup.writeEntry("Past Background Enabled", modelConf.pastColorSettings.isBackground);
     configGroup.writeEntry("Past Background Color", modelConf.pastColorSettings.brushBackground.color());
     configGroup.writeEntry("Past Highlight No Events", modelConf.pastColorSettings.highlightNoEvents);
-
-    configGroup.writeEntry("Date Format", m_selectedDateFormat);
 
     configGroup.writeEntry("Name Column Width", viewConf.columnWidthName);
     configGroup.writeEntry("Age Column Width", viewConf.columnWidthAge);
@@ -252,6 +257,9 @@ void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Mo
     m_ui_table.chckShowColWhen->setChecked(viewConf.showColWhen);
 
     m_ui_table.chckShowNicknames->setChecked(modelConf.showNicknames);
+    m_ui_table.leDateDisplayFormat->setText(modelConf.dateFormat);
+    if (modelConf.textAlignmentLeft) m_ui_table.rbTextAlignmentLeft->setChecked(true);
+    else m_ui_table.rbTextAlignmentRight->setChecked(true);
 
     m_ui_events.chckShowNamedays->setChecked(modelConf.showNamedays);
     m_ui_events.rbNamedayShowIndEvents->setChecked(modelConf.namedayDisplayMode == ModelConfiguration::NDM_IndividualEvents);
@@ -293,8 +301,6 @@ void BirthdayList::ConfigHelper::createConfigurationUI(KConfigDialog *parent, Mo
     m_ui_colors.chckPastBackground->setChecked(modelConf.pastColorSettings.isBackground);
     m_ui_colors.colorbtnPastBackground->setColor(modelConf.pastColorSettings.brushBackground.color());
     m_ui_colors.chckPastHighlightNoEvent->setChecked(modelConf.pastColorSettings.highlightNoEvents);
-
-    m_ui_table.cmbDateDisplayFormat->setCurrentIndex(m_selectedDateFormat);
     
     // enable only relevant widgets
     namedayIdentificationChanged();
@@ -336,6 +342,8 @@ void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &m
     viewConf.showColWhen = m_ui_table.chckShowColWhen->isChecked();
 
     modelConf.showNicknames = m_ui_table.chckShowNicknames->isChecked();
+    modelConf.dateFormat = m_ui_table.leDateDisplayFormat->text();
+    modelConf.textAlignmentLeft = m_ui_table.rbTextAlignmentLeft->isChecked();
 
     modelConf.showNamedays = m_ui_events.chckShowNamedays->isChecked();
     modelConf.curNamedayFile = m_namedayFiles[m_ui_events.cmbNamedayCalendar->currentIndex()];
@@ -374,9 +382,6 @@ void BirthdayList::ConfigHelper::updateConfigurationFromUI(ModelConfiguration &m
     modelConf.pastColorSettings.isBackground = m_ui_colors.chckPastBackground->isChecked();
     modelConf.pastColorSettings.brushBackground.setColor(m_ui_colors.colorbtnPastBackground->color());
     modelConf.pastColorSettings.highlightNoEvents = m_ui_colors.chckPastHighlightNoEvent->isChecked();
-
-    m_selectedDateFormat = m_ui_table.cmbDateDisplayFormat->currentIndex();
-    modelConf.dateFormat = m_possibleDateFormats[m_selectedDateFormat];
 }
 
 void BirthdayList::ConfigHelper::dataSourceChanged(const QString &name) 

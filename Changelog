@@ -18,7 +18,8 @@
         - Optional preference of nicknames over contact 'formatted names'
         - Customizable foreground/background color for today's events
         - Selectable date format output
-        - Czech and German translations
+        - Czech translation (Ondřej Kuda)
+        - German translation (Andreas Goldbohm)
 
         ============= V 0.6.1 ==================
         - Fixed Akonadi startup issue
@@ -41,7 +42,7 @@
         ============= V 0.7.1 ==================
         - Fixed startup rendering bug (occassionally the hidden columns with e-mail and homepage were shown)
         - Fixed default applet size (scaled to the table contents, not to the minimum size)
-        - Dutch translation
+        - Dutch translation (Richard Bos)
 
         ============= V 1.0 ====================
         - Fixed freezing issues (especially when using Akonadi DAV groupware resource)
@@ -49,7 +50,12 @@
         - Internal refactoring (removed dataengine layer, changed interface to Akonadi - EntityTreeModel)
 
         ============= V 1.0.1 ==================
-        - Brazilian Portuguese translation
+        - Brazilian Portuguese translation (André Marcelo Alvarenga)
         - Fixed minor translation bugs
         - Redesigned configuration of the nameday identification
         - build 2: included patch from Thomas Leineweber for backward compatibility with older KDE versions
+
+        ============= V 1.0.2 ==================
+        - Persisting the order and widths of columns immediately after change (and keeping changes on next start)
+        - Freely customizable date format (see tooltip in the configuration dialog for options)
+        - Selectable text alignment for the Date, Age and When columns
