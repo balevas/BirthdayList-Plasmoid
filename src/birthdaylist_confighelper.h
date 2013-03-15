@@ -58,8 +58,7 @@ namespace BirthdayList
         Ui::BirthdayListTableConfig m_ui_table;
         Ui::BirthdayListColorsConfig m_ui_colors;
 
-        QStringList m_possibleDateFormats;
-        int m_selectedDateFormat;
+        QStringList m_obsoleteSelectableDateFormats;
         
         QList<QString> m_namedayFiles;
         QList<QString> m_namedayLangStrings;

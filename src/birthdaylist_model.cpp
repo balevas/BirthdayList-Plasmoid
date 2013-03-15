@@ -45,6 +45,8 @@ filterType(FT_Off),
 customFieldName(""),
 customFieldPrefix(""),
 filterValue(""),
+dateFormat("ddd M/d"),
+textAlignmentLeft(false),
 todayColorSettings(false, QColor(255, 255, 255), true, QColor(128, 0, 0), true),
 highlightColorSettings(false, QColor(255, 255, 255), true, QColor(128, 0, 0), false),
 pastColorSettings(false, QColor(0, 0, 0), true, QColor(160, 0, 0), true)
@@ -307,7 +309,7 @@ void BirthdayList::Model::updateModel()
         if (showEvent) {
             QList<QStandardItem*> items;
             entry->createModelItems(items, m_conf.dateFormat);
-            for (int i=0; i<items.size(); ++i) setModelItemColors(entry, items[i], i);
+            for (int i=0; i<items.size(); ++i) setModelItemStyle(entry, items[i], i);
 
             parentItem->appendRow(items);
         }
@@ -355,12 +357,15 @@ QDate BirthdayList::Model::getContactDateField(const AddresseeInfo &contactInfo,
     return QDate();
 }
 
-void BirthdayList::Model::setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum) 
+void BirthdayList::Model::setModelItemStyle(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum) 
 {
     item->setEditable(false);
 
-    Q_UNUSED(colNum)
-    //if (colNum>0) item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    if (colNum > 0) {
+        if (m_conf.textAlignmentLeft) item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        else item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    }
+    
 
     if (entry->remainingDays() == 0) {
         if (entry->hasEvent() || m_conf.todayColorSettings.highlightNoEvents) {
@@ -382,7 +387,7 @@ void BirthdayList::Model::setModelItemColors(const AbstractAnnualEventEntry *ent
     for (int row = 0; row < item->rowCount(); ++row) {
         for (int col = 0; col < item->columnCount(); ++col) {
             QStandardItem *child = item->child(row, col);
-            if (child) setModelItemColors(entry, child, col);
+            if (child) setModelItemStyle(entry, child, col);
         }
     }
 }

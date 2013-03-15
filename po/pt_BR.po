@@ -4,9 +4,9 @@
 # André Marcelo Alvarenga <alvarenga@kde.org>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: BirthdayList 1.0.1\n"
+"Project-Id-Version: BirthdayList 1.0.2\n"
 "Report-Msgid-Bugs-To: http://kde-look.org/content/show.php?content=121134\n"
-"POT-Creation-Date: 2013-01-22 23:54+0100\n"
+"POT-Creation-Date: 2013-03-12 23:36+0100\n"
 "PO-Revision-Date: 2013-01-22 23:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -17,21 +17,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 1.5\n"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:41
-#. i18n: ectx: property (text), widget (QLabel, lblTitleComingEvents)
-#: build/src/ui_birthdaylist_config_colors.h:370 po/rc.cpp:3 rc.cpp:3
+#: build/src/ui_birthdaylist_config_colors.h:370
 msgid "Coming events"
 msgstr "Próximos eventos"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:54
-#. i18n: ectx: property (text), widget (QLabel, lblTitlePastEvents)
-#: build/src/ui_birthdaylist_config_colors.h:371 po/rc.cpp:6 rc.cpp:6
+#: build/src/ui_birthdaylist_config_colors.h:371
 msgid "Past events"
 msgstr "Eventos passados"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:77
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays)
-#: build/src/ui_birthdaylist_config_colors.h:372 po/rc.cpp:9 rc.cpp:9
+#: build/src/ui_birthdaylist_config_colors.h:372
 msgid "Highlight events within next:"
 msgstr "Realçar eventos dos próximos:"
 
@@ -41,97 +35,39 @@ msgstr "Realçar eventos dos próximos:"
 msgid "days"
 msgstr "dias"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:151
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightForeground)
-#. i18n: file: src/birthdaylist_config_colors.ui:193
-#. i18n: ectx: property (text), widget (QLabel, lblPastForeground)
-#. i18n: file: src/birthdaylist_config_colors.ui:258
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysForeground)
-#. i18n: file: src/birthdaylist_config_colors.ui:151
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightForeground)
-#. i18n: file: src/birthdaylist_config_colors.ui:193
-#. i18n: ectx: property (text), widget (QLabel, lblPastForeground)
-#. i18n: file: src/birthdaylist_config_colors.ui:258
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysForeground)
 #: build/src/ui_birthdaylist_config_colors.h:375
 #: build/src/ui_birthdaylist_config_colors.h:377
-#: build/src/ui_birthdaylist_config_colors.h:381 po/rc.cpp:15 po/rc.cpp:18
-#: po/rc.cpp:27 rc.cpp:15 rc.cpp:18 rc.cpp:27
+#: build/src/ui_birthdaylist_config_colors.h:381
 msgid "Custom foreground:"
 msgstr "Cor do texto personalizada:"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:235
-#. i18n: ectx: property (text), widget (QLabel, lblPastBackground)
-#. i18n: file: src/birthdaylist_config_colors.ui:341
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysBackground)
-#. i18n: file: src/birthdaylist_config_colors.ui:367
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightBackground)
-#. i18n: file: src/birthdaylist_config_colors.ui:235
-#. i18n: ectx: property (text), widget (QLabel, lblPastBackground)
-#. i18n: file: src/birthdaylist_config_colors.ui:341
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysBackground)
-#. i18n: file: src/birthdaylist_config_colors.ui:367
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightBackground)
 #: build/src/ui_birthdaylist_config_colors.h:379
 #: build/src/ui_birthdaylist_config_colors.h:384
-#: build/src/ui_birthdaylist_config_colors.h:385 po/rc.cpp:21 po/rc.cpp:30
-#: po/rc.cpp:33 rc.cpp:21 rc.cpp:30 rc.cpp:33
+#: build/src/ui_birthdaylist_config_colors.h:385
 msgid "Custom background:"
 msgstr "Cor de fundo personalizada:"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:251
-#. i18n: ectx: property (text), widget (QLabel, lblTitleTodaysEvents)
-#: build/src/ui_birthdaylist_config_colors.h:380 po/rc.cpp:24 rc.cpp:24
+#: build/src/ui_birthdaylist_config_colors.h:380
 msgid "Today's events"
 msgstr "Eventos de hoje"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:435
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysHighlightNoEvent)
-#. i18n: file: src/birthdaylist_config_colors.ui:445
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightNoEvent)
-#. i18n: file: src/birthdaylist_config_colors.ui:455
-#. i18n: ectx: property (text), widget (QLabel, lblPastHighlightNoEvent)
-#. i18n: file: src/birthdaylist_config_colors.ui:435
-#. i18n: ectx: property (text), widget (QLabel, lblTodaysHighlightNoEvent)
-#. i18n: file: src/birthdaylist_config_colors.ui:445
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightNoEvent)
-#. i18n: file: src/birthdaylist_config_colors.ui:455
-#. i18n: ectx: property (text), widget (QLabel, lblPastHighlightNoEvent)
 #: build/src/ui_birthdaylist_config_colors.h:387
 #: build/src/ui_birthdaylist_config_colors.h:388
-#: build/src/ui_birthdaylist_config_colors.h:389 po/rc.cpp:36 po/rc.cpp:39
-#: po/rc.cpp:42 rc.cpp:36 rc.cpp:39 rc.cpp:42
+#: build/src/ui_birthdaylist_config_colors.h:389
 msgid "Highlight lines with no events:"
 msgstr "Realçar linhas sem eventos:"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContactsConfig)
-#. i18n: file: src/birthdaylist_config_events.ui:20
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListEventsConfig)
-#. i18n: file: src/birthdaylist_config_table.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListTableConfig)
-#. i18n: file: src/birthdaylist_config_contacts.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListContactsConfig)
-#. i18n: file: src/birthdaylist_config_events.ui:20
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListEventsConfig)
-#. i18n: file: src/birthdaylist_config_table.ui:14
-#. i18n: ectx: property (windowTitle), widget (QWidget, BirthdayListTableConfig)
 #: build/src/ui_birthdaylist_config_contacts.h:216
 #: build/src/ui_birthdaylist_config_events.h:289
-#: build/src/ui_birthdaylist_config_table.h:194 po/rc.cpp:45 po/rc.cpp:75
-#: po/rc.cpp:144 rc.cpp:45 rc.cpp:75 rc.cpp:144
+#: build/src/ui_birthdaylist_config_table.h:220
 msgid "Form"
 msgstr "Formulário"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:52
-#. i18n: ectx: property (text), widget (QLabel, lblDataSource)
-#: build/src/ui_birthdaylist_config_contacts.h:217 po/rc.cpp:48 rc.cpp:48
+#: build/src/ui_birthdaylist_config_contacts.h:217
 msgid "Data source:"
 msgstr "Fonte de dados:"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:65
-#. i18n: ectx: property (text), widget (QLabel, lblAkoCollection)
-#: build/src/ui_birthdaylist_config_contacts.h:218 po/rc.cpp:51 rc.cpp:51
+#: build/src/ui_birthdaylist_config_contacts.h:218
 msgid "Akonadi collection:"
 msgstr "Coleção do Akonadi:"
 
@@ -139,21 +75,15 @@ msgstr "Coleção do Akonadi:"
 msgid "Filter"
 msgstr "Filtro"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:180
-#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeOff)
-#: build/src/ui_birthdaylist_config_contacts.h:220 po/rc.cpp:57 rc.cpp:57
+#: build/src/ui_birthdaylist_config_contacts.h:220
 msgid "All contacts from the data source"
 msgstr "Todos os contados da fonte de dados"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:187
-#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeCategory)
-#: build/src/ui_birthdaylist_config_contacts.h:221 po/rc.cpp:60 rc.cpp:60
+#: build/src/ui_birthdaylist_config_contacts.h:221
 msgid "Filter by contact category"
 msgstr "Filtrar por categoria de contato"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:194
-#. i18n: ectx: property (text), widget (QLabel, lblFilterType)
-#: build/src/ui_birthdaylist_config_contacts.h:222 po/rc.cpp:63 rc.cpp:63
+#: build/src/ui_birthdaylist_config_contacts.h:222
 msgid "Criterion:"
 msgstr "Critério:"
 
@@ -161,39 +91,27 @@ msgstr "Critério:"
 msgid "Match value:"
 msgstr "Coincidir com:"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:232
-#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeCustomFieldName)
-#: build/src/ui_birthdaylist_config_contacts.h:224 po/rc.cpp:69 rc.cpp:69
+#: build/src/ui_birthdaylist_config_contacts.h:224
 msgid "Filter by the custom field:"
 msgstr "Filtrar pelo campo personalizado:"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:242
-#. i18n: ectx: property (text), widget (QRadioButton, rbFilterTypeCustomFieldPrefix)
-#: build/src/ui_birthdaylist_config_contacts.h:225 po/rc.cpp:72 rc.cpp:72
+#: build/src/ui_birthdaylist_config_contacts.h:225
 msgid "Filter by multiple custom fields (prefix):"
 msgstr "Filtrar pelos vários campos personalizados (prefixo):"
 
-#. i18n: file: src/birthdaylist_config_events.ui:26
-#. i18n: ectx: property (text), widget (QLabel, lblNamedayIdentifyByGivenName)
-#: build/src/ui_birthdaylist_config_events.h:290 po/rc.cpp:78 rc.cpp:78
+#: build/src/ui_birthdaylist_config_events.h:290
 msgid "Determined from given names:"
 msgstr "Determinar pelos nomes próprios:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:36
-#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays)
-#: build/src/ui_birthdaylist_config_events.h:291 po/rc.cpp:81 rc.cpp:81
+#: build/src/ui_birthdaylist_config_events.h:291
 msgid "Show events within next:"
 msgstr "Mostrar eventos dos próximos:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:79
-#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowIndEvents)
-#: build/src/ui_birthdaylist_config_events.h:293 po/rc.cpp:87 rc.cpp:87
+#: build/src/ui_birthdaylist_config_events.h:293
 msgid "Individual events"
 msgstr "Eventos individuais"
 
-#. i18n: file: src/birthdaylist_config_events.ui:99
-#. i18n: ectx: property (toolTip), widget (QLineEdit, lineEditNamedayCustomDateField)
-#: build/src/ui_birthdaylist_config_events.h:295 po/rc.cpp:90 rc.cpp:90
+#: build/src/ui_birthdaylist_config_events.h:295
 msgid ""
 "Key of the custom field storing name days. \n"
 "Note that the field key can be different from the field name."
@@ -201,71 +119,49 @@ msgstr ""
 "Chave do campo personalizado para armazenamento dos dias dos nomes.\n"
 "Lembre-se de que a chave do campo pode ser diferente do nome do campo."
 
-#. i18n: file: src/birthdaylist_config_events.ui:131
-#. i18n: ectx: property (text), widget (QLabel, lblTitleAnniversaries)
-#: build/src/ui_birthdaylist_config_events.h:299 po/rc.cpp:94 rc.cpp:94
+#: build/src/ui_birthdaylist_config_events.h:299
 msgid "Anniversaries"
 msgstr "Aniversários de casamento"
 
-#. i18n: file: src/birthdaylist_config_events.ui:163
-#. i18n: ectx: property (text), widget (QLabel, lblNamedayCalendar)
-#: build/src/ui_birthdaylist_config_events.h:300 po/rc.cpp:97 rc.cpp:97
+#: build/src/ui_birthdaylist_config_events.h:300
 msgid "Name day calendar:"
 msgstr "Calendário do dia do nome:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:179
-#. i18n: ectx: property (text), widget (QLabel, lblNamedayStoredInDateField)
-#: build/src/ui_birthdaylist_config_events.h:301 po/rc.cpp:100 rc.cpp:100
+#: build/src/ui_birthdaylist_config_events.h:301
 msgid "Stored in a date field:"
 msgstr "Armazenado em campo de data:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:189
-#. i18n: ectx: property (text), widget (QLabel, lblNamedayDisplayMode)
-#: build/src/ui_birthdaylist_config_events.h:302 po/rc.cpp:103 rc.cpp:103
+#: build/src/ui_birthdaylist_config_events.h:302
 msgid "Name day display mode:"
 msgstr "Modo de exibição do dia do nome:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:199
-#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAllFromCal)
-#: build/src/ui_birthdaylist_config_events.h:303 po/rc.cpp:106 rc.cpp:106
+#: build/src/ui_birthdaylist_config_events.h:303
 msgid "All names from calendar"
 msgstr "Todos os nomes do calendário"
 
-#. i18n: file: src/birthdaylist_config_events.ui:209
-#. i18n: ectx: property (text), widget (QRadioButton, rbNamedayShowAggrEvents)
-#: build/src/ui_birthdaylist_config_events.h:304 po/rc.cpp:109 rc.cpp:109
+#: build/src/ui_birthdaylist_config_events.h:304
 msgid "Aggregated events"
 msgstr "Eventos agrupados"
 
-#. i18n: file: src/birthdaylist_config_events.ui:222
-#. i18n: ectx: property (toolTip), widget (QCheckBox, chckNamedayAnniversaryField)
-#: build/src/ui_birthdaylist_config_events.h:306 po/rc.cpp:112 rc.cpp:112
+#: build/src/ui_birthdaylist_config_events.h:306
 msgid "Anniversary field is used to store contact name days."
 msgstr ""
 "O campo de aniversário de casamento é usado para armazenar os dias dos nomes "
 "do contato."
 
-#. i18n: file: src/birthdaylist_config_events.ui:225
-#. i18n: ectx: property (text), widget (QCheckBox, chckNamedayAnniversaryField)
-#: build/src/ui_birthdaylist_config_events.h:308 po/rc.cpp:115 rc.cpp:115
+#: build/src/ui_birthdaylist_config_events.h:308
 msgid "Anniversary"
 msgstr "Aniversário de casamento"
 
-#. i18n: file: src/birthdaylist_config_events.ui:239
-#. i18n: ectx: property (text), widget (QLabel, lblShowNamedays)
-#: build/src/ui_birthdaylist_config_events.h:310 po/rc.cpp:121 rc.cpp:121
+#: build/src/ui_birthdaylist_config_events.h:310
 msgid "Show name days:"
 msgstr "Mostrar dias dos nomes:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:270
-#. i18n: ectx: property (text), widget (QLabel, lblShowAnniversaries)
-#: build/src/ui_birthdaylist_config_events.h:312 po/rc.cpp:124 rc.cpp:124
+#: build/src/ui_birthdaylist_config_events.h:312
 msgid "Show anniversaries:"
 msgstr "Mostrar aniversários de casamento:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:282
-#. i18n: ectx: property (toolTip), widget (QCheckBox, chckNamedayNameField)
-#: build/src/ui_birthdaylist_config_events.h:314 po/rc.cpp:127 rc.cpp:127
+#: build/src/ui_birthdaylist_config_events.h:314
 msgid ""
 "Name days shall be determined out of given names. \n"
 "However if the particular contact's name day is stored \n"
@@ -275,139 +171,105 @@ msgstr ""
 "Entretanto, se o dia do nome do contato específico for armazenado no\n"
 "campo de data selecionado, este campo terá preferência."
 
-#. i18n: file: src/birthdaylist_config_events.ui:327
-#. i18n: ectx: property (text), widget (QLabel, lblTitleNamedays)
-#: build/src/ui_birthdaylist_config_events.h:319 po/rc.cpp:132 rc.cpp:132
+#: build/src/ui_birthdaylist_config_events.h:319
 msgid "Name days"
 msgstr "Dias dos nomes"
 
-#. i18n: file: src/birthdaylist_config_events.ui:344
-#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays)
-#: build/src/ui_birthdaylist_config_events.h:320 po/rc.cpp:135 rc.cpp:135
+#: build/src/ui_birthdaylist_config_events.h:320
 msgid "Show events within last:"
 msgstr "Mostrar eventos dos últimos:"
 
-#. i18n: file: src/birthdaylist_config_events.ui:354
-#. i18n: ectx: property (toolTip), widget (QCheckBox, chckNamedayCustomDateField)
-#: build/src/ui_birthdaylist_config_events.h:322 po/rc.cpp:138 rc.cpp:138
+#: build/src/ui_birthdaylist_config_events.h:322
 msgid "Contact name days are stored in a custom date field."
 msgstr ""
 "Os dias dos nomes do contato são armazenados em um campo de data "
 "personalizado."
 
-#. i18n: file: src/birthdaylist_config_events.ui:357
-#. i18n: ectx: property (text), widget (QCheckBox, chckNamedayCustomDateField)
-#: build/src/ui_birthdaylist_config_events.h:324 po/rc.cpp:141 rc.cpp:141
+#: build/src/ui_birthdaylist_config_events.h:324
 msgid "Custom field:"
 msgstr "Campo personalizado:"
 
-#. i18n: file: src/birthdaylist_config_table.ui:26
-#. i18n: ectx: property (text), widget (QLabel, lblTitleColumns)
-#: build/src/ui_birthdaylist_config_table.h:195 po/rc.cpp:147 rc.cpp:147
+#: build/src/ui_birthdaylist_config_table.h:221
 msgid "Columns"
 msgstr "Colunas"
 
-#. i18n: file: src/birthdaylist_config_table.ui:46
-#. i18n: ectx: property (text), widget (QLabel, lblShowColumnHeaders)
-#: build/src/ui_birthdaylist_config_table.h:196 po/rc.cpp:150 rc.cpp:150
+#: build/src/ui_birthdaylist_config_table.h:222
 msgid "Show column headers:"
 msgstr "Mostrar o título das colunas:"
 
-#. i18n: file: src/birthdaylist_config_table.ui:88
-#. i18n: ectx: property (text), widget (QCheckBox, chckShowColDate)
-#: build/src/ui_birthdaylist_config_table.h:198 po/rc.cpp:153
-#: src/birthdaylist_model.cpp:61 rc.cpp:153
+#: build/src/ui_birthdaylist_config_table.h:224 src/birthdaylist_model.cpp:63
 msgid "Date"
 msgstr "Data"
 
-#. i18n: file: src/birthdaylist_config_table.ui:98
-#. i18n: ectx: property (text), widget (QLabel, lblShowColumns)
-#: build/src/ui_birthdaylist_config_table.h:199 po/rc.cpp:156 rc.cpp:156
+#: build/src/ui_birthdaylist_config_table.h:225
 msgid "Show columns:"
 msgstr "Mostrar colunas:"
 
-#. i18n: file: src/birthdaylist_config_table.ui:108
-#. i18n: ectx: property (text), widget (QCheckBox, chckShowColWhen)
-#: build/src/ui_birthdaylist_config_table.h:200 po/rc.cpp:159
-#: src/birthdaylist_model.cpp:61 rc.cpp:159
+#: build/src/ui_birthdaylist_config_table.h:226 src/birthdaylist_model.cpp:63
 msgid "When"
 msgstr "Quando"
 
-#. i18n: file: src/birthdaylist_config_table.ui:121
-#. i18n: ectx: property (text), widget (QCheckBox, chckShowColName)
-#: build/src/ui_birthdaylist_config_table.h:201 po/rc.cpp:162
-#: src/birthdaylist_model.cpp:61 rc.cpp:162
+#: build/src/ui_birthdaylist_config_table.h:227 src/birthdaylist_model.cpp:63
 msgid "Name"
 msgstr "Nome"
 
-#. i18n: file: src/birthdaylist_config_table.ui:134
-#. i18n: ectx: property (text), widget (QCheckBox, chckShowColAge)
-#: build/src/ui_birthdaylist_config_table.h:202 po/rc.cpp:165
-#: src/birthdaylist_model.cpp:61 rc.cpp:165
+#: build/src/ui_birthdaylist_config_table.h:228 src/birthdaylist_model.cpp:63
 msgid "Age"
 msgstr "Idade"
 
-#. i18n: file: src/birthdaylist_config_table.ui:150
-#. i18n: ectx: property (text), widget (QLabel, lblTitleNames)
-#: build/src/ui_birthdaylist_config_table.h:203 po/rc.cpp:168 rc.cpp:168
+#: build/src/ui_birthdaylist_config_table.h:229
 msgid "Names"
 msgstr "Nomes"
 
-#. i18n: file: src/birthdaylist_config_table.ui:157
-#. i18n: ectx: property (text), widget (QLabel, lblShowNicknames)
-#: build/src/ui_birthdaylist_config_table.h:204 po/rc.cpp:171 rc.cpp:171
+#: build/src/ui_birthdaylist_config_table.h:230
 msgid "Show nicknames if available:"
 msgstr "Mostrar os apelidos se disponível:"
 
-#. i18n: file: src/birthdaylist_config_table.ui:212
-#. i18n: ectx: property (text), widget (QLabel, lblTitleDateFormat)
-#: build/src/ui_birthdaylist_config_table.h:206 po/rc.cpp:174 rc.cpp:174
-msgid "Date format"
-msgstr "Formato da data"
+#: build/src/ui_birthdaylist_config_table.h:233
+msgid ""
+"Enter the desired format using the following expressions:\n"
+"d \tthe day as number without a leading zero (1 to 31)\n"
+"dd \tthe day as number with a leading zero (01 to 31)\n"
+"ddd \tthe abbreviated day name ('Mon' to 'Sun')\n"
+"dddd \tthe long day name ('Monday' to 'Sunday')\n"
+"M \tthe month as number without a leading zero (1 to 12)\n"
+"MM \tthe month as number with a leading zero (01 to 12)\n"
+"MMM \tthe abbreviated month name ('Jan' to 'Dec')\n"
+"MMMM \tthe long month name ('January' to 'December')\n"
+"\n"
+"Example: \"ddd M/d\" results in \"Sun 2/19\""
+msgstr ""
 
-#. i18n: file: src/birthdaylist_config_table.ui:219
-#. i18n: ectx: property (text), widget (QLabel, lblDateDisplayFormat)
-#: build/src/ui_birthdaylist_config_table.h:207 po/rc.cpp:177 rc.cpp:177
+#: build/src/ui_birthdaylist_config_table.h:245
 msgid "Date display format:"
 msgstr "Formato de exibição da data:"
 
-#. i18n: file: src/birthdaylist_config_colors.ui:103
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays_2)
-#. i18n: file: src/birthdaylist_config_events.ui:46
-#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays_2)
-#. i18n: file: src/birthdaylist_config_events.ui:232
-#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays_2)
-#. i18n: file: src/birthdaylist_config_colors.ui:103
-#. i18n: ectx: property (text), widget (QLabel, lblComingHighlightDays_2)
-#. i18n: file: src/birthdaylist_config_events.ui:46
-#. i18n: ectx: property (text), widget (QLabel, lblPastShowDays_2)
-#. i18n: file: src/birthdaylist_config_events.ui:232
-#. i18n: ectx: property (text), widget (QLabel, lblComingShowDays_2)
-#: po/rc.cpp:12 po/rc.cpp:84 po/rc.cpp:118 rc.cpp:12 rc.cpp:84 rc.cpp:118
-msgctxt "label: show events within x <days>"
-msgid "days"
-msgstr "dias"
+#: build/src/ui_birthdaylist_config_table.h:246
+msgid "Date format"
+msgstr "Formato da data"
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:144
-#. i18n: ectx: property (text), widget (QLabel, lblTitleFilter)
-#: po/rc.cpp:54 rc.cpp:54
-msgctxt "Filter criterion"
-msgid "Filter"
-msgstr "Filtro"
+#: build/src/ui_birthdaylist_config_table.h:247
+msgid "Alignment"
+msgstr ""
 
-#. i18n: file: src/birthdaylist_config_contacts.ui:216
-#. i18n: ectx: property (text), widget (QLabel, lblFilterValue)
-#: po/rc.cpp:66 rc.cpp:66
-msgctxt "Value to be matched when filtering contacts"
-msgid "Match value:"
-msgstr "Coincidir com:"
+#: build/src/ui_birthdaylist_config_table.h:248
+msgid "Text alignment:"
+msgstr ""
 
-#: po/rc.cpp:178 rc.cpp:178
+#: build/src/ui_birthdaylist_config_table.h:249
+msgid "Left"
+msgstr ""
+
+#: build/src/ui_birthdaylist_config_table.h:250
+msgid "Right"
+msgstr ""
+
+#: po/rc.cpp:1 rc.cpp:1
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "André Marcelo Alvarenga"
 
-#: po/rc.cpp:179 rc.cpp:179
+#: po/rc.cpp:2 rc.cpp:2
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "alvarenga@kde.org"
@@ -490,37 +352,37 @@ msgctxt "EMAIL OF THE TRANSLATORS"
 msgid "Your emails"
 msgstr "alvarenga@kde.org"
 
-#: src/birthdaylist_applet.cpp:100
+#: src/birthdaylist_applet.cpp:102
 msgctxt "Show About Dialog"
 msgid "About"
 msgstr "Sobre"
 
-#: src/birthdaylist_confighelper.cpp:200
+#: src/birthdaylist_confighelper.cpp:216
 msgid "Contacts"
 msgstr "Contatos"
 
-#: src/birthdaylist_confighelper.cpp:201
+#: src/birthdaylist_confighelper.cpp:217
 msgid "Events"
 msgstr "Eventos"
 
-#: src/birthdaylist_confighelper.cpp:202
+#: src/birthdaylist_confighelper.cpp:218
 msgid "Table"
 msgstr "Tabela"
 
-#: src/birthdaylist_confighelper.cpp:203
+#: src/birthdaylist_confighelper.cpp:219
 msgid "Colors"
 msgstr "Cores"
 
-#: src/birthdaylist_confighelper.cpp:209
+#: src/birthdaylist_confighelper.cpp:225
 msgid "Akonadi"
 msgstr "Akonadi"
 
-#: src/birthdaylist_confighelper.cpp:227
+#: src/birthdaylist_confighelper.cpp:243
 msgctxt "No Akonadi collections"
 msgid "No collections available"
 msgstr "Nenhuma coleção disponível"
 
-#: src/birthdaylist_confighelper.cpp:424
+#: src/birthdaylist_confighelper.cpp:440
 msgctxt "No nameday calendar (combo box item)"
 msgid "None"
 msgstr "Nenhum"
@@ -557,10 +419,22 @@ msgid_plural "in %1 days"
 msgstr[0] "em 1 dia"
 msgstr[1] "em %1 dias"
 
-#: src/birthdaylist_view.cpp:98
+#: src/birthdaylist_view.cpp:103
 msgid "Send Email to %1"
 msgstr "Enviar e-mail para %1"
 
-#: src/birthdaylist_view.cpp:109
+#: src/birthdaylist_view.cpp:114
 msgid "Visit %1's Homepage"
 msgstr "Visitar a página Web de %1"
+
+#~ msgctxt "label: show events within x <days>"
+#~ msgid "days"
+#~ msgstr "dias"
+
+#~ msgctxt "Filter criterion"
+#~ msgid "Filter"
+#~ msgstr "Filtro"
+
+#~ msgctxt "Value to be matched when filtering contacts"
+#~ msgid "Match value:"
+#~ msgstr "Coincidir com:"

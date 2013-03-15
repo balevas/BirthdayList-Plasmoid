@@ -69,6 +69,8 @@ namespace BirthdayList
 
         QString dateFormat;
         
+        bool textAlignmentLeft;
+        
         struct ItemColorSettings {
             ItemColorSettings(bool isForeground, QBrush brushForeground, bool isBackground, QBrush brushBackground, bool highlightNoEvents) :
                 isForeground(isForeground),
@@ -109,7 +111,7 @@ namespace BirthdayList
         /** Returns the name from the current nameday calendar belonging to the given date. */
         QString getNamedayString(QDate date);
         /** Sets the colors for the model items according to the applet configuration */
-        void setModelItemColors(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum);
+        void setModelItemStyle(const AbstractAnnualEventEntry *entry, QStandardItem *item, int colNum);
 
         ModelConfiguration m_conf;
         
