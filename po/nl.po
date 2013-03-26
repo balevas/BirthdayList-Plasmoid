@@ -128,7 +128,7 @@ msgstr "Naamdag kalender:"
 
 #: build/src/ui_birthdaylist_config_events.h:301
 msgid "Stored in a date field:"
-msgstr ""
+msgstr "Opgeslagen in een datum veld:"
 
 #: build/src/ui_birthdaylist_config_events.h:302
 msgid "Name day display mode:"
@@ -161,7 +161,6 @@ msgid "Show anniversaries:"
 msgstr "Feestelijkheden weergeven:"
 
 #: build/src/ui_birthdaylist_config_events.h:314
-#, fuzzy
 msgid ""
 "Name days shall be determined out of given names. \n"
 "However if the particular contact's name day is stored \n"
@@ -239,6 +238,17 @@ msgid ""
 "\n"
 "Example: \"ddd M/d\" results in \"Sun 2/19\""
 msgstr ""
+"Bepaal het gewenste formaat met de volgende bewerkingen:\n"
+"d \tde dag als nummer zonder voorloop nul (1 - 31)\n"
+"dd \tde dat als nummer met voorlop nul (01 - 31)\n"
+"ddd \tde verkorte naam van een dag ('maa' - 'zon')\n"
+"dddd \tde naam van een dag ('maandag' - 'zondag')\n"
+"M \tde maand als nummer zonder voorloop nul (1 - 12)\n"
+"MM \tde maand als nummer met voorloop nul (01 - 12)\n"
+"MMM \tde verkorte naam van een maand ('jan' - 'dec')\n"
+"MMMM \tde naam van een maand ('january' - 'december')\n"
+"\n"
+"Voorbeeld: \"ddd M/d\" resulteert in \"zon 2/19\""
 
 #: build/src/ui_birthdaylist_config_table.h:245
 msgid "Date display format:"
@@ -250,19 +260,19 @@ msgstr "Datum formaat"
 
 #: build/src/ui_birthdaylist_config_table.h:247
 msgid "Alignment"
-msgstr ""
+msgstr "Uitlijning"
 
 #: build/src/ui_birthdaylist_config_table.h:248
 msgid "Text alignment:"
-msgstr ""
+msgstr "Tekst uitlijning"
 
 #: build/src/ui_birthdaylist_config_table.h:249
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: build/src/ui_birthdaylist_config_table.h:250
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
 #: po/rc.cpp:1 rc.cpp:1
 msgctxt "NAME OF TRANSLATORS"

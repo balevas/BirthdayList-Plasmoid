@@ -33,16 +33,16 @@ BirthdayList::AbstractAnnualEventEntry::AbstractAnnualEventEntry(const QString &
 {
     QDate today = QDate::currentDate();
 
-    QDate currentAnniversary = QDate(today.year(), m_date.month(), m_date.day());
-    int daysToAnniversary = today.daysTo(currentAnniversary);
+    m_currentAnniversary = QDate(today.year(), m_date.month(), m_date.day());
+    int daysToAnniversary = today.daysTo(m_currentAnniversary);
     if (daysToAnniversary < -m_pastThreshold) {
-        currentAnniversary = QDate(today.year() + 1, m_date.month(), m_date.day());
+        m_currentAnniversary = QDate(today.year() + 1, m_date.month(), m_date.day());
     } else if (daysToAnniversary > today.daysInYear() - m_pastThreshold) {
-        currentAnniversary = QDate(today.year() - 1, m_date.month(), m_date.day());
+        m_currentAnniversary = QDate(today.year() - 1, m_date.month(), m_date.day());
     }
 
-    m_remainingDays = today.daysTo(currentAnniversary);
-    m_age = currentAnniversary.year() - m_date.year();
+    m_remainingDays = today.daysTo(m_currentAnniversary);
+    m_age = m_currentAnniversary.year() - m_date.year();
 }
 
 BirthdayList::AbstractAnnualEventEntry::~AbstractAnnualEventEntry() 
@@ -90,7 +90,7 @@ void BirthdayList::BirthdayEntry::createModelItems(QList<QStandardItem*> &items,
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(BirthdayEntry::m_icon);
     items.append(new QStandardItem(QString::number(m_age)));
-    items.append(new QStandardItem(m_date.toString(dateFormat)));
+    items.append(new QStandardItem(m_currentAnniversary.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
     items.append(new QStandardItem(m_email));
     items.append(new QStandardItem(m_url));
@@ -115,7 +115,7 @@ void BirthdayList::NamedayEntry::createModelItems(QList<QStandardItem*> &items, 
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(NamedayEntry::m_icon);
     items.append(new QStandardItem(m_age >= 0 ? QString::number(m_age) : ""));
-    items.append(new QStandardItem(m_aggregated ? "" : m_date.toString(dateFormat)));
+    items.append(new QStandardItem(m_aggregated ? "" : m_currentAnniversary.toString(dateFormat)));
     items.append(new QStandardItem(m_aggregated ? "" : remainingDaysString(remainingDays())));
     items.append(new QStandardItem(m_email));
     items.append(new QStandardItem(m_url));
@@ -153,7 +153,7 @@ void BirthdayList::AggregatedNamedayEntry::createModelItems(QList<QStandardItem*
     else items.append(new QStandardItem(QString("%1 (%2)").arg(m_name).arg(m_storedEntries.size())));
     items[0]->setIcon(AggregatedNamedayEntry::m_icon);
     items.append(new QStandardItem(""));
-    items.append(new QStandardItem(m_date.toString(dateFormat)));
+    items.append(new QStandardItem(m_currentAnniversary.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
     items.append(new QStandardItem(""));
     items.append(new QStandardItem(""));
@@ -185,7 +185,7 @@ void BirthdayList::AnniversaryEntry::createModelItems(QList<QStandardItem*> &ite
     items.append(new QStandardItem(m_name));
     items[0]->setIcon(AnniversaryEntry::m_icon);
     items.append(new QStandardItem(QString::number(m_age)));
-    items.append(new QStandardItem(m_date.toString(dateFormat)));
+    items.append(new QStandardItem(m_currentAnniversary.toString(dateFormat)));
     items.append(new QStandardItem(remainingDaysString(remainingDays())));
     items.append(new QStandardItem(m_email));
     items.append(new QStandardItem(m_url));

@@ -80,6 +80,7 @@ namespace BirthdayList
         QString m_name;
         int m_age;
         QDate m_date;
+        QDate m_currentAnniversary;
         int m_remainingDays;
         QString m_email;
         QString m_url;
